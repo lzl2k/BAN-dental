@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0d1117">
+<title>سجل طب الأسنان</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1117;--bg2:#161b22;--bg3:#1c2333;
+  --card:#21262d;--card2:#2d333b;--border:#30363d;
+  --text:#e6edf3;--text2:#8b949e;--text3:#6e7681;
+  --accent:#58a6ff;--green:#3fb950;--red:#f78166;--purple:#d2a8ff;--yellow:#e3b341;
+  --r:12px;--r2:8px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column}
+
+/* LOGIN */
+#loginScreen{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;padding:32px;text-align:center}
+.login-logo{font-size:4rem;margin-bottom:16px}
+.login-title{font-size:1.6rem;font-weight:900;margin-bottom:6px}
+.login-sub{font-size:0.85rem;color:var(--text2);margin-bottom:40px;line-height:1.7}
+.btn-google{display:flex;align-items:center;gap:12px;justify-content:center;background:#fff;color:#1f1f1f;padding:14px 28px;border-radius:50px;border:none;cursor:pointer;font-family:'Cairo',sans-serif;font-size:1rem;font-weight:700;box-shadow:0 4px 20px rgba(0,0,0,0.4);width:100%;max-width:280px;transition:transform 0.15s}
+.btn-google:active{transform:scale(0.97)}
+.login-note{font-size:0.72rem;color:var(--text3);margin-top:20px;line-height:1.8}
+
+/* APP */
+#appShell{display:none;flex-direction:column;height:100%}
+#appShell.show{display:flex}
+
+/* TOPBAR */
+.topbar{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.topbar-title{font-size:1rem;font-weight:700}
+.user-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;overflow:hidden}
+.user-avatar img{width:100%;height:100%;object-fit:cover}
+
+/* RIBBON */
+.ribbon{background:var(--bg2);border-bottom:1px solid var(--border);display:flex;padding:10px 0;flex-shrink:0}
+.rib-item{flex:1;text-align:center;position:relative}
+.rib-item:not(:last-child)::after{content:'';position:absolute;left:0;top:20%;height:60%;width:1px;background:var(--border)}
+.rib-num{font-size:1.3rem;font-weight:900;color:var(--accent)}
+.rib-lbl{font-size:0.62rem;color:var(--text3);margin-top:1px}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;overflow-x:hidden}
+.section{display:none;padding:14px;padding-bottom:84px}
+.section.active{display:block}
+
+/* BOTTOM NAV */
+.bnav{background:var(--bg2);border-top:1px solid var(--border);display:flex;flex-shrink:0}
+.nb{flex:1;padding:10px 4px 8px;text-align:center;cursor:pointer;border:none;background:none;color:var(--text3);font-family:'Cairo',sans-serif;font-size:0.62rem;font-weight:600;transition:color 0.2s}
+.nb.active{color:var(--accent)}
+.nb-icon{font-size:1.25rem;display:block;margin-bottom:2px}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.card-title{font-size:0.75rem;font-weight:700;color:var(--text3);margin-bottom:14px;text-transform:uppercase;letter-spacing:0.5px}
+
+/* FORM */
+.field{margin-bottom:12px}
+.field label{font-size:0.76rem;font-weight:600;color:var(--text2);display:block;margin-bottom:5px}
+.field input,.field select{width:100%;padding:10px 13px;background:var(--bg3);border:1.5px solid var(--border);border-radius:var(--r2);color:var(--text);font-family:'Cairo',sans-serif;font-size:0.88rem;outline:none;transition:border-color 0.2s;-webkit-appearance:none}
+.field input:focus,.field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(88,166,255,0.1)}
+.field input::placeholder{color:var(--text3)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+
+/* ── COMPACT SHADE BUTTON ── */
+.shade-btn{
+  width:100%;padding:10px 14px;
+  background:var(--bg3);border:1.5px solid var(--border);
+  border-radius:var(--r2);color:var(--text2);
+  font-family:'Cairo',sans-serif;font-size:0.88rem;
+  cursor:pointer;display:flex;align-items:center;justify-content:space-between;
+  transition:border-color 0.2s;
+}
+.shade-btn.has-value{border-color:var(--yellow);color:var(--text)}
+.shade-btn-left{display:flex;align-items:center;gap:8px}
+.shade-preview{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);flex-shrink:0}
+.shade-arrow{font-size:0.7rem;color:var(--text3)}
+
+/* ── SHADE MODAL ── */
+#shadeModal{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:600;display:none;align-items:flex-end}
+#shadeModal.open{display:flex}
+.shade-modal-box{background:var(--bg2);border-radius:20px 20px 0 0;border-top:1px solid var(--border);padding:20px;width:100%;max-height:75vh;overflow-y:auto;animation:su 0.28s ease}
+.shade-modal-title{font-size:0.95rem;font-weight:700;color:var(--accent);margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.shade-modal-close{font-size:1.2rem;cursor:pointer;color:var(--text3);background:none;border:none;font-family:'Cairo',sans-serif}
+.shade-groups{display:flex;flex-direction:column;gap:8px}
+.sg{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:10px}
+.sg-head{font-size:0.68rem;color:var(--text3);font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sg-dot{width:13px;height:13px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.15);display:inline-block;flex-shrink:0}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{padding:5px 9px;border-radius:20px;font-size:0.72rem;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:var(--card2);color:var(--text2);transition:all 0.15s;font-family:'Cairo',sans-serif}
+.chip.sel{background:var(--yellow);color:#0d1117;border-color:var(--yellow);box-shadow:0 2px 8px rgba(227,179,65,0.3)}
+.btn-clear-shade{width:100%;padding:10px;background:transparent;border:1.5px solid var(--border);border-radius:var(--r2);color:var(--text3);font-family:'Cairo',sans-serif;font-size:0.82rem;cursor:pointer;margin-top:10px}
+
+/* BTN */
+.btn-main{width:100%;padding:14px;border:none;border-radius:var(--r);background:var(--accent);color:#0d1117;font-family:'Cairo',sans-serif;font-size:1rem;font-weight:900;cursor:pointer;transition:opacity 0.2s,transform 0.15s;box-shadow:0 4px 15px rgba(88,166,255,0.2)}
+.btn-main:active{transform:scale(0.98);opacity:0.9}
+
+/* FILTER */
+.frow{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.frow select{flex:1;min-width:80px;padding:9px 10px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);color:var(--text);font-family:'Cairo',sans-serif;font-size:0.78rem;outline:none;-webkit-appearance:none}
+.btn-csv{padding:9px 12px;background:var(--bg3);border:1.5px solid var(--border);border-radius:var(--r2);color:var(--text2);font-family:'Cairo',sans-serif;font-size:0.75rem;cursor:pointer;white-space:nowrap}
+
+/* CASE CARD */
+.res-row{font-size:0.75rem;color:var(--text3);margin-bottom:10px;display:flex;justify-content:space-between}
+.cc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:13px;margin-bottom:8px;animation:fu 0.25s ease}
+@keyframes fu{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.cc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px}
+.cc-doc{font-weight:700;font-size:0.92rem}
+.cc-pat{font-size:0.72rem;color:var(--text2);margin-top:2px}
+.cc-num{background:rgba(88,166,255,0.12);color:var(--accent);padding:5px 11px;border-radius:20px;font-weight:900;font-size:0.92rem;border:1px solid rgba(88,166,255,0.2);white-space:nowrap}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px}
+.tag{font-size:0.66rem;padding:3px 8px;border-radius:20px;background:var(--bg3);color:var(--text2);border:1px solid var(--border)}
+.tag.m{background:rgba(63,185,80,0.08);color:var(--green);border-color:rgba(63,185,80,0.2)}
+.tag.s{background:rgba(227,179,65,0.08);color:var(--yellow);border-color:rgba(227,179,65,0.2)}
+.cc-acts{display:flex;gap:8px}
+.btn-e,.btn-d{flex:1;padding:8px;border-radius:var(--r2);font-family:'Cairo',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;transition:all 0.15s;border:1.5px solid}
+.btn-e{border-color:var(--border);color:var(--text2);background:transparent}
+.btn-e:active{background:var(--card2)}
+.btn-d{border-color:var(--red);color:var(--red);background:transparent}
+.btn-d:active{background:rgba(247,129,102,0.08)}
+
+/* ── STATS FILTER ── */
+.stats-filter{display:flex;gap:8px;margin-bottom:14px}
+.stats-filter select{flex:1;padding:9px 10px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);color:var(--text);font-family:'Cairo',sans-serif;font-size:0.8rem;outline:none;-webkit-appearance:none}
+.stats-period{font-size:0.75rem;color:var(--text3);margin-bottom:14px;text-align:center;padding:8px;background:var(--bg3);border-radius:var(--r2)}
+
+/* STATS */
+.sg4{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.sbox{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px;text-align:center}
+.sbox-n{font-size:1.5rem;font-weight:900;margin-bottom:2px}
+.sbox-l{font-size:0.68rem;color:var(--text3)}
+.doc-row{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+.drk{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;flex-shrink:0}
+.r1{background:linear-gradient(135deg,#f6d365,#fda085);color:#fff}
+.r2{background:linear-gradient(135deg,#cfd9df,#e2ebf0);color:#333}
+.r3{background:linear-gradient(135deg,#cd7f32,#e8a87c);color:#fff}
+.rn{background:var(--bg3);color:var(--text2);border:1px solid var(--border)}
+.dinf{flex:1;min-width:0}
+.dnam{font-size:0.86rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dbar-w{margin-top:5px;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.dbar{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--purple));transition:width 0.6s ease}
+.dtth{font-size:0.86rem;font-weight:900;color:var(--accent);flex-shrink:0}
+.mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.mb{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:8px 4px;text-align:center}
+.mb-n{font-size:0.95rem;font-weight:900}
+.mb-l{font-size:0.58rem;color:var(--text3);margin-top:1px}
+.sdist{display:flex;flex-direction:column;gap:7px}
+.sdist-row{display:flex;align-items:center;gap:8px}
+.sdist-n{font-size:0.75rem;color:var(--text2);min-width:52px}
+.sdist-bw{flex:1;height:7px;background:var(--bg3);border-radius:4px;overflow:hidden}
+.sdist-b{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--yellow),#f5a623)}
+.sdist-c{font-size:0.72rem;font-weight:700;color:var(--text2);min-width:20px;text-align:left}
+
+/* ACCOUNT */
+.acc-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;text-align:center;margin-bottom:12px}
+.acc-av{width:64px;height:64px;border-radius:50%;margin:0 auto 12px;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;font-size:1.8rem;overflow:hidden}
+.acc-av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.acc-name{font-size:1rem;font-weight:700;margin-bottom:4px}
+.acc-email{font-size:0.75rem;color:var(--text2)}
+.info-r{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:13px;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.info-ico{font-size:1.2rem;flex-shrink:0}
+.info-ti{font-size:0.82rem;font-weight:700}
+.info-de{font-size:0.7rem;color:var(--text3);margin-top:2px}
+.btn-out{width:100%;padding:13px;border:1.5px solid var(--red);border-radius:var(--r);background:transparent;color:var(--red);font-family:'Cairo',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;margin-top:4px}
+.btn-out:active{background:rgba(247,129,102,0.08)}
+
+/* MODAL */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);z-index:500;display:none;align-items:flex-end}
+.ov.open{display:flex}
+.modal{background:var(--bg2);border-radius:20px 20px 0 0;border-top:1px solid var(--border);padding:20px;width:100%;max-height:88vh;overflow-y:auto;animation:su 0.28s ease}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-title{font-size:1rem;font-weight:700;color:var(--accent);margin-bottom:16px}
+.m-acts{display:flex;gap:10px;margin-top:14px}
+.btn-can{flex:1;padding:13px;background:var(--bg3);border:1.5px solid var(--border);border-radius:var(--r);color:var(--text2);font-family:'Cairo',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer}
+.btn-sav{flex:2;padding:13px;background:var(--accent);color:#0d1117;border:none;border-radius:var(--r);font-family:'Cairo',sans-serif;font-size:0.88rem;font-weight:900;cursor:pointer}
+.del-body{text-align:center;padding:8px 0}
+.del-ico{font-size:2.5rem;margin-bottom:12px}
+.del-ttl{font-size:1.05rem;font-weight:700;margin-bottom:6px}
+.del-txt{font-size:0.78rem;color:var(--text2);margin-bottom:20px}
+.btn-cdel{width:100%;padding:14px;background:var(--red);color:#fff;border:none;border-radius:var(--r);font-family:'Cairo',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;margin-bottom:8px}
+
+/* TOAST */
+.toast{position:fixed;bottom:82px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--green);color:#fff;padding:10px 22px;border-radius:30px;font-size:0.8rem;font-weight:700;z-index:9000;opacity:0;transition:all 0.3s;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.4)}
+.toast.err{background:var(--red)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* MISC */
+.empty{text-align:center;padding:48px 20px;color:var(--text3)}
+.empty-ico{font-size:2.5rem;display:block;margin-bottom:10px;opacity:0.35}
+.loading{text-align:center;padding:40px;color:var(--text3)}
+.spin{width:30px;height:30px;border:2.5px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:sp 0.8s linear infinite;margin:0 auto 12px}
+@keyframes sp{to{transform:rotate(360deg)}}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-logo">🦷</div>
+  <div class="login-title">سجل طب الأسنان</div>
+  <div class="login-sub">نظام متكامل لإدارة حالات طب الأسنان<br>بياناتك محفوظة على حسابك تلقائياً</div>
+  <button class="btn-google" onclick="loginGoogle()">
+    <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.8 2.3 30.2 0 24 0 14.7 0 6.7 5.4 2.9 13.3l7.9 6.2C12.7 13.2 17.9 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.6c0-1.6-.1-3.1-.4-4.6H24v8.7h12.4c-.5 2.8-2.1 5.2-4.5 6.8l7.1 5.5c4.2-3.8 6.6-9.4 6.6-16.4z"/><path fill="#FBBC05" d="M10.8 28.5c-.5-1.5-.8-3-.8-4.5s.3-3 .8-4.5L2.9 13.3C1 16.9 0 20.8 0 24s1 7.1 2.9 10.7l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.1-5.5c-2 1.4-4.6 2.2-8.1 2.2-6.1 0-11.3-3.7-13.2-9l-7.9 6.2C6.7 42.6 14.7 48 24 48z"/></svg>
+    تسجيل الدخول بـ Google
+  </button>
+  <div class="login-note">بتسجيل الدخول، بياناتك تُحفظ على السحابة<br>ويمكنك استعادتها من أي جهاز بنفس الحساب</div>
+</div>
+
+<!-- APP -->
+<div id="appShell">
+  <div class="topbar">
+    <div class="topbar-title">🦷 سجل الأسنان</div>
+    <div class="user-avatar" id="uAv">؟</div>
+  </div>
+  <div class="ribbon">
+    <div class="rib-item"><div class="rib-num" id="rT">0</div><div class="rib-lbl">🦷 سن</div></div>
+    <div class="rib-item"><div class="rib-num" id="rC">0</div><div class="rib-lbl">📋 حالة</div></div>
+    <div class="rib-item"><div class="rib-num" id="rD">0</div><div class="rib-lbl">👨‍⚕️ طبيب</div></div>
+    <div class="rib-item"><div class="rib-num" id="rM">0</div><div class="rib-lbl">📅 هذا الشهر</div></div>
+  </div>
+
+  <div class="content">
+
+    <!-- ADD -->
+    <div class="section active" id="tab-add">
+      <div class="card">
+        <div class="card-title">➕ حالة جديدة</div>
+        <div class="row2">
+          <div class="field"><label>👨‍⚕️ اسم الطبيب</label><input type="text" id="fDoc" placeholder="د. محمد"></div>
+          <div class="field"><label>🧑 اسم المريض</label><input type="text" id="fPat" placeholder="الاسم"></div>
+        </div>
+        <div class="row3">
+          <div class="field"><label>🔢 عدد الأسنان</label><input type="number" id="fTth" placeholder="0" min="1" style="text-align:center"></div>
+          <div class="field"><label>📅 الشهر</label>
+            <select id="fMon">
+              <option value="1">شهر 1</option><option value="2">شهر 2</option><option value="3">شهر 3</option><option value="4">شهر 4</option><option value="5">شهر 5</option><option value="6">شهر 6</option><option value="7">شهر 7</option><option value="8">شهر 8</option><option value="9">شهر 9</option><option value="10">شهر 10</option><option value="11">شهر 11</option><option value="12">شهر 12</option>
+            </select>
+          </div>
+          <div class="field"><label>📆 السنة</label><select id="fYr"></select></div>
+        </div>
+
+        <!-- COMPACT SHADE BUTTON -->
+        <div class="field">
+          <label>🎨 لون السن</label>
+          <button class="shade-btn" id="shadeBtn" onclick="openShadeModal('add')">
+            <div class="shade-btn-left">
+              <span class="shade-preview" id="shadePreview" style="background:#30363d"></span>
+              <span id="shadeBtnText">اختر لون السن</span>
+            </div>
+            <span class="shade-arrow">▼</span>
+          </button>
+        </div>
+      </div>
+      <button class="btn-main" onclick="addCase()">💾 حفظ الحالة</button>
+    </div>
+
+    <!-- LIST -->
+    <div class="section" id="tab-list">
+      <div class="frow">
+        <select id="flYr" onchange="renderCases()"><option value="">كل السنوات</option></select>
+        <select id="flMon" onchange="renderCases()">
+          <option value="">كل الأشهر</option>
+          <option value="1">شهر 1</option><option value="2">شهر 2</option><option value="3">شهر 3</option><option value="4">شهر 4</option><option value="5">شهر 5</option><option value="6">شهر 6</option><option value="7">شهر 7</option><option value="8">شهر 8</option><option value="9">شهر 9</option><option value="10">شهر 10</option><option value="11">شهر 11</option><option value="12">شهر 12</option>
+        </select>
+        <select id="flDoc" onchange="renderCases()"><option value="">كل الأطباء</option></select>
+        <button class="btn-csv" onclick="doCSV()">⬇️ CSV</button>
+      </div>
+      <div class="res-row"><span id="lCnt">0 حالة</span><span id="lSum" style="color:var(--accent);font-weight:700"></span></div>
+      <div id="cList"><div class="loading"><div class="spin"></div>جارٍ التحميل...</div></div>
+    </div>
+
+    <!-- STATS -->
+    <div class="section" id="tab-stats">
+      <!-- فلتر الإحصائيات -->
+      <div class="stats-filter">
+        <select id="stFlYr" onchange="renderStats()">
+          <option value="">كل السنوات</option>
+        </select>
+        <select id="stFlMon" onchange="renderStats()">
+          <option value="">كل الأشهر</option>
+          <option value="1">شهر 1</option><option value="2">شهر 2</option><option value="3">شهر 3</option><option value="4">شهر 4</option><option value="5">شهر 5</option><option value="6">شهر 6</option><option value="7">شهر 7</option><option value="8">شهر 8</option><option value="9">شهر 9</option><option value="10">شهر 10</option><option value="11">شهر 11</option><option value="12">شهر 12</option>
+        </select>
+      </div>
+      <div class="stats-period" id="statsPeriod">📊 إجمالي كل البيانات</div>
+      <div class="sg4" id="stGrid"></div>
+      <div class="card"><div class="card-title">🏆 الأطباء — إجمالي الأسنان</div><div id="stDoc"></div></div>
+      <div class="card" id="monthCard"><div class="card-title">📅 الإنتاج الشهري</div><div class="mgrid" id="stMon"></div></div>
+      <div class="card"><div class="card-title">🎨 توزيع ألوان الأسنان</div><div class="sdist" id="stShade"></div></div>
+    </div>
+
+    <!-- ACCOUNT -->
+    <div class="section" id="tab-account">
+      <div class="acc-card">
+        <div class="acc-av" id="accAv">👤</div>
+        <div class="acc-name" id="accName">—</div>
+        <div class="acc-email" id="accEmail">—</div>
+      </div>
+      <div class="info-r"><div class="info-ico">☁️</div><div><div class="info-ti">نسخ احتياطي تلقائي</div><div class="info-de">بياناتك تحفظ فورياً على Firebase / Google Cloud</div></div></div>
+      <div class="info-r"><div class="info-ico">🔄</div><div><div class="info-ti">استعادة البيانات</div><div class="info-de">سجّل دخول بنفس حساب Google من أي جهاز</div></div></div>
+      <div class="info-r"><div class="info-ico">🔒</div><div><div class="info-ti">بياناتك خاصة 100%</div><div class="info-de">لا يمكن لأحد الوصول إليها بدون حسابك</div></div></div>
+      <button class="btn-out" onclick="doLogout()">🚪 تسجيل الخروج</button>
+    </div>
+  </div>
+
+  <div class="bnav">
+    <button class="nb active" onclick="showTab('add',this)"><span class="nb-icon">➕</span>إضافة</button>
+    <button class="nb" onclick="showTab('list',this)"><span class="nb-icon">📋</span>الحالات</button>
+    <button class="nb" onclick="showTab('stats',this)"><span class="nb-icon">📊</span>إحصائيات</button>
+    <button class="nb" onclick="showTab('account',this)"><span class="nb-icon">👤</span>حسابي</button>
+  </div>
+</div>
+
+<!-- SHADE MODAL -->
+<div id="shadeModal">
+  <div class="shade-modal-box">
+    <div class="shade-modal-title">
+      🎨 اختر لون السن
+      <button class="shade-modal-close" onclick="closeShadeModal()">✕</button>
+    </div>
+    <div class="shade-groups" id="shadeGroupsContainer"></div>
+    <button class="btn-clear-shade" onclick="clearShade()">🗑️ إزالة اللون</button>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="ov" id="editOv">
+  <div class="modal">
+    <div class="modal-title">✏️ تعديل الحالة</div>
+    <input type="hidden" id="eId">
+    <div class="row2">
+      <div class="field"><label>👨‍⚕️ الطبيب</label><input type="text" id="eDoc"></div>
+      <div class="field"><label>🧑 المريض</label><input type="text" id="ePat"></div>
+    </div>
+    <div class="row3">
+      <div class="field"><label>🔢 أسنان</label><input type="number" id="eTth" min="1" style="text-align:center"></div>
+      <div class="field"><label>📅 شهر</label>
+        <select id="eMon"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select>
+      </div>
+      <div class="field"><label>📆 سنة</label><select id="eYr"></select></div>
+    </div>
+    <div class="field">
+      <label>🎨 لون السن</label>
+      <button class="shade-btn" id="eShadeBtnEdit" onclick="openShadeModal('edit')">
+        <div class="shade-btn-left">
+          <span class="shade-preview" id="eShadePreview" style="background:#30363d"></span>
+          <span id="eShadeBtnText">اختر لون السن</span>
+        </div>
+        <span class="shade-arrow">▼</span>
+      </button>
+    </div>
+    <div class="m-acts">
+      <button class="btn-can" onclick="closeOv('editOv')">إلغاء</button>
+      <button class="btn-sav" onclick="saveEdit()">💾 حفظ</button>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE MODAL -->
+<div class="ov" id="delOv">
+  <div class="modal">
+    <div class="del-body">
+      <div class="del-ico">🗑️</div>
+      <div class="del-ttl">حذف الحالة</div>
+      <div class="del-txt">هل أنت متأكد؟ لا يمكن التراجع.</div>
+      <input type="hidden" id="delId">
+      <button class="btn-cdel" onclick="confirmDel()">حذف</button>
+      <button class="btn-can" onclick="closeOv('delOv')" style="width:100%">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getDatabase, ref, push, onValue, update, remove }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const app = initializeApp({
+  apiKey:"AIzaSyBjEd3UPOTkK143j1rZ6WQtnxhN5AS5nEU",
+  authDomain:"dental-app-c95ce.firebaseapp.com",
+  databaseURL:"https://dental-app-c95ce-default-rtdb.firebaseio.com",
+  projectId:"dental-app-c95ce",
+  storageBucket:"dental-app-c95ce.firebasestorage.app",
+  messagingSenderId:"13518342618",
+  appId:"dental-web-1"
+});
+const auth=getAuth(app), db=getDatabase(app);
+let uid=null, cRef=null, all={};
+
+// ── SHADES ──
+const shades=[
+  {g:"1",label:"المجموعة 1",color:"#f5f2ea",list:["0M1","0M2","0M3"]},
+  {g:"2",label:"المجموعة 2",color:"#f0e5cc",list:["1M1","1M2"]},
+  {g:"3",label:"المجموعة 3",color:"#e8d5a8",list:["2M1","2M2","2M3","2L1.5","2L2.5","2R1.5","2R2.5"]},
+  {g:"4",label:"المجموعة 4",color:"#d9c080",list:["3M1","3M2","3M3","3L1.5","3L2.5","3R1.5","3R2.5"]},
+  {g:"5",label:"المجموعة 5",color:"#ccaa60",list:["4M1","4M2","4M3","4L1.5","4L2.5","4R1.5","4R2.5"]},
+  {g:"6",label:"المجموعة 6",color:"#bf9540",list:["5M1","5M2","5M3"]},
+];
+
+function getShadeColor(shade){
+  for(const g of shades) if(g.list.includes(shade)) return g.color;
+  return '#30363d';
+}
+
+let selShade="", editShade="", shadeMode="add";
+
+// Build shade groups in modal
+document.getElementById('shadeGroupsContainer').innerHTML = shades.map(g=>`
+  <div class="sg">
+    <div class="sg-head"><span class="sg-dot" style="background:${g.color}"></span>${g.label}</div>
+    <div class="chips">${g.list.map(s=>`<button class="chip" data-s="${s}" onclick="pickShade('${s}')">${s}</button>`).join('')}</div>
+  </div>`).join('');
+
+window.openShadeModal=function(mode){
+  shadeMode=mode;
+  const cur=mode==='add'?selShade:editShade;
+  document.querySelectorAll('#shadeGroupsContainer .chip').forEach(c=>{
+    c.classList.toggle('sel', c.dataset.s===cur);
+  });
+  document.getElementById('shadeModal').classList.add('open');
+};
+window.closeShadeModal=()=>document.getElementById('shadeModal').classList.remove('open');
+window.clearShade=function(){
+  if(shadeMode==='add'){selShade='';updateShadeBtn('shadeBtn','shadeBtnText','shadePreview','');}
+  else{editShade='';updateShadeBtn('eShadeBtnEdit','eShadeBtnText','eShadePreview','');}
+  closeShadeModal();
+};
+window.pickShade=function(s){
+  if(shadeMode==='add'){
+    selShade=s;
+    updateShadeBtn('shadeBtn','shadeBtnText','shadePreview',s);
+  } else {
+    editShade=s;
+    updateShadeBtn('eShadeBtnEdit','eShadeBtnText','eShadePreview',s);
+  }
+  closeShadeModal();
+  showToast(`✅ تم اختيار ${s}`);
+};
+
+function updateShadeBtn(btnId,txtId,prevId,shade){
+  const btn=document.getElementById(btnId);
+  const txt=document.getElementById(txtId);
+  const prv=document.getElementById(prevId);
+  if(shade){
+    txt.textContent=shade;
+    prv.style.background=getShadeColor(shade);
+    btn.classList.add('has-value');
+  } else {
+    txt.textContent='اختر لون السن';
+    prv.style.background='#30363d';
+    btn.classList.remove('has-value');
+  }
+}
+
+// Close shade modal on backdrop
+document.getElementById('shadeModal').addEventListener('click',e=>{
+  if(e.target===document.getElementById('shadeModal')) closeShadeModal();
+});
+
+// ── YEARS ──
+function fillYr(id,val){
+  const y=new Date().getFullYear(); let o='';
+  for(let i=y+1;i>=y-3;i--) o+=`<option value="${i}">${i}</option>`;
+  const s=document.getElementById(id); s.innerHTML=o; if(val) s.value=val;
+}
+fillYr('fYr'); fillYr('eYr');
+
+const now=new Date();
+document.getElementById('fMon').value=now.getMonth()+1;
+document.getElementById('fYr').value=now.getFullYear();
+
+// ── AUTH ──
+window.loginGoogle=async()=>{
+  try{ await signInWithPopup(auth,new GoogleAuthProvider()); }
+  catch(e){ showToast('خطأ في تسجيل الدخول',1); }
+};
+window.doLogout=()=>signOut(auth);
+
+onAuthStateChanged(auth,u=>{
+  if(u){
+    uid=u.uid;
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('appShell').classList.add('show');
+    const av=document.getElementById('uAv'),aav=document.getElementById('accAv');
+    if(u.photoURL){av.innerHTML=`<img src="${u.photoURL}">`;aav.innerHTML=`<img src="${u.photoURL}">`;}
+    else{av.textContent=u.displayName?.[0]||'؟';aav.textContent='👤';}
+    document.getElementById('accName').textContent=u.displayName||'مستخدم';
+    document.getElementById('accEmail').textContent=u.email||'';
+    cRef=ref(db,`users/${uid}/cases`);
+    onValue(cRef,snap=>{ all=snap.val()||{}; refresh(); });
+    // fill year filters
+    const y=now.getFullYear(); let o='<option value="">كل السنوات</option>';
+    for(let i=y+1;i>=y-2;i--) o+=`<option value="${i}">${i}</option>`;
+    document.getElementById('flYr').innerHTML=o;
+    document.getElementById('stFlYr').innerHTML=o;
+  } else {
+    uid=null;
+    document.getElementById('loginScreen').style.display='flex';
+    document.getElementById('appShell').classList.remove('show');
+  }
+});
+
+function refresh(){
+  const list=Object.values(all);
+  const mn=now.getMonth()+1,yr=now.getFullYear();
+  document.getElementById('rT').textContent=list.reduce((s,c)=>s+(+c.teeth||0),0);
+  document.getElementById('rC').textContent=list.length;
+  document.getElementById('rD').textContent=new Set(list.map(c=>c.doc).filter(Boolean)).size;
+  document.getElementById('rM').textContent=list.filter(c=>+c.month===mn&&+c.year===yr).reduce((s,c)=>s+(+c.teeth||0),0);
+  const docs=[...new Set(list.map(c=>c.doc).filter(Boolean))].sort();
+  const fd=document.getElementById('flDoc'),cv=fd.value;
+  fd.innerHTML='<option value="">كل الأطباء</option>'+docs.map(d=>`<option value="${d}">${d}</option>`).join('');
+  if(cv) fd.value=cv;
+  renderCases(); renderStats();
+}
+
+// ── CASES ──
+window.renderCases=function(){
+  const fy=document.getElementById('flYr').value;
+  const fm=document.getElementById('flMon').value;
+  const fd=document.getElementById('flDoc').value;
+  let list=Object.entries(all).map(([id,c])=>({id,...c}));
+  if(fy) list=list.filter(c=>String(c.year)===fy);
+  if(fm) list=list.filter(c=>String(c.month)===fm);
+  if(fd) list=list.filter(c=>c.doc===fd);
+  list.sort((a,b)=>(b.ts||0)-(a.ts||0));
+  const sum=list.reduce((s,c)=>s+(+c.teeth||0),0);
+  document.getElementById('lCnt').textContent=`${list.length} حالة`;
+  document.getElementById('lSum').textContent=list.length?`🦷 ${sum} سن`:'';
+  const el=document.getElementById('cList');
+  if(!list.length){el.innerHTML=`<div class="empty"><span class="empty-ico">📭</span>لا توجد حالات</div>`;return;}
+  el.innerHTML=list.map(c=>`
+    <div class="cc">
+      <div class="cc-top">
+        <div><div class="cc-doc">👨‍⚕️ ${c.doc||'—'}</div><div class="cc-pat">🧑 ${c.pat||'—'}</div></div>
+        <div class="cc-num">🦷 ${c.teeth||0}</div>
+      </div>
+      <div class="tags">
+        <span class="tag m">📅 ${c.month||'—'} / ${c.year||'—'}</span>
+        ${c.shade?`<span class="tag s">🎨 ${c.shade}</span>`:''}
+      </div>
+      <div class="cc-acts">
+        <button class="btn-e" onclick="openEdit('${c.id}')">✏️ تعديل</button>
+        <button class="btn-d" onclick="openDel('${c.id}')">🗑️ حذف</button>
+      </div>
+    </div>`).join('');
+};
+
+// ── STATS ──
+window.renderStats=function(){
+  const fy=document.getElementById('stFlYr').value;
+  const fm=document.getElementById('stFlMon').value;
+  let list=Object.values(all);
+  if(fy) list=list.filter(c=>String(c.year)===fy);
+  if(fm) list=list.filter(c=>String(c.month)===fm);
+
+  // Period label
+  let periodTxt='📊 إجمالي كل البيانات';
+  if(fy&&fm) periodTxt=`📊 شهر ${fm} — سنة ${fy}`;
+  else if(fy) periodTxt=`📊 سنة ${fy} — كل الأشهر`;
+  else if(fm) periodTxt=`📊 شهر ${fm} — كل السنوات`;
+  document.getElementById('statsPeriod').textContent=periodTxt;
+
+  // Hide monthly chart when specific month selected
+  document.getElementById('monthCard').style.display=fm?'none':'block';
+
+  const tt=list.reduce((s,c)=>s+(+c.teeth||0),0);
+  document.getElementById('stGrid').innerHTML=`
+    <div class="sbox"><div class="sbox-n" style="color:var(--accent)">${tt}</div><div class="sbox-l">إجمالي الأسنان</div></div>
+    <div class="sbox"><div class="sbox-n" style="color:var(--green)">${list.length}</div><div class="sbox-l">إجمالي الحالات</div></div>
+    <div class="sbox"><div class="sbox-n" style="color:var(--yellow)">${list.length?Math.round(tt/(list.length)||0):0}</div><div class="sbox-l">متوسط/حالة</div></div>
+    <div class="sbox"><div class="sbox-n" style="color:var(--purple)">${new Set(list.map(c=>c.doc).filter(Boolean)).size}</div><div class="sbox-l">عدد الأطباء</div></div>`;
+
+  // Doctors
+  const dm={};
+  list.forEach(c=>{if(!c.doc)return;dm[c.doc]=(dm[c.doc]||0)+(+c.teeth||0);});
+  const ds=Object.entries(dm).sort((a,b)=>b[1]-a[1]);const mx=ds[0]?.[1]||1;
+  const rk=['r1','r2','r3'];
+  document.getElementById('stDoc').innerHTML=ds.length
+    ?ds.map(([d,t],i)=>`<div class="doc-row"><div class="drk ${rk[i]||'rn'}">${i+1}</div><div class="dinf"><div class="dnam">${d}</div><div class="dbar-w"><div class="dbar" style="width:${(t/mx*100).toFixed(1)}%"></div></div></div><div class="dtth">🦷 ${t}</div></div>`).join('')
+    :`<div style="color:var(--text3);text-align:center;padding:16px;font-size:0.8rem">لا توجد بيانات</div>`;
+
+  // Monthly (only when no specific month)
+  if(!fm){
+    const mm={};
+    list.forEach(c=>{const m=c.month;if(!m)return;if(!mm[m]){mm[m]={t:0,c:0};}mm[m].t+=+c.teeth||0;mm[m].c++;});
+    document.getElementById('stMon').innerHTML=Array.from({length:12},(_,i)=>i+1).map(m=>{
+      const d=mm[m]||{t:0,c:0};
+      return `<div class="mb"><div class="mb-n" style="color:${d.t?'var(--accent)':'var(--text3)'}">${d.t}</div><div class="mb-l">ش${m}•${d.c}ح</div></div>`;
+    }).join('');
+  }
+
+  // Shades
+  const sm={};
+  list.forEach(c=>{if(!c.shade)return;sm[c.shade]=(sm[c.shade]||0)+1;});
+  const sl=Object.entries(sm).sort((a,b)=>b[1]-a[1]).slice(0,8);const smx=sl[0]?.[1]||1;
+  document.getElementById('stShade').innerHTML=sl.length
+    ?sl.map(([s,n])=>`<div class="sdist-row"><div class="sdist-n">${s}</div><div class="sdist-bw"><div class="sdist-b" style="width:${(n/smx*100).toFixed(1)}%"></div></div><div class="sdist-c">${n}</div></div>`).join('')
+    :`<div style="color:var(--text3);font-size:0.78rem;text-align:center;padding:12px">لا توجد بيانات</div>`;
+};
+
+// ── ADD ──
+window.addCase=async function(){
+  const doc=document.getElementById('fDoc').value.trim();
+  const tth=+document.getElementById('fTth').value;
+  if(!doc){showToast('أدخل اسم الطبيب',1);return;}
+  if(!tth||tth<1){showToast('أدخل عدد الأسنان',1);return;}
+  await push(cRef,{doc,pat:document.getElementById('fPat').value.trim(),teeth:tth,month:+document.getElementById('fMon').value,year:+document.getElementById('fYr').value,shade:selShade,ts:Date.now()});
+  document.getElementById('fDoc').value='';
+  document.getElementById('fPat').value='';
+  document.getElementById('fTth').value='';
+  selShade='';
+  updateShadeBtn('shadeBtn','shadeBtnText','shadePreview','');
+  showToast('✅ تم حفظ الحالة!');
+};
+
+// ── EDIT ──
+window.openEdit=function(id){
+  const c=all[id];if(!c)return;
+  document.getElementById('eId').value=id;
+  document.getElementById('eDoc').value=c.doc||'';
+  document.getElementById('ePat').value=c.pat||'';
+  document.getElementById('eTth').value=c.teeth||'';
+  document.getElementById('eMon').value=c.month||1;
+  fillYr('eYr',c.year||now.getFullYear());
+  editShade=c.shade||'';
+  updateShadeBtn('eShadeBtnEdit','eShadeBtnText','eShadePreview',c.shade||'');
+  document.getElementById('editOv').classList.add('open');
+};
+window.saveEdit=async function(){
+  const id=document.getElementById('eId').value;
+  await update(ref(db,`users/${uid}/cases/${id}`),{
+    doc:document.getElementById('eDoc').value.trim(),
+    pat:document.getElementById('ePat').value.trim(),
+    teeth:+document.getElementById('eTth').value||0,
+    month:+document.getElementById('eMon').value,
+    year:+document.getElementById('eYr').value,
+    shade:editShade
+  });
+  closeOv('editOv');showToast('✅ تم التعديل!');
+};
+
+// ── DELETE ──
+window.openDel=function(id){document.getElementById('delId').value=id;document.getElementById('delOv').classList.add('open');};
+window.confirmDel=async function(){
+  await remove(ref(db,`users/${uid}/cases/${document.getElementById('delId').value}`));
+  closeOv('delOv');showToast('🗑️ تم الحذف');
+};
+
+// ── CSV ──
+window.doCSV=function(){
+  const fy=document.getElementById('flYr').value,fm=document.getElementById('flMon').value,fd=document.getElementById('flDoc').value;
+  let list=Object.values(all);
+  if(fy)list=list.filter(c=>String(c.year)===fy);
+  if(fm)list=list.filter(c=>String(c.month)===fm);
+  if(fd)list=list.filter(c=>c.doc===fd);
+  const csv='\uFEFF'+'السنة,الشهر,الطبيب,المريض,عدد الأسنان,لون السن\n'+list.map(c=>`${c.year||''},${c.month||''},${c.doc||''},${c.pat||''},${c.teeth||0},${c.shade||''}`).join('\n');
+  Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})),download:`dental-${Date.now()}.csv`}).click();
+  showToast('✅ تم التصدير');
+};
+
+// ── HELPERS ──
+window.showTab=function(n,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+n).classList.add('active');btn.classList.add('active');
+  if(n==='stats') renderStats();
+};
+window.closeOv=id=>document.getElementById(id).classList.remove('open');
+document.querySelectorAll('.ov').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open');}));
+
+function showToast(msg,err=0){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast'+(err?' err':'')+' show';
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+window.showToast=showToast;
+</script>
+</body>
+</html>
