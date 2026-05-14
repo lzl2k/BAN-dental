@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#f0f4ff">
+<title>دنتال</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;font-family:'Cairo',sans-serif}
+body{background:#f0f4ff;color:#1a1d2e;display:flex;flex-direction:column}
+
+/* ── LOGIN ── */
+#login{
+  position:fixed;inset:0;
+  background:linear-gradient(160deg,#1d4ed8 0%,#7c3aed 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:9999;padding:40px 32px;text-align:center;
+}
+.login-icon{font-size:4rem;margin-bottom:20px;filter:drop-shadow(0 4px 20px rgba(0,0,0,0.3))}
+.login-h{font-size:1.8rem;font-weight:900;color:#fff;margin-bottom:8px}
+.login-s{font-size:0.85rem;color:rgba(255,255,255,0.7);margin-bottom:48px;line-height:1.8}
+.g-btn{
+  display:flex;align-items:center;gap:12px;justify-content:center;
+  background:#fff;color:#1a1d2e;padding:15px 28px;
+  border-radius:50px;border:none;cursor:pointer;
+  font-family:'Cairo',sans-serif;font-size:1rem;font-weight:700;
+  width:100%;max-width:300px;box-shadow:0 8px 30px rgba(0,0,0,0.2);
+  transition:transform 0.15s,box-shadow 0.15s;
+}
+.g-btn:active{transform:scale(0.97);box-shadow:0 4px 15px rgba(0,0,0,0.2)}
+.login-note{font-size:0.7rem;color:rgba(255,255,255,0.5);margin-top:24px;line-height:1.8}
+
+/* ── APP ── */
+#app{display:none;flex-direction:column;height:100%}
+#app.on{display:flex}
+
+/* ── HEADER ── */
+.header{
+  background:linear-gradient(135deg,#1d4ed8,#7c3aed);
+  padding:16px 20px 20px;flex-shrink:0;
+  position:relative;overflow:hidden;
+}
+.header::after{
+  content:'';position:absolute;
+  width:200px;height:200px;border-radius:50%;
+  background:rgba(255,255,255,0.06);
+  top:-80px;left:-40px;
+}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative}
+.header-title{font-size:1.1rem;font-weight:900;color:#fff}
+.avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,0.2);
+  border:2px solid rgba(255,255,255,0.4);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.85rem;font-weight:700;color:#fff;overflow:hidden;cursor:pointer;
+}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.stats-row{display:flex;gap:10px;position:relative}
+.stat-pill{
+  flex:1;background:rgba(255,255,255,0.15);
+  border-radius:14px;padding:10px 8px;text-align:center;
+  backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);
+}
+.stat-pill-n{font-size:1.2rem;font-weight:900;color:#fff}
+.stat-pill-l{font-size:0.6rem;color:rgba(255,255,255,0.7);margin-top:1px}
+
+/* ── TABS ── */
+.tabs{
+  display:flex;background:#fff;
+  border-bottom:1px solid #e8ecf4;
+  flex-shrink:0;
+}
+.tb{
+  flex:1;padding:12px 4px 10px;text-align:center;
+  cursor:pointer;border:none;background:none;
+  font-family:'Cairo',sans-serif;font-size:0.62rem;font-weight:700;
+  color:#9ba3b8;transition:color 0.2s;
+  border-bottom:2.5px solid transparent;
+}
+.tb.on{color:#1d4ed8;border-bottom-color:#1d4ed8}
+.tb-ico{font-size:1.2rem;display:block;margin-bottom:2px}
+
+/* ── CONTENT ── */
+.content{flex:1;overflow-y:auto;overflow-x:hidden}
+.pg{display:none;padding:16px;padding-bottom:20px}
+.pg.on{display:block}
+
+/* ── SECTION TITLE ── */
+.sec-title{font-size:0.72rem;font-weight:700;color:#9ba3b8;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;margin-top:4px}
+
+/* ── CARD ── */
+.card{background:#fff;border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(29,78,216,0.06)}
+
+/* ── FORM ── */
+.fld{margin-bottom:14px}
+.fld label{font-size:0.75rem;font-weight:700;color:#6b7280;display:block;margin-bottom:6px}
+.fld input,.fld select{
+  width:100%;padding:12px 16px;
+  background:#f8faff;border:2px solid #e8ecf8;
+  border-radius:12px;color:#1a1d2e;
+  font-family:'Cairo',sans-serif;font-size:0.9rem;
+  outline:none;transition:all 0.2s;-webkit-appearance:none;
+}
+.fld input:focus,.fld select:focus{border-color:#1d4ed8;background:#fff;box-shadow:0 0 0 4px rgba(29,78,216,0.08)}
+.fld input::placeholder{color:#c4cad8}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+/* ── SHADE BTN ── */
+.shade-trigger{
+  width:100%;padding:12px 16px;
+  background:#f8faff;border:2px solid #e8ecf8;
+  border-radius:12px;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:all 0.2s;font-family:'Cairo',sans-serif;
+}
+.shade-trigger.picked{border-color:#f59e0b;background:#fffbeb}
+.shade-trigger-l{display:flex;align-items:center;gap:10px}
+.shade-circle{width:20px;height:20px;border-radius:50%;border:2px solid #e8ecf8;flex-shrink:0;transition:background 0.2s}
+.shade-txt{font-size:0.88rem;font-weight:600;color:#9ba3b8}
+.shade-trigger.picked .shade-txt{color:#92400e}
+.shade-arr{font-size:0.65rem;color:#c4cad8}
+
+/* ── SAVE BTN ── */
+.save-btn{
+  width:100%;padding:15px;border:none;border-radius:14px;
+  background:linear-gradient(135deg,#1d4ed8,#7c3aed);
+  color:#fff;font-family:'Cairo',sans-serif;
+  font-size:1rem;font-weight:900;cursor:pointer;
+  box-shadow:0 6px 20px rgba(29,78,216,0.3);
+  transition:transform 0.15s,box-shadow 0.15s;
+  margin-top:4px;
+}
+.save-btn:active{transform:scale(0.98);box-shadow:0 3px 10px rgba(29,78,216,0.2)}
+
+/* ── FILTER ROW ── */
+.frow{display:flex;gap:8px;margin-bottom:14px}
+.frow select{
+  flex:1;padding:10px 12px;
+  background:#fff;border:2px solid #e8ecf8;
+  border-radius:12px;color:#1a1d2e;
+  font-family:'Cairo',sans-serif;font-size:0.78rem;
+  outline:none;-webkit-appearance:none;
+}
+.csv-btn{
+  padding:10px 14px;background:#fff;
+  border:2px solid #e8ecf8;border-radius:12px;
+  color:#6b7280;font-family:'Cairo',sans-serif;
+  font-size:0.75rem;cursor:pointer;white-space:nowrap;
+  font-weight:600;
+}
+
+/* ── RESULT INFO ── */
+.rinfo{font-size:0.75rem;color:#9ba3b8;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.rinfo-sum{font-weight:700;color:#1d4ed8}
+
+/* ── CASE CARD ── */
+.ccard{
+  background:#fff;border-radius:16px;padding:14px 16px;
+  margin-bottom:10px;box-shadow:0 2px 10px rgba(29,78,216,0.05);
+  border:1.5px solid #f0f4ff;animation:fadeUp 0.25s ease;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.ccard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.ccard-doc{font-size:0.95rem;font-weight:700;color:#1a1d2e}
+.ccard-pat{font-size:0.72rem;color:#9ba3b8;margin-top:2px}
+.ccard-num{
+  background:linear-gradient(135deg,#1d4ed8,#7c3aed);
+  color:#fff;padding:6px 14px;border-radius:20px;
+  font-weight:900;font-size:0.9rem;white-space:nowrap;
+}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.tag{font-size:0.65rem;padding:3px 10px;border-radius:20px;font-weight:600}
+.tag-date{background:#eff6ff;color:#1d4ed8}
+.tag-shade{background:#fffbeb;color:#92400e}
+.ccard-acts{display:flex;gap:8px}
+.act-e,.act-d{flex:1;padding:9px;border-radius:10px;font-family:'Cairo',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;border:none;transition:all 0.15s}
+.act-e{background:#eff6ff;color:#1d4ed8}
+.act-e:active{background:#dbeafe}
+.act-d{background:#fff1f0;color:#ef4444}
+.act-d:active{background:#fee2e2}
+
+/* ── STATS ── */
+.stats-frow{display:flex;gap:8px;margin-bottom:12px}
+.stats-frow select{flex:1;padding:10px 12px;background:#fff;border:2px solid #e8ecf8;border-radius:12px;color:#1a1d2e;font-family:'Cairo',sans-serif;font-size:0.78rem;outline:none;-webkit-appearance:none}
+.period-badge{
+  text-align:center;font-size:0.72rem;font-weight:700;
+  color:#1d4ed8;background:#eff6ff;
+  border-radius:10px;padding:8px;margin-bottom:14px;
+}
+.g2-stat{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.sbox{background:#fff;border-radius:16px;padding:16px;text-align:center;box-shadow:0 2px 10px rgba(29,78,216,0.05)}
+.sbox-n{font-size:1.6rem;font-weight:900;margin-bottom:3px}
+.sbox-l{font-size:0.65rem;color:#9ba3b8;font-weight:600}
+.doc-item{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.doc-rank{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:900;flex-shrink:0}
+.rk1{background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#fff}
+.rk2{background:linear-gradient(135deg,#9ca3af,#d1d5db);color:#fff}
+.rk3{background:linear-gradient(135deg,#b45309,#d97706);color:#fff}
+.rkn{background:#f0f4ff;color:#6b7280;border:1.5px solid #e8ecf8}
+.doc-inf{flex:1;min-width:0}
+.doc-nm{font-size:0.88rem;font-weight:700;color:#1a1d2e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.doc-bar-w{margin-top:5px;height:6px;background:#f0f4ff;border-radius:4px;overflow:hidden}
+.doc-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,#1d4ed8,#7c3aed);transition:width 0.6s}
+.doc-n{font-size:0.88rem;font-weight:900;color:#1d4ed8;flex-shrink:0}
+.mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.mbox{background:#f8faff;border-radius:10px;padding:8px 4px;text-align:center;border:1.5px solid #e8ecf8}
+.mbox-n{font-size:0.9rem;font-weight:900}
+.mbox-l{font-size:0.58rem;color:#9ba3b8;margin-top:1px}
+.sdist{display:flex;flex-direction:column;gap:8px}
+.sd-row{display:flex;align-items:center;gap:10px}
+.sd-nm{font-size:0.75rem;color:#6b7280;font-weight:600;min-width:55px}
+.sd-bw{flex:1;height:8px;background:#f0f4ff;border-radius:4px;overflow:hidden}
+.sd-b{height:100%;border-radius:4px;background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.sd-c{font-size:0.72rem;font-weight:700;color:#6b7280;min-width:22px;text-align:left}
+
+/* ── ACCOUNT ── */
+.acc-head{
+  background:linear-gradient(135deg,#1d4ed8,#7c3aed);
+  border-radius:18px;padding:24px;text-align:center;margin-bottom:14px;
+}
+.acc-av{width:60px;height:60px;border-radius:50%;margin:0 auto 12px;background:rgba(255,255,255,0.2);border:3px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;font-size:1.6rem;overflow:hidden}
+.acc-av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.acc-nm{font-size:1rem;font-weight:700;color:#fff}
+.acc-em{font-size:0.72rem;color:rgba(255,255,255,0.7);margin-top:3px}
+.info-card{background:#fff;border-radius:14px;padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 10px rgba(29,78,216,0.05)}
+.info-ico{width:38px;height:38px;border-radius:12px;background:#eff6ff;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.info-ti{font-size:0.82rem;font-weight:700;color:#1a1d2e}
+.info-de{font-size:0.7rem;color:#9ba3b8;margin-top:2px}
+.logout-btn{width:100%;padding:14px;border:2px solid #fee2e2;border-radius:14px;background:#fff;color:#ef4444;font-family:'Cairo',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;margin-top:4px;transition:background 0.2s}
+.logout-btn:active{background:#fff1f0}
+
+/* ── SHADE MODAL ── */
+#shadeOv{position:fixed;inset:0;background:rgba(26,29,46,0.5);backdrop-filter:blur(6px);z-index:600;display:none;align-items:flex-end}
+#shadeOv.on{display:flex}
+.shade-box{background:#fff;border-radius:24px 24px 0 0;padding:20px;width:100%;max-height:72vh;overflow-y:auto;animation:su 0.28s ease}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.shade-box-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.shade-box-title{font-size:0.95rem;font-weight:700;color:#1a1d2e}
+.shade-close{background:#f0f4ff;border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:#6b7280}
+.sgrp{background:#f8faff;border-radius:14px;padding:12px;margin-bottom:8px}
+.sgrp-head{display:flex;align-items:center;gap:8px;font-size:0.7rem;font-weight:700;color:#6b7280;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px}
+.sgrp-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{
+  padding:6px 12px;border-radius:20px;font-size:0.73rem;font-weight:700;
+  cursor:pointer;border:2px solid #e8ecf8;background:#fff;color:#6b7280;
+  font-family:'Cairo',sans-serif;transition:all 0.15s;
+}
+.chip.on{background:#f59e0b;border-color:#f59e0b;color:#fff;box-shadow:0 2px 8px rgba(245,158,11,0.3)}
+.clear-btn{width:100%;padding:11px;background:#f8faff;border:2px solid #e8ecf8;border-radius:12px;color:#9ba3b8;font-family:'Cairo',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;margin-top:10px}
+
+/* ── EDIT MODAL ── */
+.ov{position:fixed;inset:0;background:rgba(26,29,46,0.5);backdrop-filter:blur(6px);z-index:500;display:none;align-items:flex-end}
+.ov.on{display:flex}
+.modal{background:#fff;border-radius:24px 24px 0 0;padding:20px;width:100%;max-height:88vh;overflow-y:auto;animation:su 0.28s ease}
+.modal-t{font-size:1rem;font-weight:900;color:#1a1d2e;margin-bottom:16px}
+.m-acts{display:flex;gap:10px;margin-top:14px}
+.m-can{flex:1;padding:13px;background:#f8faff;border:2px solid #e8ecf8;border-radius:12px;color:#6b7280;font-family:'Cairo',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer}
+.m-sav{flex:2;padding:13px;background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:#fff;border:none;border-radius:12px;font-family:'Cairo',sans-serif;font-size:0.88rem;font-weight:900;cursor:pointer}
+
+/* ── DEL MODAL ── */
+.del-box{text-align:center;padding:10px}
+.del-ico{font-size:2.5rem;margin-bottom:12px}
+.del-t{font-size:1.05rem;font-weight:900;color:#1a1d2e;margin-bottom:6px}
+.del-s{font-size:0.8rem;color:#9ba3b8;margin-bottom:20px}
+.del-yes{width:100%;padding:14px;background:#ef4444;color:#fff;border:none;border-radius:12px;font-family:'Cairo',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;margin-bottom:8px}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:#1a1d2e;color:#fff;padding:11px 22px;border-radius:30px;font-size:0.8rem;font-weight:700;z-index:9000;opacity:0;transition:all 0.3s;white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,0.2)}
+.toast.err{background:#ef4444}
+.toast.ok{background:#10b981}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── MISC ── */
+.empty{text-align:center;padding:60px 20px;color:#c4cad8}
+.empty-ico{font-size:3rem;display:block;margin-bottom:12px;opacity:0.4}
+.empty-txt{font-size:0.85rem}
+.loading{text-align:center;padding:50px;color:#c4cad8}
+.spin{width:32px;height:32px;border:3px solid #e8ecf8;border-top-color:#1d4ed8;border-radius:50%;animation:sp 0.8s linear infinite;margin:0 auto 12px}
+@keyframes sp{to{transform:rotate(360deg)}}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:#e8ecf8;border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- ═══ LOGIN ═══ -->
+<div id="login">
+  <div class="login-icon">🦷</div>
+  <div class="login-h">دنتال</div>
+  <div class="login-s">نظام إدارة حالات طب الأسنان<br>بياناتك محفوظة تلقائياً على حسابك</div>
+  <button class="g-btn" onclick="doLogin()">
+    <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.8 2.3 30.2 0 24 0 14.7 0 6.7 5.4 2.9 13.3l7.9 6.2C12.7 13.2 17.9 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.6c0-1.6-.1-3.1-.4-4.6H24v8.7h12.4c-.5 2.8-2.1 5.2-4.5 6.8l7.1 5.5c4.2-3.8 6.6-9.4 6.6-16.4z"/><path fill="#FBBC05" d="M10.8 28.5c-.5-1.5-.8-3-.8-4.5s.3-3 .8-4.5L2.9 13.3C1 16.9 0 20.8 0 24s1 7.1 2.9 10.7l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.1-5.5c-2 1.4-4.6 2.2-8.1 2.2-6.1 0-11.3-3.7-13.2-9l-7.9 6.2C6.7 42.6 14.7 48 24 48z"/></svg>
+    تسجيل الدخول بـ Google
+  </button>
+  <div class="login-note">بياناتك خاصة ومحمية بالكامل</div>
+</div>
+
+<!-- ═══ APP ═══ -->
+<div id="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div class="header-title">🦷 دنتال</div>
+      <div class="avatar" id="av" onclick="showPg('account',document.querySelectorAll('.tb')[3])">؟</div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-pill"><div class="stat-pill-n" id="hT">0</div><div class="stat-pill-l">🦷 سن</div></div>
+      <div class="stat-pill"><div class="stat-pill-n" id="hC">0</div><div class="stat-pill-l">📋 حالة</div></div>
+      <div class="stat-pill"><div class="stat-pill-n" id="hD">0</div><div class="stat-pill-l">👨‍⚕️ طبيب</div></div>
+      <div class="stat-pill"><div class="stat-pill-n" id="hM">0</div><div class="stat-pill-l">هذا الشهر</div></div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tb on" onclick="showPg('add',this)"><span class="tb-ico">✏️</span>إضافة</button>
+    <button class="tb" onclick="showPg('list',this)"><span class="tb-ico">📋</span>الحالات</button>
+    <button class="tb" onclick="showPg('stats',this)"><span class="tb-ico">📊</span>إحصائيات</button>
+    <button class="tb" onclick="showPg('account',this)"><span class="tb-ico">👤</span>حسابي</button>
+  </div>
+
+  <div class="content">
+
+    <!-- ADD -->
+    <div class="pg on" id="pg-add">
+      <div style="height:4px"></div>
+      <div class="sec-title">بيانات الحالة</div>
+      <div class="card">
+        <div class="g2">
+          <div class="fld"><label>الطبيب</label><input type="text" id="fDoc" placeholder="د. محمد"></div>
+          <div class="fld"><label>المريض</label><input type="text" id="fPat" placeholder="الاسم"></div>
+        </div>
+        <div class="g3">
+          <div class="fld"><label>عدد الأسنان</label><input type="number" id="fTth" placeholder="0" min="1" style="text-align:center"></div>
+          <div class="fld"><label>الشهر</label>
+            <select id="fMon">
+              <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+            </select>
+          </div>
+          <div class="fld"><label>السنة</label><select id="fYr"></select></div>
+        </div>
+        <div class="fld">
+          <label>لون السن</label>
+          <button class="shade-trigger" id="sTrig" onclick="openShade('add')">
+            <div class="shade-trigger-l">
+              <span class="shade-circle" id="sCirc"></span>
+              <span id="sTxt">اختر اللون</span>
+            </div>
+            <span class="shade-arr">▼</span>
+          </button>
+        </div>
+      </div>
+      <button class="save-btn" onclick="addCase()">حفظ الحالة</button>
+    </div>
+
+    <!-- LIST -->
+    <div class="pg" id="pg-list">
+      <div style="height:4px"></div>
+      <div class="frow">
+        <select id="flYr" onchange="renderList()"><option value="">كل السنوات</option></select>
+        <select id="flMon" onchange="renderList()">
+          <option value="">كل الأشهر</option>
+          <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+        </select>
+        <select id="flDoc" onchange="renderList()"><option value="">كل الأطباء</option></select>
+        <button class="csv-btn" onclick="doCSV()">⬇️</button>
+      </div>
+      <div class="rinfo"><span id="lCnt">0 حالة</span><span class="rinfo-sum" id="lSum"></span></div>
+      <div id="listEl"><div class="loading"><div class="spin"></div>جارٍ التحميل...</div></div>
+    </div>
+
+    <!-- STATS -->
+    <div class="pg" id="pg-stats">
+      <div style="height:4px"></div>
+      <div class="stats-frow">
+        <select id="stYr" onchange="renderStats()"><option value="">كل السنوات</option></select>
+        <select id="stMon" onchange="renderStats()">
+          <option value="">كل الأشهر</option>
+          <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+        </select>
+      </div>
+      <div class="period-badge" id="perBadge">📊 جميع البيانات</div>
+      <div class="g2-stat" id="stGrid"></div>
+      <div class="card"><div class="sec-title">🏆 الأطباء</div><div id="stDoc"></div></div>
+      <div class="card" id="mCard"><div class="sec-title">📅 الإنتاج الشهري</div><div class="mgrid" id="stMonEl"></div></div>
+      <div class="card"><div class="sec-title">🎨 ألوان الأسنان</div><div class="sdist" id="stShade"></div></div>
+    </div>
+
+    <!-- ACCOUNT -->
+    <div class="pg" id="pg-account">
+      <div style="height:4px"></div>
+      <div class="acc-head">
+        <div class="acc-av" id="accAv">👤</div>
+        <div class="acc-nm" id="accNm">—</div>
+        <div class="acc-em" id="accEm">—</div>
+      </div>
+      <div class="info-card"><div class="info-ico">☁️</div><div><div class="info-ti">نسخ احتياطي تلقائي</div><div class="info-de">بياناتك تحفظ فورياً على Google Cloud</div></div></div>
+      <div class="info-card"><div class="info-ico">🔄</div><div><div class="info-ti">استعادة من أي جهاز</div><div class="info-de">سجّل دخول بنفس حساب Google</div></div></div>
+      <div class="info-card"><div class="info-ico">🔒</div><div><div class="info-ti">بياناتك خاصة 100%</div><div class="info-de">محمية بحسابك فقط</div></div></div>
+      <button class="logout-btn" onclick="doOut()">تسجيل الخروج</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- SHADE MODAL -->
+<div id="shadeOv">
+  <div class="shade-box">
+    <div class="shade-box-head">
+      <div class="shade-box-title">🎨 اختر لون السن</div>
+      <button class="shade-close" onclick="closeShade()">✕</button>
+    </div>
+    <div id="shadeGrps"></div>
+    <button class="clear-btn" onclick="clearShade()">إزالة اللون</button>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="ov" id="editOv">
+  <div class="modal">
+    <div class="modal-t">✏️ تعديل الحالة</div>
+    <input type="hidden" id="eId">
+    <div class="g2">
+      <div class="fld"><label>الطبيب</label><input type="text" id="eDoc"></div>
+      <div class="fld"><label>المريض</label><input type="text" id="ePat"></div>
+    </div>
+    <div class="g3">
+      <div class="fld"><label>أسنان</label><input type="number" id="eTth" min="1" style="text-align:center"></div>
+      <div class="fld"><label>شهر</label>
+        <select id="eMon"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select>
+      </div>
+      <div class="fld"><label>سنة</label><select id="eYr"></select></div>
+    </div>
+    <div class="fld">
+      <label>لون السن</label>
+      <button class="shade-trigger" id="eSTrig" onclick="openShade('edit')">
+        <div class="shade-trigger-l">
+          <span class="shade-circle" id="eSCirc"></span>
+          <span id="eSTxt">اختر اللون</span>
+        </div>
+        <span class="shade-arr">▼</span>
+      </button>
+    </div>
+    <div class="m-acts">
+      <button class="m-can" onclick="closeOv('editOv')">إلغاء</button>
+      <button class="m-sav" onclick="saveEdit()">حفظ</button>
+    </div>
+  </div>
+</div>
+
+<!-- DEL MODAL -->
+<div class="ov" id="delOv">
+  <div class="modal">
+    <div class="del-box">
+      <div class="del-ico">🗑️</div>
+      <div class="del-t">حذف الحالة</div>
+      <div class="del-s">هل أنت متأكد؟ لا يمكن التراجع.</div>
+      <input type="hidden" id="delId">
+      <button class="del-yes" onclick="confirmDel()">حذف</button>
+      <button class="m-can" onclick="closeOv('delOv')" style="width:100%">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import{getDatabase,ref,push,onValue,update,remove}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const app=initializeApp({apiKey:"AIzaSyBjEd3UPOTkK143j1rZ6WQtnxhN5AS5nEU",authDomain:"dental-app-c95ce.firebaseapp.com",databaseURL:"https://dental-app-c95ce-default-rtdb.firebaseio.com",projectId:"dental-app-c95ce",storageBucket:"dental-app-c95ce.firebasestorage.app",messagingSenderId:"13518342618",appId:"dental-v3"});
+const auth=getAuth(app),db=getDatabase(app);
+let uid=null,cRef=null,all={};
+
+const shades=[
+  {g:"1",label:"المجموعة 1",color:"#f5f0e8",list:["0M1","0M2","0M3"]},
+  {g:"2",label:"المجموعة 2",color:"#ede4cc",list:["1M1","1M2"]},
+  {g:"3",label:"المجموعة 3",color:"#e0ceaa",list:["2M1","2M2","2M3","2L1.5","2L2.5","2R1.5","2R2.5"]},
+  {g:"4",label:"المجموعة 4",color:"#d4b87e",list:["3M1","3M2","3M3","3L1.5","3L2.5","3R1.5","3R2.5"]},
+  {g:"5",label:"المجموعة 5",color:"#c8a25c",list:["4M1","4M2","4M3","4L1.5","4L2.5","4R1.5","4R2.5"]},
+  {g:"6",label:"المجموعة 6",color:"#b8903a",list:["5M1","5M2","5M3"]},
+];
+
+function getColor(s){for(const g of shades)if(g.list.includes(s))return g.color;return '#e8ecf8';}
+
+let selShade="",editShade="",shadeMode="add";
+
+// Build shade groups
+document.getElementById('shadeGrps').innerHTML=shades.map(g=>`
+  <div class="sgrp">
+    <div class="sgrp-head"><span class="sgrp-dot" style="background:${g.color}"></span>${g.label}</div>
+    <div class="chips">${g.list.map(s=>`<button class="chip" data-s="${s}" onclick="pick('${s}')">${s}</button>`).join('')}</div>
+  </div>`).join('');
+
+window.openShade=function(m){
+  shadeMode=m;
+  const cur=m==='add'?selShade:editShade;
+  document.querySelectorAll('#shadeGrps .chip').forEach(c=>c.classList.toggle('on',c.dataset.s===cur));
+  document.getElementById('shadeOv').classList.add('on');
+};
+window.closeShade=()=>document.getElementById('shadeOv').classList.remove('on');
+window.clearShade=function(){
+  if(shadeMode==='add'){selShade='';setShadeUI('sTrig','sTxt','sCirc','');}
+  else{editShade='';setShadeUI('eSTrig','eSTxt','eSCirc','');}
+  closeShade();
+};
+window.pick=function(s){
+  if(shadeMode==='add'){selShade=s;setShadeUI('sTrig','sTxt','sCirc',s);}
+  else{editShade=s;setShadeUI('eSTrig','eSTxt','eSCirc',s);}
+  closeShade();toast(`✅ ${s}`,'ok');
+};
+function setShadeUI(tId,txtId,cId,s){
+  const t=document.getElementById(tId),tx=document.getElementById(txtId),ci=document.getElementById(cId);
+  if(s){tx.textContent=s;ci.style.background=getColor(s);t.classList.add('picked');}
+  else{tx.textContent='اختر اللون';ci.style.background='#e8ecf8';t.classList.remove('picked');}
+}
+document.getElementById('shadeOv').addEventListener('click',e=>{if(e.target===document.getElementById('shadeOv'))closeShade();});
+
+// Years
+function fillYr(id,val){
+  const y=new Date().getFullYear();let o='';
+  for(let i=y+1;i>=y-3;i--)o+=`<option value="${i}">${i}</option>`;
+  const s=document.getElementById(id);s.innerHTML=o;if(val)s.value=val;
+}
+fillYr('fYr');fillYr('eYr');
+const now=new Date();
+document.getElementById('fMon').value=now.getMonth()+1;
+document.getElementById('fYr').value=now.getFullYear();
+
+// Auth
+window.doLogin=async()=>{try{await signInWithPopup(auth,new GoogleAuthProvider());}catch(e){toast('خطأ في تسجيل الدخول','err');}};
+window.doOut=()=>signOut(auth);
+
+onAuthStateChanged(auth,u=>{
+  if(u){
+    uid=u.uid;
+    document.getElementById('login').style.display='none';
+    document.getElementById('app').classList.add('on');
+    const av=document.getElementById('av'),aav=document.getElementById('accAv');
+    if(u.photoURL){av.innerHTML=`<img src="${u.photoURL}">`;aav.innerHTML=`<img src="${u.photoURL}">`;}
+    else{av.textContent=u.displayName?.[0]||'؟';aav.textContent='👤';}
+    document.getElementById('accNm').textContent=u.displayName||'مستخدم';
+    document.getElementById('accEm').textContent=u.email||'';
+    cRef=ref(db,`users/${uid}/cases`);
+    onValue(cRef,snap=>{all=snap.val()||{};refresh();});
+    const y=now.getFullYear();let o='<option value="">كل السنوات</option>';
+    for(let i=y+1;i>=y-2;i--)o+=`<option value="${i}">${i}</option>`;
+    ['flYr','stYr'].forEach(id=>document.getElementById(id).innerHTML=o);
+  }else{
+    uid=null;
+    document.getElementById('login').style.display='flex';
+    document.getElementById('app').classList.remove('on');
+  }
+});
+
+function refresh(){
+  const list=Object.values(all);
+  const mn=now.getMonth()+1,yr=now.getFullYear();
+  document.getElementById('hT').textContent=list.reduce((s,c)=>s+(+c.teeth||0),0);
+  document.getElementById('hC').textContent=list.length;
+  document.getElementById('hD').textContent=new Set(list.map(c=>c.doc).filter(Boolean)).size;
+  document.getElementById('hM').textContent=list.filter(c=>+c.month===mn&&+c.year===yr).reduce((s,c)=>s+(+c.teeth||0),0);
+  const docs=[...new Set(list.map(c=>c.doc).filter(Boolean))].sort();
+  const fd=document.getElementById('flDoc'),cv=fd.value;
+  fd.innerHTML='<option value="">كل الأطباء</option>'+docs.map(d=>`<option value="${d}">${d}</option>`).join('');
+  if(cv)fd.value=cv;
+  renderList();renderStats();
+}
+
+window.renderList=function(){
+  const fy=document.getElementById('flYr').value,fm=document.getElementById('flMon').value,fd=document.getElementById('flDoc').value;
+  let list=Object.entries(all).map(([id,c])=>({id,...c}));
+  if(fy)list=list.filter(c=>String(c.year)===fy);
+  if(fm)list=list.filter(c=>String(c.month)===fm);
+  if(fd)list=list.filter(c=>c.doc===fd);
+  list.sort((a,b)=>(b.ts||0)-(a.ts||0));
+  const sum=list.reduce((s,c)=>s+(+c.teeth||0),0);
+  document.getElementById('lCnt').textContent=`${list.length} حالة`;
+  document.getElementById('lSum').textContent=list.length?`🦷 ${sum} سن`:'';
+  const el=document.getElementById('listEl');
+  if(!list.length){el.innerHTML=`<div class="empty"><span class="empty-ico">📭</span><div class="empty-txt">لا توجد حالات</div></div>`;return;}
+  el.innerHTML=list.map(c=>`
+    <div class="ccard">
+      <div class="ccard-top">
+        <div><div class="ccard-doc">👨‍⚕️ ${c.doc||'—'}</div><div class="ccard-pat">🧑 ${c.pat||'—'}</div></div>
+        <div class="ccard-num">🦷 ${c.teeth||0}</div>
+      </div>
+      <div class="tags">
+        <span class="tag tag-date">📅 ${c.month||'—'} / ${c.year||'—'}</span>
+        ${c.shade?`<span class="tag tag-shade">🎨 ${c.shade}</span>`:''}
+      </div>
+      <div class="ccard-acts">
+        <button class="act-e" onclick="openEdit('${c.id}')">✏️ تعديل</button>
+        <button class="act-d" onclick="openDel('${c.id}')">🗑️ حذف</button>
+      </div>
+    </div>`).join('');
+};
+
+window.renderStats=function(){
+  const fy=document.getElementById('stYr').value,fm=document.getElementById('stMon').value;
+  let list=Object.values(all);
+  if(fy)list=list.filter(c=>String(c.year)===fy);
+  if(fm)list=list.filter(c=>String(c.month)===fm);
+  let p='📊 جميع البيانات';
+  if(fy&&fm)p=`📊 شهر ${fm} ← سنة ${fy}`;
+  else if(fy)p=`📊 سنة ${fy}`;
+  else if(fm)p=`📊 شهر ${fm} — كل السنوات`;
+  document.getElementById('perBadge').textContent=p;
+  document.getElementById('mCard').style.display=fm?'none':'block';
+  const tt=list.reduce((s,c)=>s+(+c.teeth||0),0);
+  const avg=list.length?Math.round(tt/list.length):0;
+  document.getElementById('stGrid').innerHTML=`
+    <div class="sbox"><div class="sbox-n" style="color:#1d4ed8">${tt}</div><div class="sbox-l">إجمالي الأسنان</div></div>
+    <div class="sbox"><div class="sbox-n" style="color:#10b981">${list.length}</div><div class="sbox-l">عدد الحالات</div></div>
+    <div class="sbox"><div class="sbox-n" style="color:#f59e0b">${avg}</div><div class="sbox-l">متوسط / حالة</div></div>
+    <div class="sbox"><div class="sbox-n" style="color:#7c3aed">${new Set(list.map(c=>c.doc).filter(Boolean)).size}</div><div class="sbox-l">عدد الأطباء</div></div>`;
+  const dm={};list.forEach(c=>{if(!c.doc)return;dm[c.doc]=(dm[c.doc]||0)+(+c.teeth||0);});
+  const ds=Object.entries(dm).sort((a,b)=>b[1]-a[1]);const mx=ds[0]?.[1]||1;
+  const rk=['rk1','rk2','rk3'];
+  document.getElementById('stDoc').innerHTML=ds.length
+    ?ds.map(([d,t],i)=>`<div class="doc-item"><div class="doc-rank ${rk[i]||'rkn'}">${i+1}</div><div class="doc-inf"><div class="doc-nm">${d}</div><div class="doc-bar-w"><div class="doc-bar" style="width:${(t/mx*100).toFixed(1)}%"></div></div></div><div class="doc-n">🦷${t}</div></div>`).join('')
+    :`<div style="color:#c4cad8;text-align:center;padding:16px;font-size:0.82rem">لا توجد بيانات</div>`;
+  if(!fm){
+    const mm={};list.forEach(c=>{const m=c.month;if(!m)return;if(!mm[m]){mm[m]={t:0,c:0};}mm[m].t+=+c.teeth||0;mm[m].c++;});
+    document.getElementById('stMonEl').innerHTML=Array.from({length:12},(_,i)=>i+1).map(m=>{
+      const d=mm[m]||{t:0,c:0};
+      return `<div class="mbox"><div class="mbox-n" style="color:${d.t?'#1d4ed8':'#c4cad8'}">${d.t}</div><div class="mbox-l">ش${m}•${d.c}</div></div>`;
+    }).join('');
+  }
+  const sm={};list.forEach(c=>{if(!c.shade)return;sm[c.shade]=(sm[c.shade]||0)+1;});
+  const sl=Object.entries(sm).sort((a,b)=>b[1]-a[1]).slice(0,8);const smx=sl[0]?.[1]||1;
+  document.getElementById('stShade').innerHTML=sl.length
+    ?sl.map(([s,n])=>`<div class="sd-row"><div class="sd-nm">${s}</div><div class="sd-bw"><div class="sd-b" style="width:${(n/smx*100).toFixed(1)}%"></div></div><div class="sd-c">${n}</div></div>`).join('')
+    :`<div style="color:#c4cad8;text-align:center;padding:12px;font-size:0.8rem">لا توجد بيانات</div>`;
+};
+
+window.addCase=async function(){
+  const doc=document.getElementById('fDoc').value.trim();
+  const tth=+document.getElementById('fTth').value;
+  if(!doc){toast('أدخل اسم الطبيب','err');return;}
+  if(!tth||tth<1){toast('أدخل عدد الأسنان','err');return;}
+  await push(cRef,{doc,pat:document.getElementById('fPat').value.trim(),teeth:tth,month:+document.getElementById('fMon').value,year:+document.getElementById('fYr').value,shade:selShade,ts:Date.now()});
+  document.getElementById('fDoc').value='';
+  document.getElementById('fPat').value='';
+  document.getElementById('fTth').value='';
+  selShade='';setShadeUI('sTrig','sTxt','sCirc','');
+  toast('✅ تم حفظ الحالة','ok');
+};
+
+window.openEdit=function(id){
+  const c=all[id];if(!c)return;
+  document.getElementById('eId').value=id;
+  document.getElementById('eDoc').value=c.doc||'';
+  document.getElementById('ePat').value=c.pat||'';
+  document.getElementById('eTth').value=c.teeth||'';
+  document.getElementById('eMon').value=c.month||1;
+  fillYr('eYr',c.year||now.getFullYear());
+  editShade=c.shade||'';
+  setShadeUI('eSTrig','eSTxt','eSCirc',c.shade||'');
+  document.getElementById('editOv').classList.add('on');
+};
+window.saveEdit=async function(){
+  const id=document.getElementById('eId').value;
+  await update(ref(db,`users/${uid}/cases/${id}`),{doc:document.getElementById('eDoc').value.trim(),pat:document.getElementById('ePat').value.trim(),teeth:+document.getElementById('eTth').value||0,month:+document.getElementById('eMon').value,year:+document.getElementById('eYr').value,shade:editShade});
+  closeOv('editOv');toast('✅ تم التعديل','ok');
+};
+window.openDel=function(id){document.getElementById('delId').value=id;document.getElementById('delOv').classList.add('on');};
+window.confirmDel=async function(){
+  await remove(ref(db,`users/${uid}/cases/${document.getElementById('delId').value}`));
+  closeOv('delOv');toast('تم الحذف','ok');
+};
+window.doCSV=function(){
+  const fy=document.getElementById('flYr').value,fm=document.getElementById('flMon').value,fd=document.getElementById('flDoc').value;
+  let list=Object.values(all);
+  if(fy)list=list.filter(c=>String(c.year)===fy);
+  if(fm)list=list.filter(c=>String(c.month)===fm);
+  if(fd)list=list.filter(c=>c.doc===fd);
+  const csv='\uFEFF'+'السنة,الشهر,الطبيب,المريض,عدد الأسنان,لون السن\n'+list.map(c=>`${c.year||''},${c.month||''},${c.doc||''},${c.pat||''},${c.teeth||0},${c.shade||''}`).join('\n');
+  Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})),download:`dental-${Date.now()}.csv`}).click();
+  toast('✅ تم التصدير','ok');
+};
+window.showPg=function(n,btn){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('pg-'+n).classList.add('on');
+  if(btn)btn.classList.add('on');
+  if(n==='stats')renderStats();
+};
+window.closeOv=id=>document.getElementById(id).classList.remove('on');
+document.querySelectorAll('.ov').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('on');}));
+function toast(msg,type='ok'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className=`toast ${type} show`;
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+window.toast=toast;
+</script>
+</body>
+</html>
