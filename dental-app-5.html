@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#ffffff">
+<title>MAS Dental Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#5B9FC5;
+  --blue2:#3d7fa8;
+  --blue3:#1a5070;
+  --navy:#0d2d4a;
+  --lightblue:#ebf5fc;
+  --lightblue2:#d6ecf8;
+  --bg:#f0f7fc;
+  --white:#fff;
+  --text:#0d2d4a;
+  --text2:#4a7a9b;
+  --text3:#8eb8cc;
+  --border:#d6ecf8;
+  --gold:#FFD700;
+  --silver:#C0C0C0;
+  --green:#27ae60;
+  --red:#e74c3c;
+  --r:16px;--r2:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;font-family:'Cairo',sans-serif;background:var(--bg)}
+
+/* ══ LOGIN ══ */
+#login{
+  position:fixed;inset:0;background:var(--white);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:9999;padding:40px 32px;text-align:center;
+}
+.logo-big{margin-bottom:32px}
+.logo-big svg{width:180px;height:auto;filter:drop-shadow(0 4px 20px rgba(91,159,197,0.25))}
+.login-h{font-size:1.5rem;font-weight:900;color:var(--navy);margin-bottom:6px}
+.login-s{font-size:0.83rem;color:var(--text2);margin-bottom:40px;line-height:1.8}
+.g-btn{
+  display:flex;align-items:center;gap:12px;justify-content:center;
+  background:var(--blue);color:#fff;padding:15px 28px;
+  border-radius:50px;border:none;cursor:pointer;
+  font-family:'Cairo',sans-serif;font-size:1rem;font-weight:700;
+  width:100%;max-width:300px;
+  box-shadow:0 8px 24px rgba(91,159,197,0.4);
+  transition:transform 0.15s;
+}
+.g-btn:active{transform:scale(0.97)}
+.g-ico{width:22px;height:22px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.login-note{font-size:0.7rem;color:var(--text3);margin-top:18px;line-height:1.8}
+
+/* ══ APP ══ */
+#app{display:none;flex-direction:column;height:100%}
+#app.on{display:flex}
+
+/* ══ HEADER ══ */
+.hdr{
+  background:var(--white);
+  padding:12px 16px 0;
+  flex-shrink:0;
+  border-bottom:1px solid var(--border);
+}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.hdr-brand{display:flex;align-items:center;gap:10px}
+.hdr-logo svg{width:38px;height:38px}
+.hdr-name{display:flex;flex-direction:column}
+.hdr-title{font-size:0.85rem;font-weight:900;color:var(--navy);line-height:1.1}
+.hdr-sub{font-size:0.6rem;color:var(--text2);font-weight:600;letter-spacing:0.3px}
+.hdr-av{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--lightblue);border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.85rem;font-weight:700;color:var(--blue);
+  overflow:hidden;cursor:pointer;
+}
+.hdr-av img{width:100%;height:100%;object-fit:cover}
+
+/* STATS */
+.stats-row{display:flex;gap:8px;padding-bottom:14px}
+.spill{
+  flex:1;background:var(--lightblue);border-radius:12px;
+  padding:10px 6px;text-align:center;border:1.5px solid var(--lightblue2);
+}
+.spill-n{font-size:1.2rem;font-weight:900;color:var(--blue2)}
+.spill-l{font-size:0.58rem;color:var(--text2);margin-top:1px;font-weight:600}
+
+/* ══ TABS ══ */
+.tabs{background:var(--white);border-bottom:2px solid var(--border);display:flex;flex-shrink:0}
+.tb{
+  flex:1;padding:11px 4px 10px;text-align:center;
+  cursor:pointer;border:none;background:none;
+  font-family:'Cairo',sans-serif;font-size:0.6rem;font-weight:700;
+  color:var(--text3);border-bottom:2.5px solid transparent;margin-bottom:-2px;
+  transition:color 0.2s;
+}
+.tb.on{color:var(--blue);border-bottom-color:var(--blue)}
+.tb-ico{font-size:1.15rem;display:block;margin-bottom:2px}
+
+/* ══ CONTENT ══ */
+.content{flex:1;overflow-y:auto;background:var(--bg)}
+.pg{display:none;padding:14px;padding-bottom:24px}
+.pg.on{display:block}
+.slbl{font-size:0.68rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:9px;padding-right:2px}
+
+/* ══ CARD ══ */
+.card{background:var(--white);border-radius:var(--r);padding:16px;margin-bottom:12px;box-shadow:0 2px 14px rgba(13,45,74,0.06);border:1px solid var(--border)}
+
+/* ══ FORM ══ */
+.fld{margin-bottom:12px}
+.fld label{font-size:0.72rem;font-weight:700;color:var(--text2);display:block;margin-bottom:5px}
+.fld input,.fld select{
+  width:100%;padding:12px 14px;
+  background:var(--lightblue);border:2px solid var(--border);
+  border-radius:var(--r2);color:var(--text);
+  font-family:'Cairo',sans-serif;font-size:0.88rem;font-weight:600;
+  outline:none;transition:all 0.2s;-webkit-appearance:none;
+}
+.fld input:focus,.fld select:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(91,159,197,0.15)}
+.fld input::placeholder{color:var(--text3);font-weight:400}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+
+/* ══ DOCTOR INPUT ══ */
+.doc-input-wrap{position:relative}
+.doc-input{cursor:pointer!important}
+.doc-clear{
+  position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  background:none;border:none;color:var(--text3);font-size:1rem;cursor:pointer;
+  display:none;
+}
+
+/* ══ SHADE BTN ══ */
+.shade-btn{
+  width:100%;padding:12px 14px;
+  background:var(--lightblue);border:2px solid var(--border);
+  border-radius:var(--r2);cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:all 0.2s;font-family:'Cairo',sans-serif;
+}
+.shade-btn.picked{border-color:#e6a800;background:#fff9e6}
+.shade-l{display:flex;align-items:center;gap:10px}
+.shade-dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0}
+.shade-txt{font-size:0.88rem;font-weight:600;color:var(--text3)}
+.shade-btn.picked .shade-txt{color:#7a5000;font-weight:700}
+.shade-arr{font-size:0.65rem;color:var(--text3)}
+
+/* ══ SAVE BTN ══ */
+.save-btn{
+  width:100%;padding:15px;border:none;border-radius:var(--r);
+  background:linear-gradient(135deg,var(--blue) 0%,var(--blue3) 100%);
+  color:#fff;font-family:'Cairo',sans-serif;
+  font-size:1rem;font-weight:900;cursor:pointer;
+  box-shadow:0 6px 20px rgba(91,159,197,0.4);
+  transition:transform 0.15s;letter-spacing:0.3px;
+}
+.save-btn:active{transform:scale(0.98)}
+
+/* ══ FILTER ══ */
+.frow{display:flex;gap:8px;margin-bottom:12px}
+.frow select{flex:1;padding:10px 12px;background:var(--white);border:2px solid var(--border);border-radius:var(--r2);color:var(--text);font-weight:600;font-family:'Cairo',sans-serif;font-size:0.77rem;outline:none;-webkit-appearance:none}
+.csv-btn{padding:10px 13px;background:var(--white);border:2px solid var(--border);border-radius:var(--r2);color:var(--blue);font-family:'Cairo',sans-serif;font-size:0.77rem;font-weight:700;cursor:pointer}
+
+/* ══ LIST ══ */
+.rinfo{font-size:0.72rem;color:var(--text2);font-weight:600;margin-bottom:12px;display:flex;justify-content:space-between}
+.rinfo b{color:var(--blue2)}
+.ccard{background:var(--white);border-radius:var(--r);margin-bottom:10px;box-shadow:0 2px 12px rgba(13,45,74,0.07);border:1px solid var(--border);overflow:hidden;animation:up 0.25s ease}
+@keyframes up{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.ccard-head{display:flex;justify-content:space-between;align-items:center;padding:13px 14px 10px}
+.ccard-doc{font-size:0.93rem;font-weight:700;color:var(--navy)}
+.ccard-pat{font-size:0.7rem;color:var(--text2);margin-top:2px;font-weight:600}
+.ccard-badge{background:linear-gradient(135deg,var(--blue),var(--blue3));color:#fff;padding:6px 13px;border-radius:30px;font-weight:900;font-size:0.88rem;white-space:nowrap;box-shadow:0 3px 10px rgba(91,159,197,0.35)}
+.ccard-tags{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 10px}
+.ctag{font-size:0.64rem;padding:3px 9px;border-radius:20px;font-weight:700}
+.ctag-d{background:var(--lightblue);color:var(--blue2)}
+.ctag-s{background:#fff8e6;color:#7a5000}
+.ccard-acts{display:flex;border-top:1px solid var(--border)}
+.act-e,.act-d{flex:1;padding:11px;border:none;background:none;font-family:'Cairo',sans-serif;font-size:0.76rem;font-weight:700;cursor:pointer;transition:background 0.15s}
+.act-e{color:var(--blue);border-left:1px solid var(--border)}
+.act-e:active{background:var(--lightblue)}
+.act-d{color:var(--red)}
+.act-d:active{background:#fff5f5}
+
+/* ══ STATS ══ */
+.st-frow{display:flex;gap:8px;margin-bottom:11px}
+.st-frow select{flex:1;padding:10px 12px;background:var(--white);border:2px solid var(--border);border-radius:var(--r2);color:var(--text);font-weight:600;font-family:'Cairo',sans-serif;font-size:0.77rem;outline:none;-webkit-appearance:none}
+.period{background:var(--white);border-radius:var(--r2);padding:9px 14px;text-align:center;font-size:0.72rem;font-weight:700;color:var(--blue);margin-bottom:13px;border:1.5px solid var(--border)}
+.sg4{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.sbox{background:var(--white);border-radius:var(--r);padding:15px 10px;text-align:center;box-shadow:0 2px 12px rgba(13,45,74,0.06);border:1px solid var(--border)}
+.sbox-n{font-size:1.5rem;font-weight:900;margin-bottom:3px}
+.sbox-l{font-size:0.62rem;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:0.3px}
+
+/* DOC RANKINGS */
+.doc-item{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.doc-rk{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:900;flex-shrink:0;border:2px solid transparent}
+.rk-gold{background:linear-gradient(135deg,#FFD700,#FFA500);color:#7a5000;border-color:#e6a800;box-shadow:0 3px 10px rgba(255,215,0,0.4)}
+.rk-silver{background:linear-gradient(135deg,#E8E8E8,#C0C0C0);color:#555;border-color:#aaa;box-shadow:0 3px 8px rgba(0,0,0,0.15)}
+.rk-green{background:linear-gradient(135deg,#27ae60,#2ecc71);color:#fff;border-color:#27ae60;box-shadow:0 3px 8px rgba(39,174,96,0.3)}
+.doc-inf{flex:1;min-width:0}
+.doc-nm{font-size:0.87rem;font-weight:700;color:var(--navy);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.doc-bw{margin-top:5px;height:6px;background:var(--lightblue);border-radius:3px;overflow:hidden}
+.doc-b{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--blue),var(--blue3));transition:width 0.6s}
+.doc-n{font-size:0.87rem;font-weight:900;color:var(--blue);flex-shrink:0}
+.mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.mbox{background:var(--lightblue);border-radius:10px;padding:8px 4px;text-align:center;border:1.5px solid var(--border)}
+.mbox-n{font-size:0.9rem;font-weight:900}
+.mbox-l{font-size:0.57rem;color:var(--text2);margin-top:1px;font-weight:600}
+.sdist{display:flex;flex-direction:column;gap:8px}
+.sd-r{display:flex;align-items:center;gap:10px}
+.sd-nm{font-size:0.74rem;color:var(--text2);font-weight:700;min-width:52px}
+.sd-bw{flex:1;height:7px;background:var(--lightblue);border-radius:4px;overflow:hidden}
+.sd-b{height:100%;border-radius:4px;background:linear-gradient(90deg,#e6a800,#FFD700)}
+.sd-c{font-size:0.7rem;font-weight:700;color:var(--text2);min-width:20px;text-align:left}
+
+/* ══ ACCOUNT ══ */
+.acc-card{background:linear-gradient(145deg,var(--blue),var(--blue3));border-radius:var(--r);padding:22px;text-align:center;margin-bottom:12px;box-shadow:0 10px 28px rgba(91,159,197,0.35)}
+.acc-av{width:60px;height:60px;border-radius:50%;margin:0 auto 10px;background:rgba(255,255,255,0.2);border:3px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;font-size:1.5rem;overflow:hidden}
+.acc-av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.acc-nm{font-size:1rem;font-weight:700;color:#fff}
+.acc-em{font-size:0.71rem;color:rgba(255,255,255,0.75);margin-top:3px}
+.info-c{background:var(--white);border-radius:13px;padding:13px 15px;margin-bottom:9px;display:flex;align-items:center;gap:13px;box-shadow:0 2px 10px rgba(13,45,74,0.06);border:1px solid var(--border)}
+.info-ico{width:38px;height:38px;border-radius:12px;background:var(--lightblue);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.info-ti{font-size:0.8rem;font-weight:700;color:var(--navy)}
+.info-de{font-size:0.68rem;color:var(--text2);margin-top:2px}
+.logout-btn{width:100%;padding:13px;border:2px solid #fad4d0;border-radius:var(--r);background:var(--white);color:var(--red);font-family:'Cairo',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;margin-top:4px}
+.logout-btn:active{background:#fff5f5}
+
+/* ══ DOCTOR PICKER MODAL ══ */
+#docOv{position:fixed;inset:0;background:rgba(13,45,74,0.45);backdrop-filter:blur(8px);z-index:700;display:none;align-items:flex-end}
+#docOv.on{display:flex}
+.doc-box{background:var(--white);border-radius:24px 24px 0 0;padding:20px;width:100%;max-height:70vh;overflow-y:auto;animation:su 0.28s ease}
+.doc-box-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.doc-box-t{font-size:0.95rem;font-weight:900;color:var(--navy)}
+.doc-x{width:30px;height:30px;border-radius:50%;background:var(--lightblue);border:none;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;color:var(--text2)}
+.doc-search-wrap{position:relative;margin-bottom:12px}
+.doc-search{width:100%;padding:11px 14px;background:var(--lightblue);border:2px solid var(--border);border-radius:var(--r2);color:var(--text);font-family:'Cairo',sans-serif;font-size:0.88rem;font-weight:600;outline:none}
+.doc-search:focus{border-color:var(--blue)}
+.doc-search::placeholder{color:var(--text3);font-weight:400}
+.doc-list{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.doc-opt{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;background:var(--lightblue);
+  border-radius:var(--r2);cursor:pointer;border:1.5px solid var(--border);
+  transition:all 0.15s;
+}
+.doc-opt:active{background:var(--lightblue2);border-color:var(--blue)}
+.doc-opt-ico{width:34px;height:34px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;flex-shrink:0}
+.doc-opt-name{font-size:0.88rem;font-weight:700;color:var(--navy)}
+.doc-opt-count{font-size:0.7rem;color:var(--text2);margin-top:1px}
+.doc-new-btn{
+  width:100%;padding:12px;background:var(--white);
+  border:2px dashed var(--blue);border-radius:var(--r2);
+  color:var(--blue);font-family:'Cairo',sans-serif;font-size:0.88rem;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.doc-new-btn:active{background:var(--lightblue)}
+.doc-empty{text-align:center;padding:20px;color:var(--text3);font-size:0.82rem}
+
+/* ══ SHADE MODAL ══ */
+#shadeOv{position:fixed;inset:0;background:rgba(13,45,74,0.45);backdrop-filter:blur(8px);z-index:600;display:none;align-items:flex-end}
+#shadeOv.on{display:flex}
+.shade-box{background:var(--white);border-radius:24px 24px 0 0;padding:20px;width:100%;max-height:72vh;overflow-y:auto;animation:su 0.3s ease}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.shade-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.shade-t{font-size:0.95rem;font-weight:900;color:var(--navy)}
+.shade-x{width:30px;height:30px;border-radius:50%;background:var(--lightblue);border:none;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;color:var(--text2)}
+.sgrp{background:var(--lightblue);border-radius:13px;padding:11px 13px;margin-bottom:8px}
+.sgrp-hdr{display:flex;align-items:center;gap:7px;font-size:0.67rem;font-weight:700;color:var(--text2);margin-bottom:9px;text-transform:uppercase;letter-spacing:0.4px}
+.sgrp-dot{width:13px;height:13px;border-radius:50%;flex-shrink:0;border:2px solid rgba(0,0,0,0.08)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:6px 12px;border-radius:20px;font-size:0.72rem;font-weight:700;cursor:pointer;border:2px solid var(--border);background:var(--white);color:var(--text2);font-family:'Cairo',sans-serif;transition:all 0.15s}
+.chip.on{background:#e6a800;border-color:#e6a800;color:#fff;box-shadow:0 2px 8px rgba(230,168,0,0.3)}
+.clear-shade{width:100%;padding:11px;background:var(--lightblue);border:2px solid var(--border);border-radius:var(--r2);color:var(--text2);font-family:'Cairo',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;margin-top:10px}
+
+/* ══ MODALS ══ */
+.ov{position:fixed;inset:0;background:rgba(13,45,74,0.45);backdrop-filter:blur(8px);z-index:500;display:none;align-items:flex-end}
+.ov.on{display:flex}
+.modal{background:var(--white);border-radius:24px 24px 0 0;padding:20px;width:100%;max-height:88vh;overflow-y:auto;animation:su 0.28s ease}
+.modal-t{font-size:1rem;font-weight:900;color:var(--navy);margin-bottom:16px}
+.macts{display:flex;gap:10px;margin-top:14px}
+.m-can{flex:1;padding:13px;background:var(--lightblue);border:2px solid var(--border);border-radius:var(--r2);color:var(--text2);font-family:'Cairo',sans-serif;font-size:0.87rem;font-weight:700;cursor:pointer}
+.m-sav{flex:2;padding:13px;background:linear-gradient(135deg,var(--blue),var(--blue3));color:#fff;border:none;border-radius:var(--r2);font-family:'Cairo',sans-serif;font-size:0.87rem;font-weight:900;cursor:pointer;box-shadow:0 5px 16px rgba(91,159,197,0.35)}
+.del-box{text-align:center;padding:8px 0}
+.del-ico{font-size:2.8rem;margin-bottom:12px}
+.del-t{font-size:1.05rem;font-weight:900;color:var(--navy);margin-bottom:6px}
+.del-s{font-size:0.78rem;color:var(--text2);margin-bottom:20px}
+.del-yes{width:100%;padding:13px;background:var(--red);color:#fff;border:none;border-radius:var(--r2);font-family:'Cairo',sans-serif;font-size:0.93rem;font-weight:700;cursor:pointer;margin-bottom:8px;box-shadow:0 5px 16px rgba(231,76,60,0.3)}
+
+/* ══ TOAST ══ */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:11px 22px;border-radius:30px;font-size:0.78rem;font-weight:700;z-index:9000;opacity:0;transition:all 0.3s;white-space:nowrap;box-shadow:0 6px 24px rgba(0,0,0,0.2)}
+.toast.ok{background:var(--green)}
+.toast.err{background:var(--red)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* MISC */
+.empty{text-align:center;padding:60px 20px;color:var(--text3)}
+.empty-ico{font-size:3rem;display:block;margin-bottom:10px;opacity:0.35}
+.empty-t{font-size:0.83rem;font-weight:600}
+.loading{text-align:center;padding:50px;color:var(--text3)}
+.spin{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:sp 0.8s linear infinite;margin:0 auto 12px}
+@keyframes sp{to{transform:rotate(360deg)}}
+::-webkit-scrollbar{width:0}
+</style>
+</head>
+<body>
+
+<!-- MAS LOGO SVG (reusable) -->
+<svg style="display:none">
+  <symbol id="mas-logo" viewBox="0 0 120 80">
+    <!-- Tooth/M shape -->
+    <path d="M8,70 C8,70 12,20 28,20 C36,20 38,35 45,35 C52,35 54,20 62,20 C70,20 72,35 79,35 C86,35 88,20 96,20 C108,20 112,70 112,70 Z" fill="#5B9FC5" opacity="0.15"/>
+    <path d="M15,68 C15,68 18,28 30,28 C37,28 39,42 45,42 C51,42 53,28 60,28 C67,28 69,42 75,42 C81,42 83,28 90,28 C100,28 103,68 103,68 Z" fill="#5B9FC5"/>
+    <!-- Inner white tooth -->
+    <path d="M35,68 C35,68 37,45 42,42 C45,40 48,45 50,55 C52,45 55,40 58,42 C63,45 65,68 65,68 Z" fill="white"/>
+    <!-- Diamond gem -->
+    <polygon points="80,38 86,44 80,52 74,44" fill="white" opacity="0.9"/>
+    <line x1="74" y1="44" x2="86" y2="44" stroke="#5B9FC5" stroke-width="0.8"/>
+    <line x1="80" y1="38" x2="74" y2="44" stroke="#5B9FC5" stroke-width="0.8"/>
+    <line x1="80" y1="38" x2="86" y2="44" stroke="#5B9FC5" stroke-width="0.8"/>
+    <line x1="80" y1="52" x2="74" y2="44" stroke="#5B9FC5" stroke-width="0.8"/>
+    <line x1="80" y1="52" x2="86" y2="44" stroke="#5B9FC5" stroke-width="0.8"/>
+  </symbol>
+</svg>
+
+<!-- ══ LOGIN ══ -->
+<div id="login">
+  <div class="logo-big">
+    <svg viewBox="0 0 280 160" xmlns="http://www.w3.org/2000/svg">
+      <!-- Large tooth M shape background -->
+      <path d="M10,140 C10,140 20,30 55,30 C74,30 78,65 95,65 C112,65 116,30 135,30 C154,30 158,65 175,65 C192,65 196,30 215,30 C245,30 255,140 255,140 Z" fill="#5B9FC5" opacity="0.12"/>
+      <path d="M25,138 C25,138 35,42 65,42 C82,42 86,74 100,74 C114,74 118,42 135,42 C152,42 156,74 170,74 C184,74 188,42 205,42 C230,42 240,138 240,138 Z" fill="#5B9FC5"/>
+      <!-- Inner white molar -->
+      <path d="M82,138 C82,138 86,90 96,85 C103,82 108,95 112,118 C116,95 121,82 128,85 C138,90 142,138 142,138 Z" fill="white"/>
+      <!-- "as" text area - gem -->
+      <circle cx="185" cy="88" r="22" fill="#5B9FC5"/>
+      <polygon points="185,74 196,86 185,100 174,86" fill="white" opacity="0.95"/>
+      <line x1="174" y1="86" x2="196" y2="86" stroke="#5B9FC5" stroke-width="1.2"/>
+      <line x1="185" y1="74" x2="174" y2="86" stroke="#5B9FC5" stroke-width="1.2"/>
+      <line x1="185" y1="74" x2="196" y2="86" stroke="#5B9FC5" stroke-width="1.2"/>
+      <line x1="185" y1="100" x2="174" y2="86" stroke="#5B9FC5" stroke-width="1.2"/>
+      <line x1="185" y1="100" x2="196" y2="86" stroke="#5B9FC5" stroke-width="1.2"/>
+      <!-- S letter -->
+      <text x="205" y="100" font-family="Arial" font-weight="bold" font-size="26" fill="#5B9FC5">s</text>
+      <!-- "Dental Lab" text -->
+      <text x="140" y="155" font-family="Arial" font-size="14" fill="#0d2d4a" text-anchor="middle" letter-spacing="3" font-weight="600">DENTAL LAB</text>
+      <!-- underline -->
+      <line x1="60" y1="158" x2="220" y2="158" stroke="#5B9FC5" stroke-width="1.5" opacity="0.5"/>
+    </svg>
+  </div>
+  <div class="login-h">MAS Dental Lab</div>
+  <div class="login-s">نظام إدارة حالات طب الأسنان<br>بياناتك محفوظة على حسابك تلقائياً</div>
+  <button class="g-btn" onclick="doLogin()">
+    <div class="g-ico">
+      <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.8 2.3 30.2 0 24 0 14.7 0 6.7 5.4 2.9 13.3l7.9 6.2C12.7 13.2 17.9 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.6c0-1.6-.1-3.1-.4-4.6H24v8.7h12.4c-.5 2.8-2.1 5.2-4.5 6.8l7.1 5.5c4.2-3.8 6.6-9.4 6.6-16.4z"/><path fill="#FBBC05" d="M10.8 28.5c-.5-1.5-.8-3-.8-4.5s.3-3 .8-4.5L2.9 13.3C1 16.9 0 20.8 0 24s1 7.1 2.9 10.7l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.1-5.5c-2 1.4-4.6 2.2-8.1 2.2-6.1 0-11.3-3.7-13.2-9l-7.9 6.2C6.7 42.6 14.7 48 24 48z"/></svg>
+    </div>
+    تسجيل الدخول بـ Google
+  </button>
+  <div class="login-note">بياناتك خاصة ومحمية بحسابك</div>
+</div>
+
+<!-- ══ APP ══ -->
+<div id="app">
+  <div class="hdr">
+    <div class="hdr-top">
+      <div class="hdr-brand">
+        <div class="hdr-logo">
+          <svg viewBox="0 0 60 50" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3,48 C3,48 8,10 20,10 C27,10 29,26 34,26 C39,26 41,10 48,10 C56,10 58,48 58,48 Z" fill="#5B9FC5" opacity="0.15"/>
+            <path d="M7,47 C7,47 11,14 21,14 C27,14 29,28 34,28 C39,28 41,14 47,14 C56,14 58,47 58,47 Z" fill="#5B9FC5"/>
+            <path d="M22,47 C22,47 24,30 27,28 C29,27 31,32 32,40 C33,32 35,27 37,28 C40,30 42,47 42,47 Z" fill="white"/>
+            <polygon points="48,16 52,21 48,27 44,21" fill="white" opacity="0.9"/>
+            <line x1="44" y1="21" x2="52" y2="21" stroke="#5B9FC5" stroke-width="0.7"/>
+            <line x1="48" y1="16" x2="44" y2="21" stroke="#5B9FC5" stroke-width="0.7"/>
+            <line x1="48" y1="16" x2="52" y2="21" stroke="#5B9FC5" stroke-width="0.7"/>
+            <line x1="48" y1="27" x2="44" y2="21" stroke="#5B9FC5" stroke-width="0.7"/>
+            <line x1="48" y1="27" x2="52" y2="21" stroke="#5B9FC5" stroke-width="0.7"/>
+          </svg>
+        </div>
+        <div class="hdr-name">
+          <div class="hdr-title">MAS Dental Lab</div>
+          <div class="hdr-sub">سجل الحالات الطبية</div>
+        </div>
+      </div>
+      <div class="hdr-av" id="av">؟</div>
+    </div>
+    <div class="stats-row">
+      <div class="spill"><div class="spill-n" id="hT">0</div><div class="spill-l">🦷 سن</div></div>
+      <div class="spill"><div class="spill-n" id="hC">0</div><div class="spill-l">📋 حالة</div></div>
+      <div class="spill"><div class="spill-n" id="hD">0</div><div class="spill-l">👨‍⚕️ طبيب</div></div>
+      <div class="spill"><div class="spill-n" id="hM">0</div><div class="spill-l">هذا الشهر</div></div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tb on" onclick="showPg('add',this)"><span class="tb-ico">✏️</span>إضافة</button>
+    <button class="tb" onclick="showPg('list',this)"><span class="tb-ico">📋</span>الحالات</button>
+    <button class="tb" onclick="showPg('stats',this)"><span class="tb-ico">📊</span>إحصائيات</button>
+    <button class="tb" onclick="showPg('account',this)"><span class="tb-ico">👤</span>حسابي</button>
+  </div>
+
+  <div class="content">
+
+    <!-- ADD -->
+    <div class="pg on" id="pg-add">
+      <div style="height:2px"></div>
+      <div class="slbl">بيانات الحالة</div>
+      <div class="card">
+        <div class="g2">
+          <div class="fld">
+            <label>الطبيب</label>
+            <div class="doc-input-wrap">
+              <input type="text" id="fDoc" class="doc-input" placeholder="اختر أو أضف طبيب" readonly onclick="openDocPicker('add')" style="cursor:pointer">
+              <button class="doc-clear" id="fDocClear" onclick="clearDoc('add')">✕</button>
+            </div>
+          </div>
+          <div class="fld"><label>المريض</label><input type="text" id="fPat" placeholder="اسم المريض"></div>
+        </div>
+        <div class="g3">
+          <div class="fld"><label>عدد الأسنان</label><input type="number" id="fTth" placeholder="0" min="1" style="text-align:center"></div>
+          <div class="fld"><label>الشهر</label>
+            <select id="fMon">
+              <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+            </select>
+          </div>
+          <div class="fld"><label>السنة</label><select id="fYr"></select></div>
+        </div>
+        <div class="fld">
+          <label>لون السن</label>
+          <button class="shade-btn" id="sTrig" onclick="openShade('add')">
+            <div class="shade-l"><span class="shade-dot" id="sDot"></span><span id="sTxt">اختر اللون</span></div>
+            <span class="shade-arr">▾</span>
+          </button>
+        </div>
+      </div>
+      <button class="save-btn" onclick="addCase()">حفظ الحالة</button>
+    </div>
+
+    <!-- LIST -->
+    <div class="pg" id="pg-list">
+      <div style="height:2px"></div>
+      <div class="frow">
+        <select id="flYr" onchange="renderList()"><option value="">كل السنوات</option></select>
+        <select id="flMon" onchange="renderList()">
+          <option value="">كل الأشهر</option>
+          <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+        </select>
+        <select id="flDoc" onchange="renderList()"><option value="">كل الأطباء</option></select>
+        <button class="csv-btn" onclick="doCSV()">⬇️</button>
+      </div>
+      <div class="rinfo"><span id="lCnt">0 حالة</span><b id="lSum"></b></div>
+      <div id="listEl"><div class="loading"><div class="spin"></div>جارٍ التحميل...</div></div>
+    </div>
+
+    <!-- STATS -->
+    <div class="pg" id="pg-stats">
+      <div style="height:2px"></div>
+      <div class="st-frow">
+        <select id="stYr" onchange="renderStats()"><option value="">كل السنوات</option></select>
+        <select id="stMon" onchange="renderStats()">
+          <option value="">كل الأشهر</option>
+          <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+        </select>
+      </div>
+      <div class="period" id="per">📊 جميع البيانات</div>
+      <div class="sg4" id="stGrid"></div>
+      <div class="card"><div class="slbl">🏆 الأطباء</div><div id="stDoc"></div></div>
+      <div class="card" id="mCard"><div class="slbl">📅 الإنتاج الشهري</div><div class="mgrid" id="stMonEl"></div></div>
+      <div class="card"><div class="slbl">🎨 ألوان الأسنان</div><div class="sdist" id="stShade"></div></div>
+    </div>
+
+    <!-- ACCOUNT -->
+    <div class="pg" id="pg-account">
+      <div style="height:2px"></div>
+      <div class="acc-card">
+        <div class="acc-av" id="accAv">👤</div>
+        <div class="acc-nm" id="accNm">—</div>
+        <div class="acc-em" id="accEm">—</div>
+      </div>
+      <div class="info-c"><div class="info-ico">☁️</div><div><div class="info-ti">نسخ احتياطي تلقائي</div><div class="info-de">بياناتك تحفظ فورياً على Google Cloud</div></div></div>
+      <div class="info-c"><div class="info-ico">🔄</div><div><div class="info-ti">استعادة من أي جهاز</div><div class="info-de">سجّل دخول بنفس حساب Google</div></div></div>
+      <div class="info-c"><div class="info-ico">🔒</div><div><div class="info-ti">بياناتك خاصة 100%</div><div class="info-de">محمية بحسابك فقط</div></div></div>
+      <button class="logout-btn" onclick="doOut()">تسجيل الخروج</button>
+    </div>
+  </div>
+</div>
+
+<!-- DOCTOR PICKER -->
+<div id="docOv">
+  <div class="doc-box">
+    <div class="doc-box-hdr">
+      <div class="doc-box-t">👨‍⚕️ اختر الطبيب</div>
+      <button class="doc-x" onclick="closeDocPicker()">✕</button>
+    </div>
+    <div class="doc-search-wrap">
+      <input type="text" class="doc-search" id="docSearch" placeholder="ابحث أو اكتب اسم طبيب جديد" oninput="filterDocs()">
+    </div>
+    <div class="doc-list" id="docList"></div>
+    <button class="doc-new-btn" id="docNewBtn" onclick="addNewDoc()">➕ إضافة طبيب جديد</button>
+  </div>
+</div>
+
+<!-- SHADE MODAL -->
+<div id="shadeOv">
+  <div class="shade-box">
+    <div class="shade-hdr">
+      <div class="shade-t">🎨 اختر لون السن</div>
+      <button class="shade-x" onclick="closeShade()">✕</button>
+    </div>
+    <div id="shadeGrps"></div>
+    <button class="clear-shade" onclick="clearShade()">إزالة اللون</button>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="ov" id="editOv">
+  <div class="modal">
+    <div class="modal-t">✏️ تعديل الحالة</div>
+    <input type="hidden" id="eId">
+    <div class="g2">
+      <div class="fld">
+        <label>الطبيب</label>
+        <input type="text" id="eDoc" readonly onclick="openDocPicker('edit')" style="cursor:pointer">
+      </div>
+      <div class="fld"><label>المريض</label><input type="text" id="ePat"></div>
+    </div>
+    <div class="g3">
+      <div class="fld"><label>أسنان</label><input type="number" id="eTth" min="1" style="text-align:center"></div>
+      <div class="fld"><label>شهر</label>
+        <select id="eMon"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select>
+      </div>
+      <div class="fld"><label>سنة</label><select id="eYr"></select></div>
+    </div>
+    <div class="fld">
+      <label>لون السن</label>
+      <button class="shade-btn" id="eSTrig" onclick="openShade('edit')">
+        <div class="shade-l"><span class="shade-dot" id="eSDot"></span><span id="eSTxt">اختر اللون</span></div>
+        <span class="shade-arr">▾</span>
+      </button>
+    </div>
+    <div class="macts">
+      <button class="m-can" onclick="closeOv('editOv')">إلغاء</button>
+      <button class="m-sav" onclick="saveEdit()">حفظ</button>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE MODAL -->
+<div class="ov" id="delOv">
+  <div class="modal">
+    <div class="del-box">
+      <div class="del-ico">🗑️</div>
+      <div class="del-t">حذف الحالة</div>
+      <div class="del-s">هل أنت متأكد؟ لا يمكن التراجع.</div>
+      <input type="hidden" id="delId">
+      <button class="del-yes" onclick="confirmDel()">حذف</button>
+      <button class="m-can" onclick="closeOv('delOv')" style="width:100%">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import{getDatabase,ref,push,onValue,update,remove}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const app=initializeApp({apiKey:"AIzaSyBjEd3UPOTkK143j1rZ6WQtnxhN5AS5nEU",authDomain:"dental-app-c95ce.firebaseapp.com",databaseURL:"https://dental-app-c95ce-default-rtdb.firebaseio.com",projectId:"dental-app-c95ce",storageBucket:"dental-app-c95ce.firebasestorage.app",messagingSenderId:"13518342618",appId:"dental-mas-v1"});
+const auth=getAuth(app),db=getDatabase(app);
+let uid=null,cRef=null,all={};
+
+// ── SHADES ──
+const shades=[
+  {g:"1",label:"المجموعة 1",color:"#f5f0e8",list:["0M1","0M2","0M3"]},
+  {g:"2",label:"المجموعة 2",color:"#ede4cc",list:["1M1","1M2"]},
+  {g:"3",label:"المجموعة 3",color:"#e0ceaa",list:["2M1","2M2","2M3","2L1.5","2L2.5","2R1.5","2R2.5"]},
+  {g:"4",label:"المجموعة 4",color:"#d4b87e",list:["3M1","3M2","3M3","3L1.5","3L2.5","3R1.5","3R2.5"]},
+  {g:"5",label:"المجموعة 5",color:"#c8a25c",list:["4M1","4M2","4M3","4L1.5","4L2.5","4R1.5","4R2.5"]},
+  {g:"6",label:"المجموعة 6",color:"#b8903a",list:["5M1","5M2","5M3"]},
+];
+function getClr(s){for(const g of shades)if(g.list.includes(s))return g.color;return '#d6ecf8';}
+
+document.getElementById('shadeGrps').innerHTML=shades.map(g=>`
+  <div class="sgrp">
+    <div class="sgrp-hdr"><span class="sgrp-dot" style="background:${g.color}"></span>${g.label}</div>
+    <div class="chips">${g.list.map(s=>`<button class="chip" data-s="${s}" onclick="pick('${s}')">${s}</button>`).join('')}</div>
+  </div>`).join('');
+
+let sel="",esel="",shadeMode="add";
+let docMode="add";
+
+function setShadeUI(tId,txId,dId,s){
+  const t=document.getElementById(tId),tx=document.getElementById(txId),d=document.getElementById(dId);
+  if(s){tx.textContent=s;d.style.background=getClr(s);d.style.borderColor='transparent';t.classList.add('picked');}
+  else{tx.textContent='اختر اللون';d.style.background='#d6ecf8';d.style.borderColor='#d6ecf8';t.classList.remove('picked');}
+}
+window.openShade=m=>{
+  shadeMode=m;const c=m==='add'?sel:esel;
+  document.querySelectorAll('#shadeGrps .chip').forEach(x=>x.classList.toggle('on',x.dataset.s===c));
+  document.getElementById('shadeOv').classList.add('on');
+};
+window.closeShade=()=>document.getElementById('shadeOv').classList.remove('on');
+window.clearShade=()=>{
+  if(shadeMode==='add'){sel='';setShadeUI('sTrig','sTxt','sDot','');}
+  else{esel='';setShadeUI('eSTrig','eSTxt','eSDot','');}
+  closeShade();
+};
+window.pick=s=>{
+  if(shadeMode==='add'){sel=s;setShadeUI('sTrig','sTxt','sDot',s);}
+  else{esel=s;setShadeUI('eSTrig','eSTxt','eSDot',s);}
+  closeShade();toast(`✅ ${s}`,'ok');
+};
+document.getElementById('shadeOv').addEventListener('click',e=>{if(e.target===document.getElementById('shadeOv'))closeShade();});
+
+// ── DOCTOR PICKER ──
+window.openDocPicker=function(mode){
+  docMode=mode;
+  const search=document.getElementById('docSearch');
+  search.value='';
+  renderDocList('');
+  document.getElementById('docOv').classList.add('on');
+  setTimeout(()=>search.focus(),300);
+};
+window.closeDocPicker=()=>document.getElementById('docOv').classList.remove('on');
+document.getElementById('docOv').addEventListener('click',e=>{if(e.target===document.getElementById('docOv'))closeDocPicker();});
+
+function renderDocList(q){
+  const list=Object.values(all);
+  const docMap={};
+  list.forEach(c=>{if(!c.doc)return;docMap[c.doc]=(docMap[c.doc]||0)+1;});
+  let docs=Object.entries(docMap).sort((a,b)=>b[1]-a[1]);
+  if(q) docs=docs.filter(([d])=>d.includes(q));
+  const el=document.getElementById('docList');
+  if(!docs.length&&!q){
+    el.innerHTML=`<div class="doc-empty">لا يوجد أطباء مسجلون بعد</div>`;
+    document.getElementById('docNewBtn').style.display='flex';
+    return;
+  }
+  el.innerHTML=docs.map(([d,c])=>`
+    <div class="doc-opt" onclick="selectDoc('${d}')">
+      <div class="doc-opt-ico">${d.charAt(0)}</div>
+      <div><div class="doc-opt-name">${d}</div><div class="doc-opt-count">${c} حالة</div></div>
+    </div>`).join('');
+  // show new button if search has value not in list
+  const exists=docs.some(([d])=>d===q);
+  document.getElementById('docNewBtn').style.display=(q&&!exists)?'flex':'none';
+  if(q&&!exists) document.getElementById('docNewBtn').textContent=`➕ إضافة "${q}"`;
+  else if(!q) document.getElementById('docNewBtn').style.display='none';
+}
+
+window.filterDocs=function(){
+  const q=document.getElementById('docSearch').value.trim();
+  renderDocList(q);
+};
+
+window.selectDoc=function(name){
+  if(docMode==='add'){
+    document.getElementById('fDoc').value=name;
+    document.getElementById('fDocClear').style.display='block';
+  } else {
+    document.getElementById('eDoc').value=name;
+  }
+  closeDocPicker();
+};
+
+window.addNewDoc=function(){
+  const q=document.getElementById('docSearch').value.trim();
+  if(q) selectDoc(q);
+};
+
+window.clearDoc=function(mode){
+  if(mode==='add'){
+    document.getElementById('fDoc').value='';
+    document.getElementById('fDocClear').style.display='none';
+  }
+};
+
+// ── YEARS ──
+function fillYr(id,val){
+  const y=new Date().getFullYear();let o='';
+  for(let i=y+1;i>=y-3;i--)o+=`<option value="${i}">${i}</option>`;
+  const s=document.getElementById(id);s.innerHTML=o;if(val)s.value=val;
+}
+fillYr('fYr');fillYr('eYr');
+const now=new Date();
+document.getElementById('fMon').value=now.getMonth()+1;
+document.getElementById('fYr').value=now.getFullYear();
+
+// ── AUTH ──
+window.doLogin=async()=>{try{await signInWithPopup(auth,new GoogleAuthProvider());}catch(e){toast('خطأ في تسجيل الدخول','err');}};
+window.doOut=()=>signOut(auth);
+
+onAuthStateChanged(auth,u=>{
+  if(u){
+    uid=u.uid;
+    document.getElementById('login').style.display='none';
+    document.getElementById('app').classList.add('on');
+    const av=document.getElementById('av'),aav=document.getElementById('accAv');
+    if(u.photoURL){av.innerHTML=`<img src="${u.photoURL}">`;aav.innerHTML=`<img src="${u.photoURL}">`;}
+    else{av.textContent=u.displayName?.[0]||'؟';aav.textContent='👤';}
+    document.getElementById('accNm').textContent=u.displayName||'مستخدم';
+    document.getElementById('accEm').textContent=u.email||'';
+    cRef=ref(db,`users/${uid}/cases`);
+    onValue(cRef,snap=>{all=snap.val()||{};refresh();});
+    const y=now.getFullYear();let o='<option value="">كل السنوات</option>';
+    for(let i=y+1;i>=y-2;i--)o+=`<option value="${i}">${i}</option>`;
+    ['flYr','stYr'].forEach(id=>document.getElementById(id).innerHTML=o);
+  }else{
+    uid=null;
+    document.getElementById('login').style.display='flex';
+    document.getElementById('app').classList.remove('on');
+  }
+});
+
+function refresh(){
+  const list=Object.values(all);
+  const mn=now.getMonth()+1,yr=now.getFullYear();
+  document.getElementById('hT').textContent=list.reduce((s,c)=>s+(+c.teeth||0),0);
+  document.getElementById('hC').textContent=list.length;
+  document.getElementById('hD').textContent=new Set(list.map(c=>c.doc).filter(Boolean)).size;
+  document.getElementById('hM').textContent=list.filter(c=>+c.month===mn&&+c.year===yr).reduce((s,c)=>s+(+c.teeth||0),0);
+  const docs=[...new Set(list.map(c=>c.doc).filter(Boolean))].sort();
+  const fd=document.getElementById('flDoc'),cv=fd.value;
+  fd.innerHTML='<option value="">كل الأطباء</option>'+docs.map(d=>`<option value="${d}">${d}</option>`).join('');
+  if(cv)fd.value=cv;
+  renderList();renderStats();
+}
+
+window.renderList=function(){
+  const fy=document.getElementById('flYr').value,fm=document.getElementById('flMon').value,fd=document.getElementById('flDoc').value;
+  let list=Object.entries(all).map(([id,c])=>({id,...c}));
+  if(fy)list=list.filter(c=>String(c.year)===fy);
+  if(fm)list=list.filter(c=>String(c.month)===fm);
+  if(fd)list=list.filter(c=>c.doc===fd);
+  list.sort((a,b)=>(b.ts||0)-(a.ts||0));
+  const sum=list.reduce((s,c)=>s+(+c.teeth||0),0);
+  document.getElementById('lCnt').textContent=`${list.length} حالة`;
+  document.getElementById('lSum').textContent=list.length?`🦷 ${sum} سن`:'';
+  const el=document.getElementById('listEl');
+  if(!list.length){el.innerHTML=`<div class="empty"><span class="empty-ico">📭</span><div class="empty-t">لا توجد حالات</div></div>`;return;}
+  el.innerHTML=list.map(c=>`
+    <div class="ccard">
+      <div class="ccard-head">
+        <div><div class="ccard-doc">👨‍⚕️ ${c.doc||'—'}</div><div class="ccard-pat">🧑 ${c.pat||'—'}</div></div>
+        <div class="ccard-badge">🦷 ${c.teeth||0}</div>
+      </div>
+      <div class="ccard-tags">
+        <span class="ctag ctag-d">📅 ${c.month||'—'} / ${c.year||'—'}</span>
+        ${c.shade?`<span class="ctag ctag-s">🎨 ${c.shade}</span>`:''}
+      </div>
+      <div class="ccard-acts">
+        <button class="act-d" onclick="openDel('${c.id}')">🗑️ حذف</button>
+        <button class="act-e" onclick="openEdit('${c.id}')">✏️ تعديل</button>
+      </div>
+    </div>`).join('');
+};
+
+window.renderStats=function(){
+  const fy=document.getElementById('stYr').value,fm=document.getElementById('stMon').value;
+  let list=Object.values(all);
+  if(fy)list=list.filter(c=>String(c.year)===fy);
+  if(fm)list=list.filter(c=>String(c.month)===fm);
+  let p='📊 جميع البيانات';
+  if(fy&&fm)p=`📊 شهر ${fm} ← سنة ${fy}`;
+  else if(fy)p=`📊 سنة ${fy}`;
+  else if(fm)p=`📊 شهر ${fm}`;
+  document.getElementById('per').textContent=p;
+  document.getElementById('mCard').style.display=fm?'none':'block';
+  const tt=list.reduce((s,c)=>s+(+c.teeth||0),0);
+  const avg=list.length?Math.round(tt/list.length):0;
+  document.getElementById('stGrid').innerHTML=`
+    <div class="sbox"><div class="sbox-n" style="color:#5B9FC5">${tt}</div><div class="sbox-l">إجمالي الأسنان</div></div>
+    <div class="sbox"><div class="sbox-n" style="color:#27ae60">${list.length}</div><div class="sbox-l">عدد الحالات</div></div>
+    <div class="sbox"><div class="sbox-n" style="color:#e6a800">${avg}</div><div class="sbox-l">متوسط / حالة</div></div>
+    <div class="sbox"><div class="sbox-n" style="color:#3d7fa8">${new Set(list.map(c=>c.doc).filter(Boolean)).size}</div><div class="sbox-l">عدد الأطباء</div></div>`;
+
+  // Doctors ranking with gold/silver/silver/green
+  const dm={};list.forEach(c=>{if(!c.doc)return;dm[c.doc]=(dm[c.doc]||0)+(+c.teeth||0);});
+  const ds=Object.entries(dm).sort((a,b)=>b[1]-a[1]);const mx=ds[0]?.[1]||1;
+  function getRkClass(i){
+    if(i===0)return 'rk-gold';
+    if(i===1||i===2)return 'rk-silver';
+    return 'rk-green';
+  }
+  function getRkIcon(i){
+    if(i===0)return '🥇';
+    if(i===1)return '🥈';
+    if(i===2)return '🥈';
+    return i+1;
+  }
+  document.getElementById('stDoc').innerHTML=ds.length
+    ?ds.map(([d,t],i)=>`
+      <div class="doc-item">
+        <div class="doc-rk ${getRkClass(i)}">${getRkIcon(i)}</div>
+        <div class="doc-inf"><div class="doc-nm">${d}</div><div class="doc-bw"><div class="doc-b" style="width:${(t/mx*100).toFixed(1)}%"></div></div></div>
+        <div class="doc-n">🦷${t}</div>
+      </div>`).join('')
+    :`<div style="color:#8eb8cc;text-align:center;padding:16px;font-size:0.82rem">لا توجد بيانات</div>`;
+
+  if(!fm){
+    const mm={};list.forEach(c=>{const m=c.month;if(!m)return;if(!mm[m]){mm[m]={t:0,c:0};}mm[m].t+=+c.teeth||0;mm[m].c++;});
+    document.getElementById('stMonEl').innerHTML=Array.from({length:12},(_,i)=>i+1).map(m=>{
+      const d=mm[m]||{t:0,c:0};
+      return `<div class="mbox"><div class="mbox-n" style="color:${d.t?'#3d7fa8':'#8eb8cc'}">${d.t}</div><div class="mbox-l">ش${m}</div></div>`;
+    }).join('');
+  }
+  const sm={};list.forEach(c=>{if(!c.shade)return;sm[c.shade]=(sm[c.shade]||0)+1;});
+  const sl=Object.entries(sm).sort((a,b)=>b[1]-a[1]).slice(0,8);const smx=sl[0]?.[1]||1;
+  document.getElementById('stShade').innerHTML=sl.length
+    ?sl.map(([s,n])=>`<div class="sd-r"><div class="sd-nm">${s}</div><div class="sd-bw"><div class="sd-b" style="width:${(n/smx*100).toFixed(1)}%"></div></div><div class="sd-c">${n}</div></div>`).join('')
+    :`<div style="color:#8eb8cc;text-align:center;padding:12px;font-size:0.8rem">لا توجد بيانات</div>`;
+};
+
+window.addCase=async function(){
+  const doc=document.getElementById('fDoc').value.trim();
+  const tth=+document.getElementById('fTth').value;
+  if(!doc){toast('اختر اسم الطبيب','err');return;}
+  if(!tth||tth<1){toast('أدخل عدد الأسنان','err');return;}
+  await push(cRef,{doc,pat:document.getElementById('fPat').value.trim(),teeth:tth,month:+document.getElementById('fMon').value,year:+document.getElementById('fYr').value,shade:sel,ts:Date.now()});
+  document.getElementById('fDoc').value='';
+  document.getElementById('fDocClear').style.display='none';
+  document.getElementById('fPat').value='';
+  document.getElementById('fTth').value='';
+  sel='';setShadeUI('sTrig','sTxt','sDot','');
+  toast('✅ تم حفظ الحالة','ok');
+};
+
+window.openEdit=function(id){
+  const c=all[id];if(!c)return;
+  document.getElementById('eId').value=id;
+  document.getElementById('eDoc').value=c.doc||'';
+  document.getElementById('ePat').value=c.pat||'';
+  document.getElementById('eTth').value=c.teeth||'';
+  document.getElementById('eMon').value=c.month||1;
+  fillYr('eYr',c.year||now.getFullYear());
+  esel=c.shade||'';setShadeUI('eSTrig','eSTxt','eSDot',c.shade||'');
+  document.getElementById('editOv').classList.add('on');
+};
+window.saveEdit=async function(){
+  const id=document.getElementById('eId').value;
+  await update(ref(db,`users/${uid}/cases/${id}`),{doc:document.getElementById('eDoc').value.trim(),pat:document.getElementById('ePat').value.trim(),teeth:+document.getElementById('eTth').value||0,month:+document.getElementById('eMon').value,year:+document.getElementById('eYr').value,shade:esel});
+  closeOv('editOv');toast('✅ تم التعديل','ok');
+};
+window.openDel=function(id){document.getElementById('delId').value=id;document.getElementById('delOv').classList.add('on');};
+window.confirmDel=async function(){
+  await remove(ref(db,`users/${uid}/cases/${document.getElementById('delId').value}`));
+  closeOv('delOv');toast('تم الحذف','ok');
+};
+window.doCSV=function(){
+  const fy=document.getElementById('flYr').value,fm=document.getElementById('flMon').value,fd=document.getElementById('flDoc').value;
+  let list=Object.values(all);
+  if(fy)list=list.filter(c=>String(c.year)===fy);
+  if(fm)list=list.filter(c=>String(c.month)===fm);
+  if(fd)list=list.filter(c=>c.doc===fd);
+  const csv='\uFEFF'+'السنة,الشهر,الطبيب,المريض,عدد الأسنان,لون السن\n'+list.map(c=>`${c.year||''},${c.month||''},${c.doc||''},${c.pat||''},${c.teeth||0},${c.shade||''}`).join('\n');
+  Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})),download:`dental-${Date.now()}.csv`}).click();
+  toast('✅ تم التصدير','ok');
+};
+window.showPg=function(n,btn){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('pg-'+n).classList.add('on');if(btn)btn.classList.add('on');
+  if(n==='stats')renderStats();
+};
+window.closeOv=id=>document.getElementById(id).classList.remove('on');
+document.querySelectorAll('.ov').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('on');}));
+function toast(msg,type='ok'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className=`toast ${type} show`;
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+window.toast=toast;
+</script>
+</body>
+</html>
