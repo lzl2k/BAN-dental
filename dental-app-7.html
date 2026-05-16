@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" translate="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="google" content="notranslate">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#dce8f0">
+<title>MAS Dental Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#2d7aaa;--blue2:#1a5070;--blue3:#0d2d4a;
+  --lb:#cde3f0;--bg:#dce8f0;--bg2:#e8f2f8;--white:#f4f9fc;
+  --text:#0a2035;--text2:#2a5070;--text3:#6a90a8;
+  --border:#b0cfe0;--gold:#d4a017;--green:#1e8a4a;--red:#c0392b;
+  --fa:#2563eb;--cb:#7c3aed;--r:16px;--r2:11px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;font-family:'Cairo',sans-serif;background:var(--bg)}
+#login{position:fixed;inset:0;background:linear-gradient(160deg,#061520,#0d2d4a,#1a5070,#2d7aaa);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;padding:32px;gap:22px;text-align:center}
+.login-mas{font-size:3rem;font-weight:900;color:#fff;letter-spacing:8px;line-height:1}
+.login-dl{font-size:0.68rem;color:rgba(255,255,255,0.5);letter-spacing:5px}
+.login-sub{font-size:0.82rem;color:rgba(255,255,255,0.6)}
+.g-btn{display:flex;align-items:center;gap:12px;justify-content:center;background:#fff;color:#0a2035;padding:15px 28px;border-radius:50px;border:none;cursor:pointer;font-family:'Cairo',sans-serif;font-size:1rem;font-weight:700;width:100%;max-width:300px;box-shadow:0 8px 28px rgba(0,0,0,0.25);transition:transform 0.15s}
+.g-btn:active{transform:scale(0.97)}
+.g-ico{width:22px;height:22px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.login-note{font-size:0.68rem;color:rgba(255,255,255,0.4);line-height:1.8}
+#app{display:none;flex-direction:column;height:100%}
+#app.on{display:flex}
+.hdr{background:linear-gradient(135deg,#061520,#0d2d4a,#1a5070);padding:12px 16px 0;flex-shrink:0;box-shadow:0 4px 20px rgba(6,21,32,0.4)}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.hdr-mas{font-size:1.1rem;font-weight:900;color:#fff;letter-spacing:3px;line-height:1}
+.hdr-dl{font-size:0.48rem;color:rgba(255,255,255,0.5);letter-spacing:2px}
+.hdr-av{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.18);border:2.5px solid rgba(255,255,255,0.35);display:flex;align-items:center;justify-content:center;font-size:0.88rem;font-weight:700;color:#fff;overflow:hidden;cursor:pointer}
+.hdr-av img{width:100%;height:100%;object-fit:cover}
+.stats-row{display:flex;gap:8px;padding-bottom:12px}
+.spill{flex:1;background:rgba(255,255,255,0.12);border-radius:12px;padding:10px 4px;text-align:center;border:1.5px solid rgba(255,255,255,0.15)}
+.spill-n{font-size:1.2rem;font-weight:900;color:#fff}
+.spill-l{font-size:0.55rem;color:rgba(255,255,255,0.65);margin-top:1px;font-weight:600}
+.tabs{background:var(--white);border-bottom:2px solid var(--border);display:flex;flex-shrink:0;box-shadow:0 2px 8px rgba(10,32,53,0.08)}
+.tb{flex:1;padding:10px 2px 9px;text-align:center;cursor:pointer;border:none;background:none;font-family:'Cairo',sans-serif;font-size:0.58rem;font-weight:700;color:var(--text3);border-bottom:2.5px solid transparent;margin-bottom:-2px;transition:color 0.2s}
+.tb.on{color:var(--blue);border-bottom-color:var(--blue)}
+.tb-ico{font-size:1.15rem;display:block;margin-bottom:1px}
+.tb-av{width:22px;height:22px;border-radius:50%;margin:0 auto 2px;background:var(--lb);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:var(--blue2);overflow:hidden;border:2px solid var(--border)}
+.tb-av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.content{flex:1;overflow-y:auto;background:var(--bg)}
+.pg{display:none;padding:12px;padding-bottom:24px}
+.pg.on{display:block}
+.slbl{font-size:0.67rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:8px}
+.card{background:var(--white);border-radius:var(--r);padding:16px;margin-bottom:12px;box-shadow:0 3px 18px rgba(10,32,53,0.1);border:1.5px solid var(--border)}
+.fld{margin-bottom:11px}
+.fld label{font-size:0.72rem;font-weight:700;color:var(--text2);display:block;margin-bottom:5px}
+.fld input,.fld select{width:100%;padding:11px 13px;background:var(--bg2);border:2px solid var(--border);border-radius:var(--r2);color:var(--text);font-family:'Cairo',sans-serif;font-size:0.88rem;font-weight:600;outline:none;transition:all 0.2s;-webkit-appearance:none}
+.fld input:focus,.fld select:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(45,122,170,0.15)}
+.fld input::placeholder{color:var(--text3);font-weight:400}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+/* Case type toggle */
+.type-toggle{display:flex;gap:0;border-radius:var(--r2);overflow:hidden;border:2px solid var(--border);background:var(--bg2);margin-bottom:11px}
+.type-btn{flex:1;padding:12px 8px;border:none;background:transparent;font-family:'Cairo',sans-serif;font-size:0.85rem;font-weight:700;color:var(--text2);cursor:pointer;transition:all 0.2s;text-align:center}
+.type-btn.act-cb{background:var(--cb);color:#fff;box-shadow:0 2px 8px rgba(124,58,237,0.3)}
+.type-btn.act-fa{background:var(--fa);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,0.3)}
+/* Tooth chart */
+.chart-wrap{margin-bottom:11px}
+.chart-hdr{font-size:0.72rem;font-weight:700;color:var(--text2);display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.chart-info{font-size:0.7rem;font-weight:700;color:var(--blue);background:var(--lb);padding:2px 10px;border-radius:20px}
+.chart-svg-box{background:var(--bg2);border-radius:var(--r2);padding:6px 4px;border:1.5px solid var(--border);overflow-x:auto;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.chart-hint{font-size:0.63rem;color:var(--text3);text-align:center;margin-top:6px}
+/* Shade button */
+.shade-btn{width:100%;padding:11px 13px;background:var(--bg2);border:2px solid var(--border);border-radius:var(--r2);cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:'Cairo',sans-serif;transition:all 0.2s}
+.shade-btn.picked{border-color:#c89010;background:#fdf5e0}
+.shade-l{display:flex;align-items:center;gap:10px}
+.shade-dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0}
+.shade-txt{font-size:0.86rem;font-weight:600;color:var(--text3)}
+.shade-btn.picked .shade-txt{color:#7a5500;font-weight:700}
+.shade-arr{font-size:0.65rem;color:var(--text3)}
+.save-btn{width:100%;padding:15px;border:none;border-radius:var(--r);background:linear-gradient(135deg,#1a5070,#061520);color:#fff;font-family:'Cairo',sans-serif;font-size:1rem;font-weight:900;cursor:pointer;box-shadow:0 8px 24px rgba(6,21,32,0.4);transition:transform 0.15s}
+.save-btn:active{transform:scale(0.98)}
+.frow{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.frow select{flex:1;min-width:70px;padding:9px 10px;background:var(--white);border:2px solid var(--border);border-radius:var(--r2);color:var(--text);font-weight:600;font-family:'Cairo',sans-serif;font-size:0.74rem;outline:none;-webkit-appearance:none}
+.csv-btn,.pdf-btn{padding:9px 10px;background:var(--white);border:2px solid var(--border);border-radius:var(--r2);font-family:'Cairo',sans-serif;font-size:0.72rem;font-weight:700;cursor:pointer}
+.csv-btn{color:var(--blue2)}
+.pdf-btn{color:var(--red);border-color:#f0c0b8;background:#fff5f4}
+.rinfo{font-size:0.72rem;color:var(--text2);font-weight:600;margin-bottom:10px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px}
+.rinfo b{color:var(--blue2)}
+.type-summary{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.ts-fa{font-size:0.68rem;padding:4px 12px;border-radius:20px;font-weight:700;background:#eff6ff;color:var(--fa);border:1.5px solid #bfdbfe}
+.ts-cb{font-size:0.68rem;padding:4px 12px;border-radius:20px;font-weight:700;background:#f5f3ff;color:var(--cb);border:1.5px solid #ddd6fe}
+.ccard{background:var(--white);border-radius:var(--r);margin-bottom:10px;box-shadow:0 3px 16px rgba(10,32,53,0.1);border:1.5px solid var(--border);overflow:hidden;animation:up 0.25s ease}
+@keyframes up{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.ccard-head{display:flex;justify-content:space-between;align-items:flex-start;padding:13px 14px 9px}
+.ccard-doc{font-size:0.93rem;font-weight:900;color:var(--text)}
+.ccard-pat{font-size:0.7rem;color:var(--text2);margin-top:2px;font-weight:600}
+.ccard-badge{background:linear-gradient(135deg,var(--blue),var(--blue3));color:#fff;padding:6px 13px;border-radius:30px;font-weight:900;font-size:0.86rem;white-space:nowrap;box-shadow:0 3px 10px rgba(13,45,74,0.3)}
+.ccard-tags{display:flex;flex-wrap:wrap;gap:5px;padding:0 14px 10px}
+.ctag{font-size:0.64rem;padding:3px 9px;border-radius:20px;font-weight:700}
+.ctag-d{background:var(--lb);color:var(--blue2)}
+.ctag-s{background:#fdf5e0;color:#7a5500}
+.ctag-fa{background:#eff6ff;color:var(--fa)}
+.ctag-cb{background:#f5f3ff;color:var(--cb)}
+.ccard-acts{display:flex;border-top:1.5px solid var(--border)}
+.act-e,.act-d{flex:1;padding:11px;border:none;background:none;font-family:'Cairo',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;transition:background 0.15s}
+.act-e{color:var(--blue2);border-left:1.5px solid var(--border)}.act-e:active{background:var(--lb)}
+.act-d{color:var(--red)}.act-d:active{background:#fde8e5}
+.st-frow{display:flex;gap:8px;margin-bottom:10px}
+.st-frow select{flex:1;padding:9px 10px;background:var(--white);border:2px solid var(--border);border-radius:var(--r2);color:var(--text);font-weight:600;font-family:'Cairo',sans-serif;font-size:0.74rem;outline:none;-webkit-appearance:none}
+.period{background:var(--white);border-radius:var(--r2);padding:9px;text-align:center;font-size:0.7rem;font-weight:700;color:var(--blue2);margin-bottom:12px;border:1.5px solid var(--border)}
+.sg4{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
+.sbox{background:var(--white);border-radius:var(--r);padding:14px 8px;text-align:center;box-shadow:0 3px 14px rgba(10,32,53,0.1);border:1.5px solid var(--border)}
+.sbox-n{font-size:1.5rem;font-weight:900;margin-bottom:2px}
+.sbox-l{font-size:0.6rem;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:0.3px}
+.type-stats-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
+.tsbox{border-radius:var(--r);padding:14px 10px;text-align:center;border:2px solid}
+.tsbox.fa{background:#eff6ff;border-color:#bfdbfe}
+.tsbox.cb{background:#f5f3ff;border-color:#ddd6fe}
+.tsbox-n{font-size:1.4rem;font-weight:900;margin-bottom:2px}
+.tsbox-l{font-size:0.62rem;font-weight:700}
+.doc-item{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.doc-rk{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:900;flex-shrink:0}
+.rk-gold{background:linear-gradient(135deg,#f0c040,#d4a017);color:#5a3a00;box-shadow:0 3px 10px rgba(212,160,23,0.4)}
+.rk-silver{background:linear-gradient(135deg,#d8d8d8,#a0a0a0);color:#3a3a3a}
+.rk-green{background:linear-gradient(135deg,#2ecc71,#1e8a4a);color:#fff}
+.doc-inf{flex:1;min-width:0}
+.doc-nm{font-size:0.86rem;font-weight:700;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.doc-bw{margin-top:5px;height:6px;background:var(--lb);border-radius:3px;overflow:hidden}
+.doc-b{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--blue),var(--blue3));transition:width 0.6s}
+.doc-n{font-size:0.86rem;font-weight:900;color:var(--blue2);flex-shrink:0}
+.mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.mbox{background:var(--bg2);border-radius:10px;padding:8px 4px;text-align:center;border:1.5px solid var(--border)}
+.mbox-n{font-size:0.9rem;font-weight:900}
+.mbox-l{font-size:0.55rem;color:var(--text2);margin-top:1px;font-weight:600}
+.sdist{display:flex;flex-direction:column;gap:8px}
+.sd-r{display:flex;align-items:center;gap:10px}
+.sd-nm{font-size:0.73rem;color:var(--text2);font-weight:700;min-width:50px}
+.sd-bw{flex:1;height:7px;background:var(--lb);border-radius:4px;overflow:hidden}
+.sd-b{height:100%;border-radius:4px;background:linear-gradient(90deg,#d4a017,#f0c040)}
+.sd-c{font-size:0.7rem;font-weight:700;color:var(--text2);min-width:18px;text-align:left}
+.acc-card{background:linear-gradient(145deg,#061520,#1a5070);border-radius:var(--r);padding:22px;text-align:center;margin-bottom:12px;box-shadow:0 10px 28px rgba(6,21,32,0.4)}
+.acc-av{width:66px;height:66px;border-radius:50%;margin:0 auto 10px;background:rgba(255,255,255,0.18);border:3px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;font-size:1.7rem;overflow:hidden}
+.acc-av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.acc-nm{font-size:1rem;font-weight:700;color:#fff}
+.acc-em{font-size:0.7rem;color:rgba(255,255,255,0.65);margin-top:3px}
+.info-c{background:var(--white);border-radius:13px;padding:13px 14px;margin-bottom:9px;display:flex;align-items:center;gap:13px;box-shadow:0 3px 12px rgba(10,32,53,0.08);border:1.5px solid var(--border)}
+.info-ico{width:38px;height:38px;border-radius:12px;background:var(--lb);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.info-ti{font-size:0.8rem;font-weight:700;color:var(--text)}
+.info-de{font-size:0.68rem;color:var(--text2);margin-top:2px}
+.lang-toggle{display:flex;gap:0;border-radius:var(--r2);overflow:hidden;border:2px solid var(--border);background:var(--bg2);margin-top:8px}
+.lang-btn{flex:1;padding:12px;border:none;background:transparent;font-family:'Cairo',sans-serif;font-size:0.85rem;font-weight:700;color:var(--text2);cursor:pointer;transition:all 0.2s}
+.lang-btn.active{background:var(--blue);color:#fff}
+.logout-btn{width:100%;padding:13px;border:2px solid #f0b8b0;border-radius:var(--r);background:var(--white);color:var(--red);font-family:'Cairo',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;margin-top:4px}
+.logout-btn:active{background:#fde8e5}
+.ov-back{position:fixed;inset:0;background:rgba(6,21,32,0.55);backdrop-filter:blur(8px);z-index:500;display:none;align-items:flex-end}
+.ov-back.on{display:flex}
+.modal{background:var(--white);border-radius:24px 24px 0 0;padding:18px;width:100%;max-height:88vh;overflow-y:auto;animation:su 0.28s ease;border-top:3px solid var(--blue)}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-t{font-size:0.95rem;font-weight:900;color:var(--text);margin-bottom:14px}
+.macts{display:flex;gap:10px;margin-top:12px}
+.m-can{flex:1;padding:12px;background:var(--bg2);border:2px solid var(--border);border-radius:var(--r2);color:var(--text2);font-family:'Cairo',sans-serif;font-size:0.86rem;font-weight:700;cursor:pointer}
+.m-sav{flex:2;padding:12px;background:linear-gradient(135deg,var(--blue),var(--blue3));color:#fff;border:none;border-radius:var(--r2);font-family:'Cairo',sans-serif;font-size:0.86rem;font-weight:900;cursor:pointer}
+.del-box{text-align:center;padding:10px 0}
+.del-ico{font-size:2.8rem;margin-bottom:12px}
+.del-t{font-size:1rem;font-weight:900;color:var(--text);margin-bottom:6px}
+.del-s{font-size:0.77rem;color:var(--text2);margin-bottom:20px}
+.del-yes{width:100%;padding:13px;background:var(--red);color:#fff;border:none;border-radius:var(--r2);font-family:'Cairo',sans-serif;font-size:0.93rem;font-weight:700;cursor:pointer;margin-bottom:8px}
+#docOv{position:fixed;inset:0;background:rgba(6,21,32,0.55);backdrop-filter:blur(8px);z-index:700;display:none;align-items:flex-end}
+#docOv.on{display:flex}
+.doc-box{background:var(--white);border-radius:24px 24px 0 0;padding:18px;width:100%;max-height:68vh;overflow-y:auto;animation:su 0.28s ease;border-top:3px solid var(--blue)}
+.doc-box-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.doc-box-t{font-size:0.93rem;font-weight:900;color:var(--text)}
+.xbtn{width:30px;height:30px;border-radius:50%;background:var(--lb);border:none;cursor:pointer;font-size:0.88rem;color:var(--text2);font-weight:700;display:flex;align-items:center;justify-content:center}
+.doc-search{width:100%;padding:11px 13px;background:var(--bg2);border:2px solid var(--border);border-radius:var(--r2);color:var(--text);font-family:'Cairo',sans-serif;font-size:0.86rem;font-weight:600;outline:none;margin-bottom:10px}
+.doc-search:focus{border-color:var(--blue)}
+.doc-search::placeholder{color:var(--text3);font-weight:400}
+.doc-list{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+.doc-opt{display:flex;align-items:center;gap:11px;padding:11px 13px;background:var(--bg2);border-radius:var(--r2);cursor:pointer;border:1.5px solid var(--border);transition:all 0.15s}
+.doc-opt:active{background:var(--lb);border-color:var(--blue)}
+.doc-opt-ico{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue3));color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.86rem;font-weight:700;flex-shrink:0}
+.doc-opt-nm{font-size:0.88rem;font-weight:700;color:var(--text)}
+.doc-opt-ct{font-size:0.68rem;color:var(--text2);margin-top:1px}
+.doc-new-btn{width:100%;padding:12px;background:var(--white);border:2px dashed var(--blue);border-radius:var(--r2);color:var(--blue2);font-family:'Cairo',sans-serif;font-size:0.86rem;font-weight:700;cursor:pointer;display:none;align-items:center;justify-content:center;gap:8px}
+.doc-empty{text-align:center;padding:18px;color:var(--text3);font-size:0.8rem}
+#shadeOv{position:fixed;inset:0;background:rgba(6,21,32,0.55);backdrop-filter:blur(8px);z-index:600;display:none;align-items:flex-end}
+#shadeOv.on{display:flex}
+.shade-box{background:var(--white);border-radius:24px 24px 0 0;padding:18px;width:100%;max-height:70vh;overflow-y:auto;animation:su 0.28s ease;border-top:3px solid var(--blue)}
+.shade-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.shade-t{font-size:0.93rem;font-weight:900;color:var(--text)}
+.sgrp{background:var(--bg2);border-radius:13px;padding:11px 12px;margin-bottom:7px;border:1.5px solid var(--border)}
+.sgrp-hdr{display:flex;align-items:center;gap:7px;font-size:0.66rem;font-weight:700;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.4px}
+.sgrp-dot{width:13px;height:13px;border-radius:50%;flex-shrink:0;border:2px solid rgba(0,0,0,0.1)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:6px 12px;border-radius:20px;font-size:0.71rem;font-weight:700;cursor:pointer;border:2px solid var(--border);background:var(--white);color:var(--text2);font-family:'Cairo',sans-serif;transition:all 0.15s}
+.chip.on{background:#d4a017;border-color:#d4a017;color:#fff}
+.clear-shade{width:100%;padding:11px;background:var(--bg2);border:2px solid var(--border);border-radius:var(--r2);color:var(--text2);font-family:'Cairo',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;margin-top:8px}
+#pdfOv{position:fixed;inset:0;background:rgba(6,21,32,0.55);backdrop-filter:blur(8px);z-index:600;display:none;align-items:center;justify-content:center;padding:20px}
+#pdfOv.on{display:flex}
+.pdf-box{background:var(--white);border-radius:var(--r);padding:22px;width:100%;max-width:320px;box-shadow:0 16px 48px rgba(6,21,32,0.3);border:1.5px solid var(--border)}
+.pdf-box-t{font-size:0.95rem;font-weight:900;color:var(--text);margin-bottom:14px}
+.pdf-box select{width:100%;padding:11px 13px;background:var(--bg2);border:2px solid var(--border);border-radius:var(--r2);color:var(--text);font-family:'Cairo',sans-serif;font-size:0.88rem;outline:none;-webkit-appearance:none;margin-bottom:10px}
+.pdf-gen-btn{width:100%;padding:13px;border:none;border-radius:var(--r2);background:linear-gradient(135deg,var(--red),#922b21);color:#fff;font-family:'Cairo',sans-serif;font-size:0.93rem;font-weight:900;cursor:pointer;margin-bottom:9px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(18px);background:var(--text);color:#fff;padding:11px 20px;border-radius:30px;font-size:0.77rem;font-weight:700;z-index:9000;opacity:0;transition:all 0.3s;white-space:nowrap;box-shadow:0 6px 24px rgba(0,0,0,0.25)}
+.toast.ok{background:var(--green)}.toast.err{background:var(--red)}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.empty{text-align:center;padding:56px 20px;color:var(--text3)}.empty-ico{font-size:3rem;display:block;margin-bottom:10px;opacity:0.35}.empty-t{font-size:0.82rem;font-weight:600}
+.loading{text-align:center;padding:48px;color:var(--text3)}.spin{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:sp 0.8s linear infinite;margin:0 auto 12px}
+@keyframes sp{to{transform:rotate(360deg)}}::-webkit-scrollbar{width:0}
+/* Tooth SVG styles */
+.tooth-crown{transition:fill 0.15s,stroke 0.15s}
+.tooth-root{transition:stroke 0.15s}
+.tooth-grp{cursor:pointer}
+.tooth-grp:active .tooth-crown{fill:#1a5070}
+</style>
+</head>
+<body translate="no">
+
+<!-- LOGIN -->
+<div id="login">
+  <div><div class="login-mas">MAS</div><div class="login-dl">DENTAL LAB</div></div>
+  <div class="login-sub" id="loginSub">نظام إدارة حالات طب الأسنان</div>
+  <button class="g-btn" onclick="doLogin()">
+    <div class="g-ico"><svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.8 2.3 30.2 0 24 0 14.7 0 6.7 5.4 2.9 13.3l7.9 6.2C12.7 13.2 17.9 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.6c0-1.6-.1-3.1-.4-4.6H24v8.7h12.4c-.5 2.8-2.1 5.2-4.5 6.8l7.1 5.5c4.2-3.8 6.6-9.4 6.6-16.4z"/><path fill="#FBBC05" d="M10.8 28.5c-.5-1.5-.8-3-.8-4.5s.3-3 .8-4.5L2.9 13.3C1 16.9 0 20.8 0 24s1 7.1 2.9 10.7l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.1-5.5c-2 1.4-4.6 2.2-8.1 2.2-6.1 0-11.3-3.7-13.2-9l-7.9 6.2C6.7 42.6 14.7 48 24 48z"/></svg></div>
+    <span id="loginBtn">تسجيل الدخول بـ Google</span>
+  </button>
+  <div class="login-note" id="loginNote">بياناتك خاصة ومحمية بحسابك</div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="hdr">
+    <div class="hdr-top">
+      <div><div class="hdr-mas">MAS</div><div class="hdr-dl">DENTAL LAB</div></div>
+      <div class="hdr-av" id="hdrAv">؟</div>
+    </div>
+    <div class="stats-row">
+      <div class="spill"><div class="spill-n" id="hT">0</div><div class="spill-l" id="hTl">🦷 سن</div></div>
+      <div class="spill"><div class="spill-n" id="hC">0</div><div class="spill-l" id="hCl">📋 حالة</div></div>
+      <div class="spill"><div class="spill-n" id="hD">0</div><div class="spill-l" id="hDl">👨‍⚕️ طبيب</div></div>
+      <div class="spill"><div class="spill-n" id="hM">0</div><div class="spill-l" id="hMl">هذا الشهر</div></div>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tb on" onclick="showPg('add',this)"><span class="tb-ico">➕</span><span id="tbAddTxt">إضافة</span></button>
+    <button class="tb" onclick="showPg('list',this)"><span class="tb-ico">📋</span><span id="tbListTxt">الحالات</span></button>
+    <button class="tb" onclick="showPg('stats',this)"><span class="tb-ico">📊</span><span id="tbStatsTxt">إحصائيات</span></button>
+    <button class="tb" onclick="showPg('account',this)"><div class="tb-av" id="tabAv">👤</div><span id="tbAccTxt">حسابي</span></button>
+  </div>
+  <div class="content">
+
+    <!-- ADD -->
+    <div class="pg on" id="pg-add">
+      <div style="height:2px"></div>
+      <div class="slbl" id="addSlbl">بيانات الحالة الجديدة</div>
+      <div class="card">
+        <div class="g2">
+          <div class="fld"><label id="lDoc">👨‍⚕️ الطبيب</label><input type="text" id="fDoc" readonly onclick="openDocPicker('add')" style="cursor:pointer" placeholder="اختر أو أضف طبيب"></div>
+          <div class="fld"><label id="lPat">🧑 المريض</label><input type="text" id="fPat" placeholder="اسم المريض"></div>
+        </div>
+        <div class="g3">
+          <div class="fld"><label id="lTth">🔢 عدد الأسنان</label><input type="number" id="fTth" placeholder="0" min="1" style="text-align:center" oninput="onManualCount()"></div>
+          <div class="fld"><label id="lMon">📅 الشهر</label>
+            <select id="fMon"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select>
+          </div>
+          <div class="fld"><label id="lYr">📆 السنة</label><select id="fYr"></select></div>
+        </div>
+        <div class="fld">
+          <label id="lType">🏷️ نوع الحالة</label>
+          <div class="type-toggle">
+            <button class="type-btn act-cb" id="btnCB" onclick="setType('CB')">Cut Back</button>
+            <button class="type-btn" id="btnFA" onclick="setType('FA')">Full Anatomy</button>
+          </div>
+        </div>
+        <div class="fld">
+          <label id="lShade">🎨 لون السن</label>
+          <button class="shade-btn" id="sTrig" onclick="openShade('add')">
+            <div class="shade-l"><span class="shade-dot" id="sDot"></span><span id="sTxt">اختر اللون</span></div>
+            <span class="shade-arr">▾</span>
+          </button>
+        </div>
+      </div>
+      <!-- Tooth chart -->
+      <div class="card">
+        <div class="chart-hdr">
+          <span id="chartLbl">🦷 اختر الأسنان المعالجة</span>
+          <span class="chart-info" id="chartInfo">0 سن</span>
+        </div>
+        <div class="chart-svg-box" id="chartBox"></div>
+        <div class="chart-hint" id="chartHint">اضغط على السن أو اسحب لتحديد مجموعة</div>
+      </div>
+      <button class="save-btn" id="btnSave" onclick="addCase()">💾 حفظ الحالة</button>
+    </div>
+
+    <!-- LIST -->
+    <div class="pg" id="pg-list">
+      <div style="height:2px"></div>
+      <div class="frow">
+        <select id="flYr" onchange="renderList()"><option value="">كل السنوات</option></select>
+        <select id="flMon" onchange="renderList()">
+          <option value="">كل الأشهر</option>
+          <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+        </select>
+        <select id="flDoc" onchange="renderList()"><option value="">كل الأطباء</option></select>
+        <select id="flType" onchange="renderList()"><option value="">كل الأنواع</option><option value="FA">Full Anatomy</option><option value="CB">Cut Back</option></select>
+      </div>
+      <div class="frow" style="margin-top:-4px">
+        <button class="csv-btn" onclick="doCSV()">⬇️ CSV</button>
+        <button class="pdf-btn" onclick="openPdfModal()">📄 PDF</button>
+      </div>
+      <div class="rinfo"><span id="lCnt">0 حالة</span><b id="lSum"></b></div>
+      <div class="type-summary" id="typeSummary"></div>
+      <div id="listEl"><div class="loading"><div class="spin"></div>جارٍ التحميل...</div></div>
+    </div>
+
+    <!-- STATS -->
+    <div class="pg" id="pg-stats">
+      <div style="height:2px"></div>
+      <div class="st-frow">
+        <select id="stYr" onchange="renderStats()"><option value="">كل السنوات</option></select>
+        <select id="stMon" onchange="renderStats()">
+          <option value="">كل الأشهر</option>
+          <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+        </select>
+      </div>
+      <div class="period" id="per">📊 جميع البيانات</div>
+      <div class="sg4" id="stGrid"></div>
+      <div class="type-stats-row" id="typeStats"></div>
+      <div class="card"><div class="slbl" id="stDocLbl">🏆 الأطباء</div><div id="stDoc"></div></div>
+      <div class="card" id="mCard"><div class="slbl" id="stMonLbl">📅 الإنتاج الشهري</div><div class="mgrid" id="stMonEl"></div></div>
+      <div class="card"><div class="slbl" id="stShadeLbl">🎨 ألوان الأسنان</div><div class="sdist" id="stShade"></div></div>
+    </div>
+
+    <!-- ACCOUNT -->
+    <div class="pg" id="pg-account">
+      <div style="height:2px"></div>
+      <div class="acc-card">
+        <div class="acc-av" id="accAv">👤</div>
+        <div class="acc-nm" id="accNm">—</div>
+        <div class="acc-em" id="accEm">—</div>
+      </div>
+      <div class="info-c">
+        <div class="info-ico">🌐</div>
+        <div style="flex:1">
+          <div class="info-ti" id="langLabel">اللغة / Language</div>
+          <div class="lang-toggle" style="margin-top:8px">
+            <button class="lang-btn active" id="btnAr" onclick="setLang('ar')">العربية</button>
+            <button class="lang-btn" id="btnEn" onclick="setLang('en')">English</button>
+          </div>
+        </div>
+      </div>
+      <div class="info-c"><div class="info-ico">☁️</div><div><div class="info-ti" id="accI1t">نسخ احتياطي تلقائي</div><div class="info-de" id="accI1d">بياناتك تحفظ فورياً على Google Cloud</div></div></div>
+      <div class="info-c"><div class="info-ico">🔄</div><div><div class="info-ti" id="accI2t">استعادة من أي جهاز</div><div class="info-de" id="accI2d">سجّل دخول بنفس حساب Google</div></div></div>
+      <div class="info-c"><div class="info-ico">🔒</div><div><div class="info-ti" id="accI3t">بياناتك خاصة 100%</div><div class="info-de" id="accI3d">محمية بحسابك فقط</div></div></div>
+      <button class="logout-btn" id="btnLogout" onclick="doOut()">🚪 تسجيل الخروج</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modals -->
+<div id="docOv"><div class="doc-box">
+  <div class="doc-box-hdr"><div class="doc-box-t" id="docPickTitle">👨‍⚕️ اختر الطبيب</div><button class="xbtn" onclick="closeDocPicker()">✕</button></div>
+  <input type="text" class="doc-search" id="docSearch" placeholder="ابحث أو اكتب اسم طبيب جديد" oninput="filterDocs()">
+  <div class="doc-list" id="docList"></div>
+  <button class="doc-new-btn" id="docNewBtn" onclick="addNewDoc()">➕</button>
+</div></div>
+
+<div id="shadeOv"><div class="shade-box">
+  <div class="shade-hdr"><div class="shade-t" id="shadeTitle">🎨 اختر لون السن</div><button class="xbtn" onclick="closeShade()">✕</button></div>
+  <div id="shadeGrps"></div>
+  <button class="clear-shade" id="clearShadeBtn" onclick="clearShade()">🗑️ إزالة اللون</button>
+</div></div>
+
+<div id="pdfOv"><div class="pdf-box">
+  <div class="pdf-box-t" id="pdfTitle">📄 تصدير تقرير PDF</div>
+  <div class="fld"><label id="pdfMonLbl">📅 الشهر</label>
+    <select id="pdfMon"><option value="1">شهر 1</option><option value="2">شهر 2</option><option value="3">شهر 3</option><option value="4">شهر 4</option><option value="5">شهر 5</option><option value="6">شهر 6</option><option value="7">شهر 7</option><option value="8">شهر 8</option><option value="9">شهر 9</option><option value="10">شهر 10</option><option value="11">شهر 11</option><option value="12">شهر 12</option></select>
+  </div>
+  <div class="fld"><label id="pdfYrLbl">📆 السنة</label><select id="pdfYr"></select></div>
+  <button class="pdf-gen-btn" id="pdfGenBtn" onclick="genPDF()">📄 توليد التقرير</button>
+  <button class="m-can" onclick="closePdfModal()" style="width:100%" id="pdfCanBtn">إلغاء</button>
+</div></div>
+
+<div class="ov-back" id="editOv"><div class="modal">
+  <div class="modal-t" id="editTitle">✏️ تعديل الحالة</div>
+  <input type="hidden" id="eId">
+  <div class="g2">
+    <div class="fld"><label id="eLDoc">👨‍⚕️ الطبيب</label><input type="text" id="eDoc" readonly onclick="openDocPicker('edit')" style="cursor:pointer"></div>
+    <div class="fld"><label id="eLPat">🧑 المريض</label><input type="text" id="ePat"></div>
+  </div>
+  <div class="g3">
+    <div class="fld"><label id="eLTth">🔢 أسنان</label><input type="number" id="eTth" min="1" style="text-align:center"></div>
+    <div class="fld"><label>📅 شهر</label><select id="eMon"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select></div>
+    <div class="fld"><label>📆 سنة</label><select id="eYr"></select></div>
+  </div>
+  <div class="fld">
+    <label id="eLType">🏷️ نوع الحالة</label>
+    <div class="type-toggle">
+      <button class="type-btn act-cb" id="eBtnCB" onclick="setEditType('CB')">Cut Back</button>
+      <button class="type-btn" id="eBtnFA" onclick="setEditType('FA')">Full Anatomy</button>
+    </div>
+  </div>
+  <div class="fld"><label id="eLShade">🎨 لون السن</label>
+    <button class="shade-btn" id="eSTrig" onclick="openShade('edit')">
+      <div class="shade-l"><span class="shade-dot" id="eSDot"></span><span id="eSTxt">اختر اللون</span></div>
+      <span class="shade-arr">▾</span>
+    </button>
+  </div>
+  <div class="macts">
+    <button class="m-can" id="editCan" onclick="closeOv('editOv')">إلغاء</button>
+    <button class="m-sav" id="editSav" onclick="saveEdit()">💾 حفظ</button>
+  </div>
+</div></div>
+
+<div class="ov-back" id="delOv"><div class="modal">
+  <div class="del-box">
+    <div class="del-ico">🗑️</div>
+    <div class="del-t" id="delTitle">حذف الحالة</div>
+    <div class="del-s" id="delSub">هل أنت متأكد؟ لا يمكن التراجع.</div>
+    <input type="hidden" id="delId">
+    <button class="del-yes" id="delYes" onclick="confirmDel()">حذف</button>
+    <button class="m-can" onclick="closeOv('delOv')" style="width:100%" id="delCan">إلغاء</button>
+  </div>
+</div></div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import{getDatabase,ref,push,onValue,update,remove}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+const app=initializeApp({apiKey:"AIzaSyBjEd3UPOTkK143j1rZ6WQtnxhN5AS5nEU",authDomain:"dental-app-c95ce.firebaseapp.com",databaseURL:"https://dental-app-c95ce-default-rtdb.firebaseio.com",projectId:"dental-app-c95ce",storageBucket:"dental-app-c95ce.firebasestorage.app",messagingSenderId:"13518342618",appId:"dental-mas-v5"});
+const auth=getAuth(app),db=getDatabase(app);
+let uid=null,cRef=null,all={};
+
+// ══ LANGUAGE ══
+const TR={
+  ar:{loginSub:'نظام إدارة حالات طب الأسنان',loginBtn:'تسجيل الدخول بـ Google',loginNote:'بياناتك خاصة ومحمية بحسابك',hTl:'🦷 سن',hCl:'📋 حالة',hDl:'👨‍⚕️ طبيب',hMl:'هذا الشهر',tbAddTxt:'إضافة',tbListTxt:'الحالات',tbStatsTxt:'إحصائيات',tbAccTxt:'حسابي',addSlbl:'بيانات الحالة الجديدة',lDoc:'👨‍⚕️ الطبيب',lPat:'🧑 المريض',lTth:'🔢 عدد الأسنان',lMon:'📅 الشهر',lYr:'📆 السنة',lType:'🏷️ نوع الحالة',lShade:'🎨 لون السن',chartLbl:'🦷 اختر الأسنان المعالجة',chartHint:'اضغط على السن أو اسحب لتحديد مجموعة',btnSave:'💾 حفظ الحالة',shadeTitle:'🎨 اختر لون السن',clearShadeBtn:'🗑️ إزالة اللون',docPickTitle:'👨‍⚕️ اختر الطبيب',pdfTitle:'📄 تصدير تقرير PDF',pdfMonLbl:'📅 الشهر',pdfYrLbl:'📆 السنة',pdfGenBtn:'📄 توليد التقرير',pdfCanBtn:'إلغاء',editTitle:'✏️ تعديل الحالة',editCan:'إلغاء',editSav:'💾 حفظ',eLDoc:'👨‍⚕️ الطبيب',eLPat:'🧑 المريض',eLTth:'🔢 أسنان',eLType:'🏷️ نوع الحالة',eLShade:'🎨 لون السن',delTitle:'حذف الحالة',delSub:'هل أنت متأكد؟ لا يمكن التراجع.',delYes:'حذف',delCan:'إلغاء',langLabel:'اللغة / Language',accI1t:'نسخ احتياطي تلقائي',accI1d:'بياناتك تحفظ فورياً على Google Cloud',accI2t:'استعادة من أي جهاز',accI2d:'سجّل دخول بنفس حساب Google',accI3t:'بياناتك خاصة 100%',accI3d:'محمية بحسابك فقط',btnLogout:'🚪 تسجيل الخروج',stDocLbl:'🏆 الأطباء',stMonLbl:'📅 الإنتاج الشهري',stShadeLbl:'🎨 ألوان الأسنان',per:'📊 جميع البيانات',allYears:'كل السنوات',allMonths:'كل الأشهر',allDocs:'كل الأطباء',allTypes:'كل الأنواع',totalTeeth:'إجمالي الأسنان',totalCases:'عدد الحالات',avgPerCase:'متوسط / حالة',totalDoctors:'عدد الأطباء',noData:'لا توجد بيانات',noCases:'لا توجد حالات',noDocYet:'لا يوجد أطباء مسجلون بعد',savedOk:'✅ تم حفظ الحالة',editOk:'✅ تم التعديل',delOk:'تم الحذف',csvOk:'✅ تم التصدير',pdfOpening:'✅ جارٍ فتح التقرير',errDoc:'اختر اسم الطبيب',errTth:'أدخل عدد الأسنان',errNoCases:'لا توجد حالات لهذا الشهر',errLogin:'خطأ في تسجيل الدخول',cases:'حالة',teeth:'سن',month:'شهر'},
+  en:{loginSub:'Dental Cases Management System',loginBtn:'Sign in with Google',loginNote:'Your data is private and protected',hTl:'🦷 Teeth',hCl:'📋 Cases',hDl:'👨‍⚕️ Doctors',hMl:'This Month',tbAddTxt:'Add',tbListTxt:'Cases',tbStatsTxt:'Stats',tbAccTxt:'Account',addSlbl:'New Case Details',lDoc:'👨‍⚕️ Doctor',lPat:'🧑 Patient',lTth:'🔢 Tooth Count',lMon:'📅 Month',lYr:'📆 Year',lType:'🏷️ Case Type',lShade:'🎨 Shade',chartLbl:'🦷 Select Treated Teeth',chartHint:'Tap or drag to select teeth',btnSave:'💾 Save Case',shadeTitle:'🎨 Select Shade',clearShadeBtn:'🗑️ Clear Shade',docPickTitle:'👨‍⚕️ Select Doctor',pdfTitle:'📄 Export PDF Report',pdfMonLbl:'📅 Month',pdfYrLbl:'📆 Year',pdfGenBtn:'📄 Generate Report',pdfCanBtn:'Cancel',editTitle:'✏️ Edit Case',editCan:'Cancel',editSav:'💾 Save',eLDoc:'👨‍⚕️ Doctor',eLPat:'🧑 Patient',eLTth:'🔢 Teeth',eLType:'🏷️ Case Type',eLShade:'🎨 Shade',delTitle:'Delete Case',delSub:'Are you sure? This cannot be undone.',delYes:'Delete',delCan:'Cancel',langLabel:'Language / اللغة',accI1t:'Auto Backup',accI1d:'Your data saves instantly to Google Cloud',accI2t:'Restore from Any Device',accI2d:'Sign in with same Google account',accI3t:'100% Private Data',accI3d:'Protected by your account only',btnLogout:'🚪 Sign Out',stDocLbl:'🏆 Doctors',stMonLbl:'📅 Monthly Production',stShadeLbl:'🎨 Shade Distribution',per:'📊 All Data',allYears:'All Years',allMonths:'All Months',allDocs:'All Doctors',allTypes:'All Types',totalTeeth:'Total Teeth',totalCases:'Total Cases',avgPerCase:'Avg / Case',totalDoctors:'Total Doctors',noData:'No data available',noCases:'No cases found',noDocYet:'No doctors registered yet',savedOk:'✅ Case saved!',editOk:'✅ Updated!',delOk:'Deleted',csvOk:'✅ Exported',pdfOpening:'✅ Opening report...',errDoc:'Select doctor name',errTth:'Enter tooth count',errNoCases:'No cases for this month',errLogin:'Login error',cases:'cases',teeth:'teeth',month:'Month'}
+};
+let lang=localStorage.getItem('lang')||'ar';
+function t(k){return TR[lang]?.[k]||TR.ar[k]||k;}
+function applyLang(){
+  Object.keys(TR.ar).forEach(k=>{const el=document.getElementById(k);if(el&&TR[lang][k]!==undefined)el.textContent=TR[lang][k];});
+  const isAr=lang==='ar';
+  document.documentElement.dir=isAr?'rtl':'ltr';
+  document.documentElement.lang=lang;
+  document.getElementById('btnAr').classList.toggle('active',isAr);
+  document.getElementById('btnEn').classList.toggle('active',!isAr);
+  [{id:'flYr',k:'allYears'},{id:'flMon',k:'allMonths'},{id:'flDoc',k:'allDocs'},{id:'flType',k:'allTypes'},{id:'stYr',k:'allYears'},{id:'stMon',k:'allMonths'}].forEach(({id,k})=>{const s=document.getElementById(id);if(s&&s.options[0])s.options[0].text=t(k);});
+  const fd=document.getElementById('fDoc');if(fd)fd.placeholder=isAr?'اختر أو أضف طبيب':'Select or add doctor';
+  const ds=document.getElementById('docSearch');if(ds)ds.placeholder=isAr?'ابحث أو اكتب اسم طبيب جديد':'Search or type new doctor name';
+  updateChartInfo();renderList();renderStats();
+}
+window.setLang=function(l){lang=l;localStorage.setItem('lang',l);applyLang();};
+
+// ══ TOOTH CHART - ANATOMICAL SVG ══
+// Layout: upper row (roots up, crown down) | lower row (crown up, roots down)
+// Tooth data: [number, x-position, width, type]
+// Types: M=molar, P=premolar, C=canine, L=lateral, I=incisor
+const tLayout={
+  upper:[
+    ['18',2,28,'M'],['17',32,28,'M'],['16',62,28,'M'],
+    ['15',92,21,'P'],['14',115,21,'P'],
+    ['13',138,18,'C'],['12',158,15,'L'],['11',175,18,'I'],
+    ['21',195,18,'I'],['22',215,15,'L'],['23',232,18,'C'],
+    ['24',252,21,'P'],['25',275,21,'P'],
+    ['26',298,28,'M'],['27',328,28,'M'],['28',358,28,'M'],
+  ],
+  lower:[
+    ['48',2,28,'M'],['47',32,28,'M'],['46',62,28,'M'],
+    ['45',92,21,'P'],['44',115,21,'P'],
+    ['43',138,18,'C'],['42',158,14,'L'],['41',174,16,'I'],
+    ['31',192,16,'I'],['32',210,14,'L'],['33',226,18,'C'],
+    ['34',246,21,'P'],['35',269,21,'P'],
+    ['36',292,28,'M'],['37',322,28,'M'],['38',352,28,'M'],
+  ]
+};
+const SVG_W=390,UG=68,LG=82,SVG_H=166;
+
+function crownPath(x,w,type,isUpper){
+  const cx=x+w/2;
+  if(isUpper){
+    // Crown at bottom (opens downward), y: UG-24 to UG
+    const ct=UG-24,cb=UG;
+    switch(type){
+      case 'M':{
+        const c1=x+w*0.22,c2=cx,c3=x+w*0.78;
+        return `M${x+1},${ct} Q${x},${ct} ${x},${ct+3} L${x},${cb-6} C${x},${cb} ${c1-3},${cb+4} ${c1},${cb} C${c1+3},${cb-4} ${c2-4},${cb-4} ${c2},${cb} C${c2+4},${cb+4} ${c3-3},${cb-4} ${c3},${cb} C${c3+3},${cb} ${x+w},${cb-6} L${x+w},${ct+3} Q${x+w},${ct} ${x+w-1},${ct} Z`;
+      }
+      case 'P':{
+        const c1=x+w*0.3,c2=x+w*0.7;
+        return `M${x+1},${ct} Q${x},${ct} ${x},${ct+3} L${x},${cb-5} C${x},${cb} ${c1-2},${cb+4} ${c1},${cb} C${c1+3},${cb-4} ${c2-3},${cb-4} ${c2},${cb} C${c2+2},${cb} ${x+w},${cb-5} L${x+w},${ct+3} Q${x+w},${ct} ${x+w-1},${ct} Z`;
+      }
+      case 'C':{
+        return `M${x+1},${ct} Q${x},${ct} ${x},${ct+3} L${x},${cb-4} C${x},${cb-1} ${cx-3},${cb+6} ${cx},${cb+6} C${cx+3},${cb+6} ${x+w},${cb-1} L${x+w},${ct+3} Q${x+w},${ct} ${x+w-1},${ct} Z`;
+      }
+      default:{ // L,I
+        return `M${x+1},${ct} Q${x},${ct} ${x},${ct+3} L${x},${cb} Q${cx},${cb+2} ${x+w},${cb} L${x+w},${ct+3} Q${x+w},${ct} ${x+w-1},${ct} Z`;
+      }
+    }
+  } else {
+    // Crown at top (opens upward), y: LG to LG+24
+    const ct=LG,cb=LG+24;
+    switch(type){
+      case 'M':{
+        const c1=x+w*0.2,c2=x+w*0.4,c3=x+w*0.6,c4=x+w*0.8;
+        return `M${x+1},${cb} Q${x},${cb} ${x},${cb-3} L${x},${ct+6} C${x},${ct} ${c1-2},${ct-4} ${c1},${ct} C${c1+2},${ct+4} ${c2-2},${ct+4} ${c2},${ct} C${c2+2},${ct-4} ${c3-2},${ct-4} ${c3},${ct} C${c3+2},${ct+4} ${c4-2},${ct+4} ${c4},${ct} C${c4+2},${ct-4} ${x+w},${ct+6} L${x+w},${cb-3} Q${x+w},${cb} ${x+w-1},${cb} Z`;
+      }
+      case 'P':{
+        const c1=x+w*0.32,c2=x+w*0.68;
+        return `M${x+1},${cb} Q${x},${cb} ${x},${cb-3} L${x},${ct+5} C${x},${ct} ${c1-2},${ct-4} ${c1},${ct} C${c1+3},${ct+4} ${c2-3},${ct+4} ${c2},${ct} C${c2+2},${ct-4} ${x+w},${ct+5} L${x+w},${cb-3} Q${x+w},${cb} ${x+w-1},${cb} Z`;
+      }
+      case 'C':{
+        return `M${x+1},${cb} Q${x},${cb} ${x},${cb-3} L${x},${ct+4} C${x},${ct+1} ${cx-3},${ct-6} ${cx},${ct-6} C${cx+3},${ct-6} ${x+w},${ct+1} L${x+w},${cb-3} Q${x+w},${cb} ${x+w-1},${cb} Z`;
+      }
+      default:{
+        return `M${x+1},${cb} Q${x},${cb} ${x},${cb-3} L${x},${ct} Q${cx},${ct-2} ${x+w},${ct} L${x+w},${cb-3} Q${x+w},${cb} ${x+w-1},${cb} Z`;
+      }
+    }
+  }
+}
+
+function rootPaths(x,w,type,isUpper){
+  const cx=x+w/2;
+  let paths=[];
+  if(isUpper){
+    const rb=UG-24; // root bottom (connect to crown top)
+    switch(type){
+      case 'M':
+        paths.push(`M${x+5},${rb} C${x+3},${rb-14} ${x+1},${rb-25} ${x+3},${rb-38}`);
+        paths.push(`M${cx},${rb} C${cx},${rb-12} ${cx},${rb-24} ${cx},${rb-36}`);
+        paths.push(`M${x+w-5},${rb} C${x+w-3},${rb-14} ${x+w-1},${rb-25} ${x+w-3},${rb-38}`);
+        break;
+      case 'P':
+        paths.push(`M${x+6},${rb} C${x+4},${rb-12} ${x+3},${rb-24} ${x+5},${rb-36}`);
+        paths.push(`M${x+w-6},${rb} C${x+w-4},${rb-12} ${x+w-3},${rb-24} ${x+w-5},${rb-36}`);
+        break;
+      case 'C':
+        paths.push(`M${cx},${rb} C${cx-1},${rb-14} ${cx+1},${rb-28} ${cx},${rb-40}`);
+        break;
+      default:
+        paths.push(`M${cx},${rb} C${cx-1},${rb-12} ${cx+1},${rb-22} ${cx},${rb-32}`);
+    }
+  } else {
+    const rt=LG+24; // root top (connect to crown bottom)
+    switch(type){
+      case 'M':
+        paths.push(`M${x+7},${rt} C${x+5},${rt+14} ${x+3},${rt+26} ${x+5},${rt+38}`);
+        paths.push(`M${x+w-7},${rt} C${x+w-5},${rt+14} ${x+w-3},${rt+26} ${x+w-5},${rt+38}`);
+        break;
+      case 'P':
+        paths.push(`M${cx},${rt} C${cx-1},${rt+12} ${cx+1},${rt+24} ${cx},${rt+36}`);
+        break;
+      case 'C':
+        paths.push(`M${cx},${rt} C${cx-1},${rt+14} ${cx+1},${rt+28} ${cx},${rt+40}`);
+        break;
+      default:
+        paths.push(`M${cx},${rt} C${cx-1},${rt+12} ${cx+1},${rt+22} ${cx},${rt+32}`);
+    }
+  }
+  return paths;
+}
+
+let selectedTeeth=new Set();
+let isDrag=false,lastDragN=null;
+
+function buildDentalSVG(){
+  let svg=`<svg id="dSVG" viewBox="0 0 ${SVG_W} ${SVG_H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:340px;display:block;touch-action:none" preserveAspectRatio="xMidYMid meet">`;
+  // Background
+  svg+=`<rect x="0" y="0" width="${SVG_W}" height="${SVG_H}" fill="transparent"/>`;
+  // Midline
+  svg+=`<line x1="10" y1="${(UG+LG)/2}" x2="${SVG_W-10}" y2="${(UG+LG)/2}" stroke="#c0d8e8" stroke-width="0.8" stroke-dasharray="3,4"/>`;
+  // Labels
+  svg+=`<text x="${SVG_W/2}" y="${(UG+LG)/2-2}" text-anchor="middle" font-size="7" fill="#a0c0d0" font-family="Arial">— upper | lower —</text>`;
+  // Upper teeth
+  tLayout.upper.forEach(([n,x,w,tp])=>{ svg+=toothSVG(n,x,w,tp,true,selectedTeeth.has(n)); });
+  // Lower teeth
+  tLayout.lower.forEach(([n,x,w,tp])=>{ svg+=toothSVG(n,x,w,tp,false,selectedTeeth.has(n)); });
+  svg+='</svg>';
+  return svg;
+}
+
+function toothSVG(n,x,w,tp,isUpper,sel){
+  const fill=sel?'#2d7aaa':'#f0f8ff';
+  const stroke=sel?'#0d2d4a':'#90b8d0';
+  const rootStroke=sel?'#1a5070':'#a8c8dc';
+  const sw=sel?1.6:1.1;
+  const cx=x+w/2;
+  const cp=crownPath(x,w,tp,isUpper);
+  const rp=rootPaths(x,w,tp,isUpper);
+  const numY=isUpper?UG+13:LG-6;
+  let g=`<g class="tooth-grp" data-tooth="${n}">`;
+  // Roots (behind crown)
+  rp.forEach(p=>{ g+=`<path class="tooth-root" d="${p}" fill="none" stroke="${rootStroke}" stroke-width="${sw}" stroke-linecap="round"/>`; });
+  // Crown (filled)
+  g+=`<path class="tooth-crown" d="${cp}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>`;
+  // Number
+  g+=`<text x="${cx}" y="${numY}" text-anchor="middle" font-size="6.5" fill="${sel?'#0d2d4a':'#90b8d0'}" font-family="Arial" font-weight="${sel?'bold':'normal'}">${n}</text>`;
+  g+='</g>';
+  return g;
+}
+
+function renderChart(){
+  document.getElementById('chartBox').innerHTML=buildDentalSVG();
+  setupChartEvents();
+}
+
+function setupChartEvents(){
+  const svg=document.getElementById('dSVG');
+  if(!svg)return;
+  svg.addEventListener('pointerdown',e=>{
+    const g=e.target.closest('[data-tooth]');
+    if(g){isDrag=true;lastDragN=g.dataset.tooth;toggleTooth(g.dataset.tooth);svg.setPointerCapture(e.pointerId);}
+    e.preventDefault();
+  });
+  svg.addEventListener('pointermove',e=>{
+    if(!isDrag)return;
+    const el=document.elementFromPoint(e.clientX,e.clientY);
+    const g=el?.closest('[data-tooth]');
+    if(g&&g.dataset.tooth!==lastDragN){lastDragN=g.dataset.tooth;selectTooth(g.dataset.tooth);}
+  });
+  svg.addEventListener('pointerup',()=>{isDrag=false;lastDragN=null;});
+  svg.addEventListener('pointercancel',()=>{isDrag=false;lastDragN=null;});
+}
+
+function toggleTooth(n){
+  if(selectedTeeth.has(n))selectedTeeth.delete(n);else selectedTeeth.add(n);
+  syncCount();renderChart();
+}
+function selectTooth(n){
+  if(!selectedTeeth.has(n)){selectedTeeth.add(n);syncCount();renderChart();}
+}
+function syncCount(){
+  document.getElementById('fTth').value=selectedTeeth.size||'';
+  updateChartInfo();
+}
+function updateChartInfo(){
+  document.getElementById('chartInfo').textContent=`${selectedTeeth.size} ${t('teeth')}`;
+}
+window.onManualCount=function(){selectedTeeth.clear();updateChartInfo();renderChart();};
+renderChart();
+
+// ══ SHADES ══
+const shades=[
+  {label:"المجموعة 1 / Group 1",color:"#f5f0e8",list:["0M1","0M2","0M3"]},
+  {label:"المجموعة 2 / Group 2",color:"#ede4cc",list:["1M1","1M2"]},
+  {label:"المجموعة 3 / Group 3",color:"#e0ceaa",list:["2M1","2M2","2M3","2L1.5","2L2.5","2R1.5","2R2.5"]},
+  {label:"المجموعة 4 / Group 4",color:"#d4b87e",list:["3M1","3M2","3M3","3L1.5","3L2.5","3R1.5","3R2.5"]},
+  {label:"المجموعة 5 / Group 5",color:"#c8a25c",list:["4M1","4M2","4M3","4L1.5","4L2.5","4R1.5","4R2.5"]},
+  {label:"المجموعة 6 / Group 6",color:"#b8903a",list:["5M1","5M2","5M3"]},
+];
+function getClr(s){for(const g of shades)if(g.list.includes(s))return g.color;return '#c8dde8';}
+document.getElementById('shadeGrps').innerHTML=shades.map(g=>`<div class="sgrp"><div class="sgrp-hdr"><span class="sgrp-dot" style="background:${g.color}"></span>${g.label}</div><div class="chips">${g.list.map(s=>`<button class="chip" data-s="${s}" onclick="pick('${s}')">${s}</button>`).join('')}</div></div>`).join('');
+
+let sel="",esel="",shadeMode="add",docMode="add";
+let caseType="CB",editType="CB";
+
+function setShadeUI(tId,txId,dId,s){
+  const t2=document.getElementById(tId),tx=document.getElementById(txId),d=document.getElementById(dId);
+  if(s){tx.textContent=s;d.style.background=getClr(s);d.style.borderColor='transparent';t2.classList.add('picked');}
+  else{tx.textContent=lang==='ar'?'اختر اللون':'Select shade';d.style.background='#c8dde8';d.style.borderColor='var(--border)';t2.classList.remove('picked');}
+}
+window.openShade=m=>{shadeMode=m;const c=m==='add'?sel:esel;document.querySelectorAll('#shadeGrps .chip').forEach(x=>x.classList.toggle('on',x.dataset.s===c));document.getElementById('shadeOv').classList.add('on');};
+window.closeShade=()=>document.getElementById('shadeOv').classList.remove('on');
+window.clearShade=()=>{if(shadeMode==='add'){sel='';setShadeUI('sTrig','sTxt','sDot','');}else{esel='';setShadeUI('eSTrig','eSTxt','eSDot','');}closeShade();};
+window.pick=s=>{if(shadeMode==='add'){sel=s;setShadeUI('sTrig','sTxt','sDot',s);}else{esel=s;setShadeUI('eSTrig','eSTxt','eSDot',s);}closeShade();showToast(`✅ ${s}`,'ok');};
+document.getElementById('shadeOv').addEventListener('click',e=>{if(e.target===document.getElementById('shadeOv'))closeShade();});
+
+window.setType=function(tp){
+  caseType=tp;
+  document.getElementById('btnCB').className=`type-btn${tp==='CB'?' act-cb':''}`;
+  document.getElementById('btnFA').className=`type-btn${tp==='FA'?' act-fa':''}`;
+};
+window.setEditType=function(tp){
+  editType=tp;
+  document.getElementById('eBtnCB').className=`type-btn${tp==='CB'?' act-cb':''}`;
+  document.getElementById('eBtnFA').className=`type-btn${tp==='FA'?' act-fa':''}`;
+};
+
+window.openDocPicker=function(mode){
+  docMode=mode;document.getElementById('docSearch').value='';renderDocList('');
+  document.getElementById('docOv').classList.add('on');
+  setTimeout(()=>document.getElementById('docSearch').focus(),350);
+};
+window.closeDocPicker=()=>document.getElementById('docOv').classList.remove('on');
+document.getElementById('docOv').addEventListener('click',e=>{if(e.target===document.getElementById('docOv'))closeDocPicker();});
+function renderDocList(q){
+  const list=Object.values(all);const dm={};
+  list.forEach(c=>{if(!c.doc)return;dm[c.doc]=(dm[c.doc]||0)+1;});
+  let docs=Object.entries(dm).sort((a,b)=>b[1]-a[1]);
+  if(q)docs=docs.filter(([d])=>d.includes(q)||d.toLowerCase().includes(q.toLowerCase()));
+  const el=document.getElementById('docList');
+  if(!docs.length&&!q){el.innerHTML=`<div class="doc-empty">${t('noDocYet')}</div>`;document.getElementById('docNewBtn').style.display='none';return;}
+  el.innerHTML=docs.map(([d,c])=>`<div class="doc-opt" onclick="selectDoc('${d}')"><div class="doc-opt-ico">${d.charAt(0)}</div><div><div class="doc-opt-nm">${d}</div><div class="doc-opt-ct">🦷${c}</div></div></div>`).join('');
+  const exists=docs.some(([d])=>d===q);const nb=document.getElementById('docNewBtn');
+  if(q&&!exists){nb.style.display='flex';nb.textContent=`➕ ${q}`;}else nb.style.display='none';
+}
+window.filterDocs=()=>renderDocList(document.getElementById('docSearch').value.trim());
+window.selectDoc=function(name){document.getElementById(docMode==='add'?'fDoc':'eDoc').value=name;closeDocPicker();};
+window.addNewDoc=function(){const q=document.getElementById('docSearch').value.trim();if(q)selectDoc(q);};
+
+function fillYr(id,val){
+  const y=new Date().getFullYear();let o='';
+  for(let i=y+1;i>=y-3;i--)o+=`<option value="${i}">${i}</option>`;
+  const s=document.getElementById(id);s.innerHTML=o;if(val)s.value=val;
+}
+fillYr('fYr');fillYr('eYr');fillYr('pdfYr');
+const now=new Date();
+document.getElementById('fMon').value=now.getMonth()+1;
+document.getElementById('fYr').value=now.getFullYear();
+document.getElementById('pdfMon').value=now.getMonth()+1;
+document.getElementById('pdfYr').value=now.getFullYear();
+
+window.doLogin=async()=>{try{await signInWithPopup(auth,new GoogleAuthProvider());}catch(e){showToast(t('errLogin'),'err');}};
+window.doOut=()=>signOut(auth);
+
+onAuthStateChanged(auth,u=>{
+  if(u){
+    uid=u.uid;
+    document.getElementById('login').style.display='none';
+    document.getElementById('app').classList.add('on');
+    ['hdrAv','tabAv','accAv'].forEach(id=>{const el=document.getElementById(id);if(u.photoURL)el.innerHTML=`<img src="${u.photoURL}">`;else el.textContent=u.displayName?.[0]||'؟';});
+    document.getElementById('accNm').textContent=u.displayName||'User';
+    document.getElementById('accEm').textContent=u.email||'';
+    cRef=ref(db,`users/${uid}/cases`);
+    onValue(cRef,snap=>{all=snap.val()||{};refresh();});
+    const y=now.getFullYear();let o=`<option value="">${t('allYears')}</option>`;
+    for(let i=y+1;i>=y-2;i--)o+=`<option value="${i}">${i}</option>`;
+    ['flYr','stYr'].forEach(id=>document.getElementById(id).innerHTML=o);
+    applyLang();
+  }else{uid=null;document.getElementById('login').style.display='flex';document.getElementById('app').classList.remove('on');}
+});
+
+function refresh(){
+  const list=Object.values(all);const mn=now.getMonth()+1,yr=now.getFullYear();
+  document.getElementById('hT').textContent=list.reduce((s,c)=>s+(+c.teeth||0),0);
+  document.getElementById('hC').textContent=list.length;
+  document.getElementById('hD').textContent=new Set(list.map(c=>c.doc).filter(Boolean)).size;
+  document.getElementById('hM').textContent=list.filter(c=>+c.month===mn&&+c.year===yr).reduce((s,c)=>s+(+c.teeth||0),0);
+  const docs=[...new Set(list.map(c=>c.doc).filter(Boolean))].sort();
+  const fd=document.getElementById('flDoc'),cv=fd.value;
+  fd.innerHTML=`<option value="">${t('allDocs')}</option>`+docs.map(d=>`<option value="${d}">${d}</option>`).join('');
+  if(cv)fd.value=cv;
+  renderList();renderStats();
+}
+
+window.renderList=function(){
+  const fy=document.getElementById('flYr').value,fm=document.getElementById('flMon').value;
+  const fd=document.getElementById('flDoc').value,ftp=document.getElementById('flType').value;
+  let list=Object.entries(all).map(([id,c])=>({id,...c}));
+  if(fy)list=list.filter(c=>String(c.year)===fy);if(fm)list=list.filter(c=>String(c.month)===fm);
+  if(fd)list=list.filter(c=>c.doc===fd);if(ftp)list=list.filter(c=>(c.type||'CB')===ftp);
+  list.sort((a,b)=>(b.ts||0)-(a.ts||0));
+  const sum=list.reduce((s,c)=>s+(+c.teeth||0),0);
+  const faT=list.filter(c=>(c.type||'CB')==='FA').reduce((s,c)=>s+(+c.teeth||0),0);
+  const cbT=list.filter(c=>(c.type||'CB')==='CB').reduce((s,c)=>s+(+c.teeth||0),0);
+  document.getElementById('lCnt').textContent=`${list.length} ${t('cases')}`;
+  document.getElementById('lSum').textContent=list.length?`🦷 ${sum} ${t('teeth')}`:'';
+  document.getElementById('typeSummary').innerHTML=list.length?`<span class="ts-fa">FA: 🦷${faT}</span><span class="ts-cb">CB: 🦷${cbT}</span>`:'';
+  const el=document.getElementById('listEl');
+  if(!list.length){el.innerHTML=`<div class="empty"><span class="empty-ico">📭</span><div class="empty-t">${t('noCases')}</div></div>`;return;}
+  el.innerHTML=list.map(c=>{const tp=c.type||'CB';return`<div class="ccard"><div class="ccard-head"><div><div class="ccard-doc">👨‍⚕️ ${c.doc||'—'}</div><div class="ccard-pat">🧑 ${c.pat||'—'}</div></div><div class="ccard-badge">🦷 ${c.teeth||0}</div></div><div class="ccard-tags"><span class="ctag ctag-d">📅 ${c.month||'—'}/${c.year||'—'}</span><span class="ctag ${tp==='FA'?'ctag-fa':'ctag-cb'}">${tp}</span>${c.shade?`<span class="ctag ctag-s">🎨 ${c.shade}</span>`:''}</div><div class="ccard-acts"><button class="act-d" onclick="openDel('${c.id}')">🗑️ ${lang==='ar'?'حذف':'Delete'}</button><button class="act-e" onclick="openEdit('${c.id}')">✏️ ${lang==='ar'?'تعديل':'Edit'}</button></div></div>`;}).join('');
+};
+
+window.renderStats=function(){
+  const fy=document.getElementById('stYr').value,fm=document.getElementById('stMon').value;
+  let list=Object.values(all);
+  if(fy)list=list.filter(c=>String(c.year)===fy);if(fm)list=list.filter(c=>String(c.month)===fm);
+  let p=t('per');
+  if(fy&&fm)p=`📊 ${lang==='ar'?'شهر':'Month'} ${fm}←${fy}`;else if(fy)p=`📊 ${fy}`;else if(fm)p=`📊 ${lang==='ar'?'شهر':'Month'} ${fm}`;
+  document.getElementById('per').textContent=p;
+  document.getElementById('mCard').style.display=fm?'none':'block';
+  const tt=list.reduce((s,c)=>s+(+c.teeth||0),0);const avg=list.length?Math.round(tt/list.length):0;
+  document.getElementById('stGrid').innerHTML=`<div class="sbox"><div class="sbox-n" style="color:var(--blue2)">${tt}</div><div class="sbox-l">${t('totalTeeth')}</div></div><div class="sbox"><div class="sbox-n" style="color:var(--green)">${list.length}</div><div class="sbox-l">${t('totalCases')}</div></div><div class="sbox"><div class="sbox-n" style="color:var(--gold)">${avg}</div><div class="sbox-l">${t('avgPerCase')}</div></div><div class="sbox"><div class="sbox-n" style="color:var(--blue)">${new Set(list.map(c=>c.doc).filter(Boolean)).size}</div><div class="sbox-l">${t('totalDoctors')}</div></div>`;
+  const faT=list.filter(c=>(c.type||'CB')==='FA').reduce((s,c)=>s+(+c.teeth||0),0);const cbT=list.filter(c=>(c.type||'CB')==='CB').reduce((s,c)=>s+(+c.teeth||0),0);
+  const faC=list.filter(c=>(c.type||'CB')==='FA').length;const cbC=list.filter(c=>(c.type||'CB')==='CB').length;
+  document.getElementById('typeStats').innerHTML=`<div class="tsbox fa"><div class="tsbox-n" style="color:var(--fa)">🦷${faT}</div><div class="tsbox-l" style="color:var(--fa)">Full Anatomy</div><div style="font-size:0.65rem;color:#93c5fd;margin-top:3px">${faC} ${t('cases')}</div></div><div class="tsbox cb"><div class="tsbox-n" style="color:var(--cb)">🦷${cbT}</div><div class="tsbox-l" style="color:var(--cb)">Cut Back</div><div style="font-size:0.65rem;color:#c4b5fd;margin-top:3px">${cbC} ${t('cases')}</div></div>`;
+  const dm={};list.forEach(c=>{if(!c.doc)return;dm[c.doc]=(dm[c.doc]||0)+(+c.teeth||0);});
+  const ds=Object.entries(dm).sort((a,b)=>b[1]-a[1]);const mx=ds[0]?.[1]||1;
+  function rk(i){if(i===0)return['rk-gold','🥇'];if(i===1||i===2)return['rk-silver','🥈'];return['rk-green',i+1];}
+  document.getElementById('stDoc').innerHTML=ds.length?ds.map(([d,v],i)=>{const[c,ic]=rk(i);return`<div class="doc-item"><div class="doc-rk ${c}">${ic}</div><div class="doc-inf"><div class="doc-nm">${d}</div><div class="doc-bw"><div class="doc-b" style="width:${(v/mx*100).toFixed(1)}%"></div></div></div><div class="doc-n">🦷${v}</div></div>`;}).join(''):`<div style="color:var(--text3);text-align:center;padding:14px;font-size:0.8rem">${t('noData')}</div>`;
+  if(!fm){const mm={};list.forEach(c=>{const m=c.month;if(!m)return;if(!mm[m]){mm[m]={t:0,c:0};}mm[m].t+=+c.teeth||0;mm[m].c++;});document.getElementById('stMonEl').innerHTML=Array.from({length:12},(_,i)=>i+1).map(m=>{const d=mm[m]||{t:0,c:0};return`<div class="mbox"><div class="mbox-n" style="color:${d.t?'var(--blue2)':'var(--text3)'}">${d.t}</div><div class="mbox-l">${m}</div></div>`;}).join('');}
+  const sm={};list.forEach(c=>{if(!c.shade)return;sm[c.shade]=(sm[c.shade]||0)+1;});
+  const sl=Object.entries(sm).sort((a,b)=>b[1]-a[1]).slice(0,8);const smx=sl[0]?.[1]||1;
+  document.getElementById('stShade').innerHTML=sl.length?sl.map(([s,n])=>`<div class="sd-r"><div class="sd-nm">${s}</div><div class="sd-bw"><div class="sd-b" style="width:${(n/smx*100).toFixed(1)}%"></div></div><div class="sd-c">${n}</div></div>`).join(''):`<div style="color:var(--text3);text-align:center;padding:12px;font-size:0.78rem">${t('noData')}</div>`;
+};
+
+window.addCase=async function(){
+  const doc=document.getElementById('fDoc').value.trim();const tth=+document.getElementById('fTth').value;
+  if(!doc){showToast(t('errDoc'),'err');return;}if(!tth||tth<1){showToast(t('errTth'),'err');return;}
+  await push(cRef,{doc,pat:document.getElementById('fPat').value.trim(),teeth:tth,month:+document.getElementById('fMon').value,year:+document.getElementById('fYr').value,shade:sel,type:caseType,teethList:selectedTeeth.size>0?[...selectedTeeth]:[],ts:Date.now()});
+  document.getElementById('fDoc').value='';document.getElementById('fPat').value='';document.getElementById('fTth').value='';
+  sel='';setShadeUI('sTrig','sTxt','sDot','');selectedTeeth.clear();setType('CB');updateChartInfo();renderChart();
+  showToast(t('savedOk'),'ok');
+};
+window.openEdit=function(id){const c=all[id];if(!c)return;document.getElementById('eId').value=id;document.getElementById('eDoc').value=c.doc||'';document.getElementById('ePat').value=c.pat||'';document.getElementById('eTth').value=c.teeth||'';document.getElementById('eMon').value=c.month||1;fillYr('eYr',c.year||now.getFullYear());esel=c.shade||'';setShadeUI('eSTrig','eSTxt','eSDot',c.shade||'');editType=c.type||'CB';setEditType(editType);document.getElementById('editOv').classList.add('on');};
+window.saveEdit=async function(){const id=document.getElementById('eId').value;await update(ref(db,`users/${uid}/cases/${id}`),{doc:document.getElementById('eDoc').value.trim(),pat:document.getElementById('ePat').value.trim(),teeth:+document.getElementById('eTth').value||0,month:+document.getElementById('eMon').value,year:+document.getElementById('eYr').value,shade:esel,type:editType});closeOv('editOv');showToast(t('editOk'),'ok');};
+window.openDel=function(id){document.getElementById('delId').value=id;document.getElementById('delOv').classList.add('on');};
+window.confirmDel=async function(){await remove(ref(db,`users/${uid}/cases/${document.getElementById('delId').value}`));closeOv('delOv');showToast(t('delOk'),'ok');};
+window.doCSV=function(){
+  let list=Object.values(all);const fy=document.getElementById('flYr').value,fm=document.getElementById('flMon').value,fd=document.getElementById('flDoc').value,ftp=document.getElementById('flType').value;
+  if(fy)list=list.filter(c=>String(c.year)===fy);if(fm)list=list.filter(c=>String(c.month)===fm);if(fd)list=list.filter(c=>c.doc===fd);if(ftp)list=list.filter(c=>(c.type||'CB')===ftp);
+  const csv='\uFEFF'+'Year,Month,Doctor,Patient,Teeth,Type,Shade\n'+list.map(c=>`${c.year||''},${c.month||''},${c.doc||''},${c.pat||''},${c.teeth||0},${c.type||'CB'},${c.shade||''}`).join('\n');
+  Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})),download:`dental-${Date.now()}.csv`}).click();showToast(t('csvOk'),'ok');
+};
+window.openPdfModal=function(){document.getElementById('pdfMon').value=document.getElementById('flMon').value||now.getMonth()+1;document.getElementById('pdfOv').classList.add('on');};
+window.closePdfModal=()=>document.getElementById('pdfOv').classList.remove('on');
+document.getElementById('pdfOv').addEventListener('click',e=>{if(e.target===document.getElementById('pdfOv'))closePdfModal();});
+window.genPDF=function(){
+  const month=+document.getElementById('pdfMon').value,year=+document.getElementById('pdfYr').value;
+  let list=Object.values(all).filter(c=>+c.month===month&&+c.year===year);
+  if(!list.length){showToast(t('errNoCases'),'err');return;}
+  const byDoc={};list.forEach(c=>{if(!byDoc[c.doc])byDoc[c.doc]=[];byDoc[c.doc].push(c);});
+  const totalAll=list.reduce((s,c)=>s+(+c.teeth||0),0);
+  const faT=list.filter(c=>(c.type||'CB')==='FA').reduce((s,c)=>s+(+c.teeth||0),0);
+  const cbT=list.filter(c=>(c.type||'CB')==='CB').reduce((s,c)=>s+(+c.teeth||0),0);
+  const docSections=Object.entries(byDoc).map(([doc,cases])=>{const total=cases.reduce((s,c)=>s+(+c.teeth||0),0);const rows=cases.map(c=>`<tr><td style="padding:7px 12px;border-bottom:1px solid #e0eaf0;font-size:14px;font-weight:700;color:#0d2d4a">${c.teeth||0}</td><td style="padding:7px 12px;border-bottom:1px solid #e0eaf0;font-size:14px;color:#1a3a5c">${c.pat||'—'}</td><td style="padding:7px 12px;border-bottom:1px solid #e0eaf0;font-size:13px;color:${(c.type||'CB')==='FA'?'#1d4ed8':'#7c3aed'};font-weight:700">${c.type||'CB'}</td><td style="padding:7px 12px;border-bottom:1px solid #e0eaf0;font-size:13px;color:#7a5500;font-weight:600">${c.shade||'—'}</td></tr>`).join('');const faDt=cases.filter(c=>(c.type||'CB')==='FA').reduce((s,c)=>s+(+c.teeth||0),0);const cbDt=cases.filter(c=>(c.type||'CB')==='CB').reduce((s,c)=>s+(+c.teeth||0),0);return`<div style="margin-bottom:22px;border:1.5px solid #b0cfe0;border-radius:12px;overflow:hidden;page-break-inside:avoid"><div style="background:linear-gradient(135deg,#0d2d4a,#1a5070);padding:12px 16px;display:flex;justify-content:space-between;align-items:center"><div style="font-size:17px;font-weight:900;color:#fff">${doc}</div><div style="display:flex;gap:8px">${faDt?`<span style="background:rgba(29,78,216,0.3);color:#93c5fd;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700">FA:🦷${faDt}</span>`:''} ${cbDt?`<span style="background:rgba(124,58,237,0.3);color:#c4b5fd;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700">CB:🦷${cbDt}</span>`:''}<span style="background:rgba(255,255,255,0.15);color:#fff;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700">🦷${total}</span></div></div><table style="width:100%;border-collapse:collapse;direction:rtl"><thead><tr style="background:#e8f2f8"><th style="padding:7px 12px;text-align:right;font-size:11px;color:#2a5070">Teeth</th><th style="padding:7px 12px;text-align:right;font-size:11px;color:#2a5070">Patient</th><th style="padding:7px 12px;text-align:right;font-size:11px;color:#2a5070">Type</th><th style="padding:7px 12px;text-align:right;font-size:11px;color:#2a5070">Shade</th></tr></thead><tbody>${rows}</tbody><tfoot><tr style="background:#f0f8ff"><td colspan="4" style="padding:7px 12px;text-align:left;font-size:12px;font-weight:700;color:#2670a0">Total: ${cases.length} — 🦷${total}</td></tr></tfoot></table></div>`;}).join('');
+  const html=`<!DOCTYPE html><html dir="rtl" lang="ar"><head><meta charset="UTF-8"><title>MAS Dental Lab</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;padding:20px;direction:rtl;color:#0a2035}@media print{body{padding:12px}}</style></head><body><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:14px;border-bottom:3px solid #1a5070"><div><div style="font-size:22px;font-weight:900;letter-spacing:4px">MAS</div><div style="font-size:10px;color:#6a90a8;letter-spacing:3px">DENTAL LAB</div><div style="font-size:12px;color:#2a5070;margin-top:6px">Report: ${month}/${year}</div></div><div style="text-align:left"><div style="font-size:13px;color:#2a5070">Cases: <b>${list.length}</b></div><div style="font-size:13px;color:#1a5070;margin-top:3px">🦷 ${totalAll}</div><div style="font-size:12px;margin-top:3px;color:#1d4ed8">FA:🦷${faT} | <span style="color:#7c3aed">CB:🦷${cbT}</span></div></div></div>${docSections}<div style="margin-top:16px;padding-top:10px;border-top:1.5px solid #b0cfe0;text-align:center;color:#6a90a8;font-size:11px">MAS Dental Lab — ${new Date().toLocaleDateString()}</div></body></html>`;
+  const w=window.open('','_blank','width=800,height=900');w.document.write(html);w.document.close();setTimeout(()=>w.print(),500);closePdfModal();showToast(t('pdfOpening'),'ok');
+};
+window.showPg=function(n,btn){document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));document.getElementById('pg-'+n).classList.add('on');if(btn)btn.classList.add('on');if(n==='stats')renderStats();};
+window.closeOv=id=>document.getElementById(id).classList.remove('on');
+document.querySelectorAll('.ov-back').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('on');}));
+function showToast(msg,type='ok'){const t2=document.getElementById('toast');t2.textContent=msg;t2.className=`toast ${type} show`;setTimeout(()=>t2.classList.remove('show'),2500);}
+window.showToast=showToast;
+applyLang();
+</script>
+</body>
+</html>
