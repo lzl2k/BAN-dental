@@ -2,60 +2,87 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 <title>Dental Selector — BAN Dental</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     background: #f0f4fa;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'DM Sans', Arial, sans-serif;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 16px;
   }
-  .chip-btn {
+  .container { width: 100%; max-width: 380px; }
+  .header { text-align: center; margin-bottom: 12px; }
+  .header h2 { font-size: 11px; font-weight: 700; color: #64748b; letter-spacing: 0.15em; text-transform: uppercase; }
+  .header p { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+  .chips-box {
+    margin-bottom: 12px; background: #fff; border-radius: 16px;
+    border: 1px solid #e2e8f0; box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    padding: 10px 14px; min-height: 52px;
+    display: flex; align-items: center; flex-wrap: wrap; gap: 6px;
+  }
+  .chips-placeholder { color: #94a3b8; font-size: 12px; width: 100%; text-align: center; }
+  .chips-label { font-size: 10px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; }
+  .chip {
     display: inline-flex; align-items: center; gap: 4px;
     padding: 4px 10px; background: #2563eb; color: #fff;
     border: none; border-radius: 999px; font-size: 11px; font-weight: 700;
-    cursor: pointer; transition: background 0.15s;
-    font-family: inherit;
+    cursor: pointer; font-family: inherit;
   }
-  .chip-btn:hover { background: #1d4ed8; }
-  .chip-btn:active { background: #1e40af; }
+  .chip span { color: #93c5fd; font-size: 12px; }
   .clear-btn {
     background: none; border: none; cursor: pointer;
-    font-size: 10px; color: #94a3b8; transition: color 0.15s;
-    font-family: inherit; font-weight: 500; margin-right: auto;
+    font-size: 10px; color: #94a3b8; font-family: inherit; font-weight: 500; margin-right: auto;
   }
-  .clear-btn:hover { color: #ef4444; }
+  .chart-wrap {
+    background: linear-gradient(180deg, #f8fafc 0%, #fff 50%, #f8fafc 100%);
+    border-radius: 24px; border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08); overflow: hidden;
+  }
+  svg { width: 100%; display: block; touch-action: none; }
+  .footer-row { margin-top: 8px; display: flex; justify-content: space-between; padding: 0 4px; }
+  .footer-hint { font-size: 11px; color: #94a3b8; }
+  .footer-nums { font-size: 11px; color: #cbd5e1; font-family: monospace; }
   .confirm-btn {
-    width: 100%; padding: 13px;
-    background: #2563eb; color: #fff;
-    border: none; border-radius: 16px;
-    font-size: 14px; font-weight: 700; letter-spacing: 0.03em;
-    cursor: pointer; transition: background 0.15s;
-    margin-top: 12px; font-family: inherit;
-    box-shadow: 0 4px 14px rgba(37,99,235,0.25);
+    width: 100%; padding: 13px; background: #2563eb; color: #fff;
+    border: none; border-radius: 16px; font-size: 14px; font-weight: 700;
+    cursor: pointer; margin-top: 12px; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(37,99,235,0.25); display: none;
   }
-  .confirm-btn:hover { background: #1d4ed8; }
-  .confirm-btn:active { background: #1e40af; }
 </style>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
-const { useState, useCallback } = React;
+<div class="container">
+  <div class="header">
+    <h2>Tooth Selection</h2>
+    <p>FDI Numbering System</p>
+  </div>
+  <div class="chips-box" id="chipsBox">
+    <span class="chips-placeholder">اضغط على السن لتحديده — Tap a tooth to select</span>
+  </div>
+  <div class="chart-wrap">
+    <svg id="dentalSvg" viewBox="0 0 400 462"></svg>
+  </div>
+  <div class="footer-row">
+    <span class="footer-hint" id="footerHint">Tap to select</span>
+    <span class="footer-nums" id="footerNums">[]</span>
+  </div>
+  <button class="confirm-btn" id="confirmBtn" onclick="confirmSelection()">
+    Confirm Selection — تأكيد الاختيار
+  </button>
+</div>
 
-const UA = { cx: 200, cy: 148, rx: 154, ry: 112 };
-const LA = { cx: 200, cy: 315, rx: 138, ry: 98 };
+<script>
+const UA = { cx:200, cy:148, rx:154, ry:112 };
+const LA = { cx:200, cy:315, rx:138, ry:98  };
 
-const UA_DEG = [200,213,225,236,246,255,263,269, 271,277,285,294,304,315,327,340];
-const LA_DEG = [160,147,133,121,110,101, 94, 91,  89, 86, 79, 70, 59, 47, 33, 20];
+const UA_DEG = [200,213,225,236,246,255,263,269,271,277,285,294,304,315,327,340];
+const LA_DEG = [160,147,133,121,110,101,94,91,89,86,79,70,59,47,33,20];
 
 const UPPER = [
   {n:18,t:'M'},{n:17,t:'M'},{n:16,t:'M'},{n:15,t:'P'},{n:14,t:'P'},
@@ -70,217 +97,180 @@ const LOWER = [
   {n:34,t:'P'},{n:35,t:'P'},{n:36,t:'M'},{n:37,t:'M'},{n:38,t:'M'},
 ];
 
-function archPos(arch, deg) {
-  const r = (deg * Math.PI) / 180;
-  const x = arch.cx + arch.rx * Math.cos(r);
-  const y = arch.cy - arch.ry * Math.sin(r);
-  const rot = Math.atan2(arch.cy - y, arch.cx - x) * 180 / Math.PI + 90;
-  return { x, y, rot };
+const SHAPE = {
+  M:"M-11,12 C-11,14.5 -8,16 -3,16 L3,16 C8,16 11,14.5 11,12 L11,-10 C11,-14 7.5,-16 3,-16 L-3,-16 C-7.5,-16 -11,-14 -11,-10 Z",
+  P:"M-8,11 C-8,13.5 -4.5,15 0,15 C4.5,15 8,13.5 8,11 L8,-9 C8,-13 4.5,-14.5 0,-14.5 C-4.5,-14.5 -8,-13 -8,-9 Z",
+  C:"M0,-17 C3.5,-17 7,-12 7,-6 L7,11 C7,13.5 4,15 0,15 C-4,15 -7,13.5 -7,11 L-7,-6 C-7,-12 -3.5,-17 0,-17 Z",
+  L:"M-5.5,-12.5 C-3.5,-14.5 3.5,-14.5 5.5,-12.5 L6,10.5 C6,13 3.5,14 0,14 C-3.5,14 -6,13 -6,10.5 Z",
+  I:"M-7.5,-11 C-5,-13.5 5,-13.5 7.5,-11 L7.5,11 C7.5,13.5 4.5,15 0,15 C-4.5,15 -7.5,13.5 -7.5,11 Z",
+};
+const HIGHLIGHT = {
+  M:"M-7,12 C-7,13.5 -4.5,14.5 -1,14.5 L1,14.5 C4.5,14.5 7,13.5 7,12 L7,-8 C7,-11.5 5,-13.5 2,-13.5 L-2,-13.5 C-5,-13.5 -7,-11.5 -7,-8 Z",
+  P:"M-5,11 C-5,12.5 -3,13.5 0,13.5 C3,13.5 5,12.5 5,11 L5,-7 C5,-10.5 3,-12 0,-12 C-3,-12 -5,-10.5 -5,-7 Z",
+  C:"M0,-13 C2.5,-13 5,-9 5,-5 L5,9 C5,11.5 3,13 0,13 C-3,13 -5,11.5 -5,9 L-5,-5 C-5,-9 -2.5,-13 0,-13 Z",
+  L:"M-3.5,-10 C-2,-12 2,-12 3.5,-10 L4,9 C4,11 2.5,12 0,12 C-2.5,12 -4,11 -4,9 Z",
+  I:"M-5,-8.5 C-3.5,-11 3.5,-11 5,-8.5 L5,9 C5,11.5 3,13 0,13 C-3,13 -5,11.5 -5,9 Z",
+};
+
+const selected = new Set();
+
+function S(tag, attrs) {
+  const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  for (const [k,v] of Object.entries(attrs||{})) el.setAttribute(k,v);
+  return el;
 }
 
-function archPath(arch, d0, d1, steps = 30) {
-  const pts = [];
-  for (let i = 0; i <= steps; i++) {
-    const deg = d0 + ((d1 - d0) * i) / steps;
-    const r = (deg * Math.PI) / 180;
-    pts.push(`${(arch.cx + arch.rx * Math.cos(r)).toFixed(1)},${(arch.cy - arch.ry * Math.sin(r)).toFixed(1)}`);
+function archPos(arch, deg) {
+  const r = deg * Math.PI / 180;
+  const x = arch.cx + arch.rx * Math.cos(r);
+  const y = arch.cy - arch.ry * Math.sin(r);
+  const rot = Math.atan2(arch.cy-y, arch.cx-x) * 180/Math.PI + 90;
+  return {x,y,rot};
+}
+
+function archPath(arch, d0, d1, steps=30) {
+  const pts=[];
+  for(let i=0;i<=steps;i++){
+    const deg=d0+((d1-d0)*i)/steps;
+    const r=deg*Math.PI/180;
+    pts.push(`${(arch.cx+arch.rx*Math.cos(r)).toFixed(1)},${(arch.cy-arch.ry*Math.sin(r)).toFixed(1)}`);
   }
   return `M ${pts.join(" L ")}`;
 }
 
-const SHAPE = {
-  M: ["M-11,12 C-11,14.5 -8,16 -3,16 L3,16 C8,16 11,14.5 11,12","L11,-10 C11,-14 7.5,-16 3,-16 L-3,-16 C-7.5,-16 -11,-14 -11,-10 Z"].join(" "),
-  P: ["M-8,11 C-8,13.5 -4.5,15 0,15 C4.5,15 8,13.5 8,11","L8,-9 C8,-13 4.5,-14.5 0,-14.5 C-4.5,-14.5 -8,-13 -8,-9 Z"].join(" "),
-  C: "M0,-17 C3.5,-17 7,-12 7,-6 L7,11 C7,13.5 4,15 0,15 C-4,15 -7,13.5 -7,11 L-7,-6 C-7,-12 -3.5,-17 0,-17 Z",
-  L: "M-5.5,-12.5 C-3.5,-14.5 3.5,-14.5 5.5,-12.5 L6,10.5 C6,13 3.5,14 0,14 C-3.5,14 -6,13 -6,10.5 Z",
-  I: "M-7.5,-11 C-5,-13.5 5,-13.5 7.5,-11 L7.5,11 C7.5,13.5 4.5,15 0,15 C-4.5,15 -7.5,13.5 -7.5,11 Z",
-};
+function buildSVG() {
+  const svg = document.getElementById("dentalSvg");
 
-const HIGHLIGHT = {
-  M: "M-7,12 C-7,13.5 -4.5,14.5 -1,14.5 L1,14.5 C4.5,14.5 7,13.5 7,12 L7,-8 C7,-11.5 5,-13.5 2,-13.5 L-2,-13.5 C-5,-13.5 -7,-11.5 -7,-8 Z",
-  P: "M-5,11 C-5,12.5 -3,13.5 0,13.5 C3,13.5 5,12.5 5,11 L5,-7 C5,-10.5 3,-12 0,-12 C-3,-12 -5,-10.5 -5,-7 Z",
-  C: "M0,-13 C2.5,-13 5,-9 5,-5 L5,9 C5,11.5 3,13 0,13 C-3,13 -5,11.5 -5,9 L-5,-5 C-5,-9 -2.5,-13 0,-13 Z",
-  L: "M-3.5,-10 C-2,-12 2,-12 3.5,-10 L4,9 C4,11 2.5,12 0,12 C-2.5,12 -4,11 -4,9 Z",
-  I: "M-5,-8.5 C-3.5,-11 3.5,-11 5,-8.5 L5,9 C5,11.5 3,13 0,13 C-3,13 -5,11.5 -5,9 Z",
-};
+  // defs + gradients
+  const defs = S("defs");
+  const rg = S("radialGradient",{id:"chartBg",cx:"50%",cy:"40%",r:"65%"});
+  const rs1=S("stop",{offset:"0%","stop-color":"#f8fafc"});
+  const rs2=S("stop",{offset:"100%","stop-color":"#eef2f8"});
+  rg.append(rs1,rs2); defs.appendChild(rg);
 
-const CUSPS = {
-  M: [[-6,-4,6,-4],[-6,2,6,2],[0,-14,0,-4]],
-  P: [[-4,-5,4,-5],[0,-14,0,-5]],
-  C: [], L: [], I: [],
-};
-
-export default function DentalSelector() {
-  const [sel, setSel] = useState(new Set());
-  const [hov, setHov] = useState(null);
-
-  const toggle = useCallback((n) => {
-    setSel(prev => {
-      const next = new Set(prev);
-      next.has(n) ? next.delete(n) : next.add(n);
-      return next;
-    });
-  }, []);
-
-  const clearAll = () => setSel(new Set());
-  const selArr = Array.from(sel).sort((a, b) => a - b);
-
-  const Tooth = ({ n, t, x, y, rot }) => {
-    const on = sel.has(n);
-    const ho = hov === n;
-    const gid = `sg${n}`;
-    return (
-      <g
-        transform={`translate(${x.toFixed(1)},${y.toFixed(1)}) rotate(${rot.toFixed(1)})`}
-        onClick={() => toggle(n)}
-        onPointerEnter={() => setHov(n)}
-        onPointerLeave={() => setHov(null)}
-        style={{ cursor: "pointer", touchAction: "manipulation" }}
-      >
-        {on && <path d={SHAPE[t]} fill="none" stroke="#3b82f6" strokeWidth={11} strokeOpacity={0.18} strokeLinejoin="round"/>}
-        <path d={SHAPE[t]} fill="rgba(30,50,90,0.10)" transform="translate(0.5,1.5)" strokeLinejoin="round"/>
-        <path d={SHAPE[t]}
-          fill={on ? `url(#${gid})` : ho ? "#d4dce9" : "#e9edf5"}
-          stroke={on ? "#1a44c8" : ho ? "#607090" : "#b8c4d8"}
-          strokeWidth={on ? 1.8 : 1.2} strokeLinejoin="round"/>
-        {!on && <path d={HIGHLIGHT[t]} fill="rgba(255,255,255,0.55)" strokeLinejoin="round"/>}
-        {on && <path d={HIGHLIGHT[t]} fill="rgba(255,255,255,0.15)" strokeLinejoin="round"/>}
-        {on && CUSPS[t]?.map(([x1,y1,x2,y2], i) => (
-          <line key={i} x1={x1} y1={y1} x2={x2} y2={y2}
-            stroke="rgba(255,255,255,0.30)" strokeWidth="0.8" strokeLinecap="round"/>
-        ))}
-        {ho && !on && <path d={SHAPE[t]} fill="none" stroke="#4a6fa5" strokeWidth="1.5" strokeLinejoin="round" strokeOpacity="0.5"/>}
-        <defs>
-          <linearGradient id={gid} x1="0" y1="-1" x2="0" y2="1">
-            <stop offset="0%" stopColor="#7ab8ff"/>
-            <stop offset="40%" stopColor="#2d6ef5"/>
-            <stop offset="100%" stopColor="#1435c0"/>
-          </linearGradient>
-        </defs>
-        <text textAnchor="middle" dy="0.36em"
-          fontSize={t === "M" ? 7.5 : 7}
-          fontWeight={on ? "700" : "500"}
-          fill={on ? "#fff" : ho ? "#2d4060" : "#5a6a82"}
-          fontFamily="'DM Sans',sans-serif"
-          style={{ pointerEvents: "none", userSelect: "none" }}>
-          {n}
-        </text>
-      </g>
+  // per-tooth gradients
+  [...UPPER,...LOWER].forEach(({n})=>{
+    const lg=S("linearGradient",{id:`sg${n}`,x1:"0",y1:"-1",x2:"0",y2:"1"});
+    lg.append(
+      S("stop",{offset:"0%","stop-color":"#7ab8ff"}),
+      S("stop",{offset:"40%","stop-color":"#2d6ef5"}),
+      S("stop",{offset:"100%","stop-color":"#1435c0"})
     );
-  };
+    defs.appendChild(lg);
+  });
+  svg.appendChild(defs);
 
-  return (
-    <div style={{ minHeight: "100vh", background: "#f0f4fa", display: "flex", alignItems: "center", justifyContent: "center", padding: "16px" }}>
-      <div style={{ width: "100%", maxWidth: "380px", fontFamily: "'DM Sans', sans-serif" }}>
+  // bg
+  svg.appendChild(S("rect",{width:"400",height:"462",fill:"url(#chartBg)"}));
 
-        {/* Header */}
-        <div style={{ marginBottom: "12px", textAlign: "center" }}>
-          <h2 style={{ fontSize: "11px", fontWeight: 700, color: "#64748b", letterSpacing: "0.15em", textTransform: "uppercase" }}>
-            Tooth Selection
-          </h2>
-          <p style={{ fontSize: "11px", color: "#94a3b8", marginTop: "2px" }}>FDI Numbering System</p>
-        </div>
+  // labels
+  function txt(x,y,str,anchor,size,color,spacing){
+    const t=S("text",{x,y,"text-anchor":anchor||"middle","font-size":size||"8.5",fill:color||"#b0bcd0","letter-spacing":spacing||"2.5","font-weight":"600"});
+    t.textContent=str; svg.appendChild(t);
+  }
+  txt(200,20,"UPPER / الفك العلوي");
+  txt(200,450,"LOWER / الفك السفلي");
+  [["Q1",55,36,"start"],["Q2",345,36,"end"],["Q4",55,434,"start"],["Q3",345,434,"end"]].forEach(([l,lx,ly,ta])=>{
+    txt(lx,ly,l,ta,"7.5","#d4dce8","1");
+  });
 
-        {/* Selected chips */}
-        <div style={{
-          marginBottom: "12px", background: "#fff", borderRadius: "16px",
-          border: "1px solid #e2e8f0", boxShadow: "0 1px 4px rgba(0,0,0,0.05)",
-          padding: "10px 14px", minHeight: "52px",
-          display: "flex", alignItems: "center", flexWrap: "wrap", gap: "6px"
-        }}>
-          {selArr.length === 0 ? (
-            <span style={{ color: "#94a3b8", fontSize: "12px", width: "100%", textAlign: "center" }}>
-              اضغط على السن لتحديده — Tap a tooth to select
-            </span>
-          ) : (
-            <>
-              <span style={{ fontSize: "10px", fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                {selArr.length} selected
-              </span>
-              {selArr.map(n => (
-                <button key={n} className="chip-btn" onClick={() => toggle(n)}>
-                  {n} <span style={{ color: "#93c5fd", fontSize: "10px" }}>×</span>
-                </button>
-              ))}
-              <button className="clear-btn" onClick={clearAll}>Clear all</button>
-            </>
-          )}
-        </div>
+  // arch guides
+  svg.appendChild(S("path",{d:archPath(UA,197,343),fill:"none",stroke:"#dde5f2","stroke-width":"1.5","stroke-linecap":"round"}));
+  svg.appendChild(S("path",{d:archPath(LA,163,17),fill:"none",stroke:"#dde5f2","stroke-width":"1.5","stroke-linecap":"round"}));
+  svg.appendChild(S("path",{d:archPath({...UA,rx:UA.rx+20,ry:UA.ry+18},198,342),fill:"none",stroke:"#edf1f8","stroke-width":"1"}));
+  svg.appendChild(S("path",{d:archPath({...LA,rx:LA.rx+20,ry:LA.ry+18},162,18),fill:"none",stroke:"#edf1f8","stroke-width":"1"}));
 
-        {/* SVG Chart */}
-        <div style={{
-          background: "linear-gradient(180deg, #f8fafc 0%, #fff 50%, #f8fafc 100%)",
-          borderRadius: "24px", border: "1px solid #e2e8f0",
-          boxShadow: "0 4px 20px rgba(0,0,0,0.08)", overflow: "hidden"
-        }}>
-          <svg viewBox="0 0 400 462" style={{ width: "100%", display: "block", touchAction: "none" }}>
-            <defs>
-              <radialGradient id="chartBg" cx="50%" cy="40%" r="65%">
-                <stop offset="0%" stopColor="#f8fafc"/>
-                <stop offset="100%" stopColor="#eef2f8"/>
-              </radialGradient>
-            </defs>
-            <rect width="400" height="462" fill="url(#chartBg)"/>
+  // midline
+  svg.appendChild(S("line",{x1:"200",y1:"220",x2:"200",y2:"238",stroke:"#c8d4e8","stroke-width":"1.5","stroke-dasharray":"2,3"}));
+  svg.appendChild(S("circle",{cx:"200",cy:"229",r:"2.5",fill:"#dde5f2"}));
 
-            <text x="200" y="20" textAnchor="middle" fontSize="8.5" fill="#b0bcd0"
-              fontFamily="inherit" letterSpacing="2.5" fontWeight="600">UPPER / الفك العلوي</text>
-            <text x="200" y="450" textAnchor="middle" fontSize="8.5" fill="#b0bcd0"
-              fontFamily="inherit" letterSpacing="2.5" fontWeight="600">LOWER / الفك السفلي</text>
-
-            {[["Q1",55,36,"left"],["Q2",345,36,"right"],["Q4",55,434,"left"],["Q3",345,434,"right"]].map(([lbl,lx,ly,ta])=>(
-              <text key={lbl} x={lx} y={ly} textAnchor={ta==="right"?"end":"start"}
-                fontSize="7.5" fill="#d4dce8" fontFamily="inherit" fontWeight="700">{lbl}</text>
-            ))}
-
-            <path d={archPath(UA, 197, 343)} fill="none" stroke="#dde5f2"
-              strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d={archPath(LA, 163, 17)} fill="none" stroke="#dde5f2"
-              strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d={archPath({...UA, rx:UA.rx+20, ry:UA.ry+18}, 198, 342)}
-              fill="none" stroke="#edf1f8" strokeWidth="1" strokeLinecap="round"/>
-            <path d={archPath({...LA, rx:LA.rx+20, ry:LA.ry+18}, 162, 18)}
-              fill="none" stroke="#edf1f8" strokeWidth="1" strokeLinecap="round"/>
-
-            <line x1="200" y1="220" x2="200" y2="238" stroke="#c8d4e8"
-              strokeWidth="1.5" strokeLinecap="round" strokeDasharray="2,3"/>
-            <circle cx="200" cy="229" r="2.5" fill="#dde5f2"/>
-
-            {UPPER.map((tooth, i) => {
-              const pos = archPos(UA, UA_DEG[i]);
-              return <Tooth key={tooth.n} {...tooth} {...pos}/>;
-            })}
-            {LOWER.map((tooth, i) => {
-              const pos = archPos(LA, LA_DEG[i]);
-              return <Tooth key={tooth.n} {...tooth} {...pos}/>;
-            })}
-          </svg>
-        </div>
-
-        {/* Footer */}
-        <div style={{ marginTop: "8px", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 4px" }}>
-          <span style={{ fontSize: "11px", color: "#94a3b8" }}>
-            {selArr.length > 0
-              ? `${selArr.length} tooth${selArr.length > 1 ? "teeth" : ""} selected`
-              : "Tap or drag to select"}
-          </span>
-          <span style={{ fontSize: "11px", color: "#cbd5e1", fontFamily: "monospace" }}>
-            [{selArr.join(",")}]
-          </span>
-        </div>
-
-        {selArr.length > 0 && (
-          <button className="confirm-btn"
-            onClick={() => alert(`Selected: [${selArr.join(", ")}]`)}>
-            Confirm Selection — تأكيد الاختيار
-          </button>
-        )}
-      </div>
-    </div>
-  );
+  // teeth
+  UPPER.forEach((tooth,i)=>{ const p=archPos(UA,UA_DEG[i]); addTooth(svg,tooth.n,tooth.t,p.x,p.y,p.rot); });
+  LOWER.forEach((tooth,i)=>{ const p=archPos(LA,LA_DEG[i]); addTooth(svg,tooth.n,tooth.t,p.x,p.y,p.rot); });
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<DentalSelector/>);
+function addTooth(svg, n, t, x, y, rot) {
+  const g = S("g",{transform:`translate(${x.toFixed(1)},${y.toFixed(1)}) rotate(${rot.toFixed(1)})`});
+  g.style.cursor="pointer";
+
+  const glow = S("path",{d:SHAPE[t],fill:"none",stroke:"#3b82f6","stroke-width":"11","stroke-opacity":"0.18","stroke-linejoin":"round"});
+  glow.style.display="none";
+
+  const shadow = S("path",{d:SHAPE[t],fill:"rgba(30,50,90,0.10)",transform:"translate(0.5,1.5)"});
+  const body   = S("path",{d:SHAPE[t],fill:"#e9edf5",stroke:"#b8c4d8","stroke-width":"1.2","stroke-linejoin":"round"});
+  const hl     = S("path",{d:HIGHLIGHT[t],fill:"rgba(255,255,255,0.55)"});
+
+  const label  = S("text",{"text-anchor":"middle",dy:"0.36em","font-size":t==="M"?"7.5":"7","font-weight":"500",fill:"#5a6a82","font-family":"'DM Sans',Arial,sans-serif"});
+  label.style.pointerEvents="none"; label.style.userSelect="none";
+  label.textContent=n;
+
+  g.append(glow, shadow, body, hl, label);
+
+  g.addEventListener("click",()=>toggleTooth(n,t));
+  g.addEventListener("pointerenter",()=>{ if(!selected.has(n)){ body.setAttribute("fill","#d4dce9"); body.setAttribute("stroke","#607090"); }});
+  g.addEventListener("pointerleave",()=>{ if(!selected.has(n)){ body.setAttribute("fill","#e9edf5"); body.setAttribute("stroke","#b8c4d8"); }});
+
+  g.dataset.n = n;
+  svg.appendChild(g);
+}
+
+function toggleTooth(n) {
+  selected.has(n) ? selected.delete(n) : selected.add(n);
+  const g = document.querySelector(`[data-n="${n}"]`);
+  const on = selected.has(n);
+  const glow=g.children[0], body=g.children[2], hl=g.children[3], lbl=g.children[4];
+  glow.style.display = on?"":"none";
+  body.setAttribute("fill", on?`url(#sg${n})`:"#e9edf5");
+  body.setAttribute("stroke", on?"#1a44c8":"#b8c4d8");
+  body.setAttribute("stroke-width", on?"1.8":"1.2");
+  hl.setAttribute("fill", on?"rgba(255,255,255,0.15)":"rgba(255,255,255,0.55)");
+  lbl.setAttribute("fill", on?"#fff":"#5a6a82");
+  lbl.setAttribute("font-weight", on?"700":"500");
+  updateUI();
+}
+
+function removeTooth(n){ selected.delete(n); toggleTooth(n); }
+
+function clearAll(){
+  const copy=[...selected];
+  selected.clear();
+  copy.forEach(n=>{
+    const g=document.querySelector(`[data-n="${n}"]`);
+    const glow=g.children[0],body=g.children[2],hl=g.children[3],lbl=g.children[4];
+    glow.style.display="none";
+    body.setAttribute("fill","#e9edf5"); body.setAttribute("stroke","#b8c4d8"); body.setAttribute("stroke-width","1.2");
+    hl.setAttribute("fill","rgba(255,255,255,0.55)");
+    lbl.setAttribute("fill","#5a6a82"); lbl.setAttribute("font-weight","500");
+  });
+  updateUI();
+}
+
+function updateUI(){
+  const arr=[...selected].sort((a,b)=>a-b);
+  const box=document.getElementById("chipsBox");
+  const hint=document.getElementById("footerHint");
+  const nums=document.getElementById("footerNums");
+  const btn=document.getElementById("confirmBtn");
+  nums.textContent=`[${arr.join(",")}]`;
+  if(arr.length===0){
+    box.innerHTML=`<span class="chips-placeholder">اضغط على السن لتحديده — Tap a tooth to select</span>`;
+    hint.textContent="Tap to select"; btn.style.display="none";
+  } else {
+    let h=`<span class="chips-label">${arr.length} selected</span>`;
+    arr.forEach(n=>{ h+=`<button class="chip" onclick="removeTooth(${n})">${n} <span>×</span></button>`; });
+    h+=`<button class="clear-btn" onclick="clearAll()">Clear all</button>`;
+    box.innerHTML=h;
+    hint.textContent=`${arr.length} tooth${arr.length>1?"teeth":""} selected`;
+    btn.style.display="block";
+  }
+}
+
+function confirmSelection(){
+  const arr=[...selected].sort((a,b)=>a-b);
+  alert(`الأسنان المحددة:\n[${arr.join(", ")}]`);
+}
+
+buildSVG();
 </script>
 </body>
 </html>
