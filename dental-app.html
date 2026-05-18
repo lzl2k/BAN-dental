@@ -6,457 +6,1001 @@
 <meta name="google" content="notranslate">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#0d2d4a">
+<meta name="theme-color" content="#0f172a">
 <title>MAS Dental Lab</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{
-  --blue:#2d7aaa;--blue2:#1a5070;--blue3:#0d2d4a;
-  --lb:#cde3f0;--bg:#dce8f0;--bg2:#e8f2f8;--white:#f4f9fc;
-  --text:#0a2035;--text2:#2a5070;--text3:#6a90a8;
-  --border:#b0cfe0;--gold:#d4a017;--green:#1e8a4a;--red:#c0392b;
-  --fa:#2563eb;--cb:#7c3aed;--r:16px;--r2:11px;
+/* ═══════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════ */
+:root {
+  --bg:      #f1f5f9;
+  --bg2:     #f8fafc;
+  --white:   #ffffff;
+  --text:    #0f172a;
+  --text2:   #475569;
+  --text3:   #94a3b8;
+  --border:  #e2e8f0;
+  --border2: #cbd5e1;
+  --blue:    #2563eb;
+  --blue2:   #1d4ed8;
+  --blue3:   #1e3a8a;
+  --lb:      #eff6ff;
+  --lb2:     #dbeafe;
+  --gold:    #d97706;
+  --green:   #059669;
+  --red:     #dc2626;
+  --fa:      #2563eb;
+  --cb:      #7c3aed;
+  --header:  #0f172a;
+  --r:       12px;
+  --r2:      8px;
+  --shadow:  0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow2: 0 4px 12px rgba(0,0,0,0.10);
 }
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow:hidden;font-family:'Cairo',sans-serif;background:var(--bg)}
 
-/* LOGIN */
-#login{position:fixed;inset:0;background:linear-gradient(160deg,#061520,#0d2d4a,#1a5070,#2d7aaa);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;padding:32px;gap:22px;text-align:center}
-.lmas{font-size:3.2rem;font-weight:900;color:#fff;letter-spacing:8px;line-height:1;text-shadow:0 4px 20px rgba(0,0,0,0.3)}
-.ldl{font-size:0.7rem;color:rgba(255,255,255,0.5);letter-spacing:5px;text-transform:uppercase}
-.lsub{font-size:0.84rem;color:rgba(255,255,255,0.6)}
-.gbtn{display:flex;align-items:center;gap:12px;justify-content:center;background:#fff;color:#0a2035;padding:15px 28px;border-radius:50px;border:none;cursor:pointer;font-family:'Cairo',sans-serif;font-size:1rem;font-weight:700;width:100%;max-width:300px;box-shadow:0 8px 28px rgba(0,0,0,0.25);transition:transform 0.15s}
-.gbtn:active{transform:scale(0.97)}
-.gico{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.lnote{font-size:0.68rem;color:rgba(255,255,255,0.4)}
+/* ═══════════════════════════════
+   RESET & BASE
+═══════════════════════════════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html, body { height:100%; overflow:hidden; font-family:'Cairo',sans-serif; background:var(--bg); color:var(--text); font-size:14px; }
 
-/* APP */
-#app{display:none;flex-direction:column;height:100%}
-#app.on{display:flex}
+/* ═══════════════════════════════
+   LOGIN PAGE
+═══════════════════════════════ */
+#login {
+  position:fixed; inset:0; z-index:9999;
+  background:var(--header);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:32px; gap:20px; text-align:center;
+}
+.login-logo { margin-bottom:8px; }
+.login-mas { font-size:2.5rem; font-weight:900; color:#fff; letter-spacing:6px; line-height:1; }
+.login-dl { font-size:0.65rem; color:#475569; letter-spacing:4px; text-transform:uppercase; margin-top:3px; }
+.login-divider { width:40px; height:2px; background:var(--blue); border-radius:1px; margin:4px auto; }
+.login-subtitle { font-size:0.82rem; color:#64748b; }
+.login-btn {
+  display:flex; align-items:center; gap:10px; justify-content:center;
+  background:#fff; color:var(--text); padding:13px 24px;
+  border-radius:50px; border:none; cursor:pointer;
+  font-family:'Cairo',sans-serif; font-size:0.9rem; font-weight:700;
+  width:100%; max-width:280px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.3);
+  transition:transform 0.15s, box-shadow 0.15s;
+}
+.login-btn:active { transform:scale(0.97); box-shadow:0 2px 8px rgba(0,0,0,0.2); }
+.login-btn svg { width:18px; height:18px; flex-shrink:0; }
+.login-note { font-size:0.68rem; color:#334155; }
 
-/* HEADER */
-.hdr{background:linear-gradient(135deg,#061520,#0d2d4a,#1a5070);padding:12px 16px 0;flex-shrink:0;box-shadow:0 4px 20px rgba(6,21,32,0.4)}
-.hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.hmas{font-size:1.2rem;font-weight:900;color:#fff;letter-spacing:4px;line-height:1}
-.hdl{font-size:0.5rem;color:rgba(255,255,255,0.5);letter-spacing:2.5px;text-transform:uppercase}
-.hav{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.18);border:2.5px solid rgba(255,255,255,0.35);display:flex;align-items:center;justify-content:center;font-size:0.88rem;font-weight:700;color:#fff;overflow:hidden;cursor:pointer}
-.hav img{width:100%;height:100%;object-fit:cover}
-.srow{display:flex;gap:8px;padding-bottom:12px}
-.sp{flex:1;background:rgba(255,255,255,0.12);border-radius:12px;padding:10px 4px;text-align:center;border:1.5px solid rgba(255,255,255,0.15)}
-.spn{font-size:1.25rem;font-weight:900;color:#fff}
-.spl{font-size:0.55rem;color:rgba(255,255,255,0.65);margin-top:1px;font-weight:600}
+/* ═══════════════════════════════
+   APP SHELL
+═══════════════════════════════ */
+#app { display:none; flex-direction:column; height:100%; }
+#app.on { display:flex; }
 
-/* TABS */
-.tabs{background:var(--white);border-bottom:2px solid var(--border);display:flex;flex-shrink:0;box-shadow:0 2px 8px rgba(10,32,53,0.08)}
-.tb{flex:1;padding:10px 2px 9px;text-align:center;cursor:pointer;border:none;background:none;font-family:'Cairo',sans-serif;font-size:0.58rem;font-weight:700;color:var(--text3);border-bottom:2.5px solid transparent;margin-bottom:-2px;transition:color 0.2s}
-.tb.on{color:var(--blue);border-bottom-color:var(--blue)}
-.tbico{font-size:1.15rem;display:block;margin-bottom:1px}
-.tbav{width:22px;height:22px;border-radius:50%;margin:0 auto 2px;background:var(--lb);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:var(--blue2);overflow:hidden;border:2px solid var(--border)}
-.tbav img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+/* ═══════════════════════════════
+   HEADER
+═══════════════════════════════ */
+.hdr {
+  background:var(--header);
+  padding:12px 14px 10px;
+  flex-shrink:0;
+  border-bottom:1px solid #1e293b;
+}
+.hdr-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.hdr-brand {}
+.hdr-mas { font-size:1rem; font-weight:900; color:#fff; letter-spacing:3px; line-height:1; }
+.hdr-dl { font-size:0.47rem; color:#475569; letter-spacing:2px; text-transform:uppercase; }
+.hdr-av {
+  width:34px; height:34px; border-radius:50%;
+  background:#1e293b; border:1.5px solid #334155;
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.8rem; font-weight:700; color:#94a3b8;
+  overflow:hidden; cursor:pointer; flex-shrink:0;
+}
+.hdr-av img { width:100%; height:100%; object-fit:cover; }
 
-/* CONTENT */
-.content{flex:1;overflow-y:auto;background:var(--bg)}
-.pg{display:none;padding:14px;padding-bottom:28px}
-.pg.on{display:block}
-.slbl{font-size:0.68rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:9px}
+/* Stats ribbon */
+.stats-ribbon { display:flex; gap:6px; }
+.stat-pill {
+  flex:1; background:#1e293b; border-radius:8px;
+  padding:8px 4px; text-align:center;
+  border:1px solid #334155;
+}
+.stat-pill-n { font-size:1.1rem; font-weight:800; color:#fff; line-height:1; }
+.stat-pill-l { font-size:0.52rem; color:#64748b; margin-top:2px; font-weight:600; }
 
-/* CARD */
-.card{background:var(--white);border-radius:var(--r);padding:18px;margin-bottom:13px;box-shadow:0 3px 18px rgba(10,32,53,0.1);border:1.5px solid var(--border)}
+/* ═══════════════════════════════
+   TAB BAR
+═══════════════════════════════ */
+.tabs {
+  background:var(--white);
+  display:flex; flex-shrink:0;
+  border-bottom:1px solid var(--border);
+  box-shadow:0 1px 0 var(--border);
+}
+.tab {
+  flex:1; padding:9px 2px 8px; text-align:center;
+  cursor:pointer; border:none; background:none;
+  font-family:'Cairo',sans-serif; font-size:0.55rem; font-weight:700;
+  color:var(--text3); position:relative;
+  transition:color 0.18s;
+}
+.tab.on { color:var(--blue); }
+.tab.on::after {
+  content:''; position:absolute; bottom:0; left:20%; right:20%;
+  height:2px; background:var(--blue); border-radius:2px 2px 0 0;
+}
+.tab-icon {
+  width:20px; height:20px; margin:0 auto 2px;
+  display:flex; align-items:center; justify-content:center;
+}
+.tab-icon svg { width:18px; height:18px; }
+.tab-av {
+  width:20px; height:20px; border-radius:50%;
+  margin:0 auto 2px; background:var(--border);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.62rem; font-weight:700; color:var(--text2);
+  overflow:hidden;
+}
+.tab-av img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
 
-/* FORM */
-.fld{margin-bottom:12px}
-.fld label{font-size:0.72rem;font-weight:700;color:var(--text2);display:block;margin-bottom:5px}
-.fld input,.fld select{width:100%;padding:12px 14px;background:var(--bg2);border:2px solid var(--border);border-radius:var(--r2);color:var(--text);font-family:'Cairo',sans-serif;font-size:0.9rem;font-weight:600;outline:none;transition:all 0.2s;-webkit-appearance:none}
-.fld input:focus,.fld select:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(45,122,170,0.15)}
-.fld input::placeholder{color:var(--text3);font-weight:400}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+/* ═══════════════════════════════
+   CONTENT AREA
+═══════════════════════════════ */
+.content { flex:1; overflow-y:auto; background:var(--bg); }
+.page { display:none; padding:12px; padding-bottom:24px; }
+.page.on { display:block; }
 
-/* CASE TYPE */
-.type-toggle{display:flex;border-radius:var(--r2);overflow:hidden;border:2px solid var(--border);background:var(--bg2)}
-.tbtn{flex:1;padding:13px 8px;border:none;background:transparent;font-family:'Cairo',sans-serif;font-size:0.87rem;font-weight:700;color:var(--text2);cursor:pointer;transition:all 0.2s;text-align:center}
-.tbtn.acb{background:var(--cb);color:#fff;box-shadow:inset 0 2px 8px rgba(124,58,237,0.3)}
-.tbtn.afa{background:var(--fa);color:#fff;box-shadow:inset 0 2px 8px rgba(37,99,235,0.3)}
+/* ═══════════════════════════════
+   SECTION LABEL
+═══════════════════════════════ */
+.sec-label {
+  font-size:0.62rem; font-weight:700; color:var(--text3);
+  text-transform:uppercase; letter-spacing:0.8px;
+  margin-bottom:6px; padding-right:2px;
+}
 
-/* SHADE */
-.shade-btn{width:100%;padding:12px 14px;background:var(--bg2);border:2px solid var(--border);border-radius:var(--r2);cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:'Cairo',sans-serif;transition:all 0.2s}
-.shade-btn.picked{border-color:#c89010;background:#fdf5e0}
-.shade-l{display:flex;align-items:center;gap:10px}
-.shade-dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;box-shadow:inset 0 1px 3px rgba(0,0,0,0.1)}
-.shade-txt{font-size:0.88rem;font-weight:600;color:var(--text3)}
-.shade-btn.picked .shade-txt{color:#7a5500;font-weight:700}
-.shade-arr{font-size:0.65rem;color:var(--text3)}
+/* ═══════════════════════════════
+   CARD
+═══════════════════════════════ */
+.card {
+  background:var(--white);
+  border-radius:var(--r);
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  padding:14px;
+  margin-bottom:10px;
+}
 
-/* SAVE BTN */
-.save-btn{width:100%;padding:16px;border:none;border-radius:var(--r);background:linear-gradient(135deg,#1a5070,#061520);color:#fff;font-family:'Cairo',sans-serif;font-size:1.05rem;font-weight:900;cursor:pointer;box-shadow:0 8px 24px rgba(6,21,32,0.4);transition:transform 0.15s;letter-spacing:0.3px}
-.save-btn:active{transform:scale(0.98)}
+/* ═══════════════════════════════
+   FORM COMPONENTS
+═══════════════════════════════ */
+.fld { margin-bottom:10px; }
+.fld-label {
+  font-size:0.68rem; font-weight:700; color:var(--text2);
+  display:flex; align-items:center; gap:5px;
+  margin-bottom:4px;
+}
+.fld-label svg { width:13px; height:13px; }
+.fld-input, .fld-select {
+  width:100%; padding:9px 12px;
+  background:var(--bg2);
+  border:1.5px solid var(--border);
+  border-radius:var(--r2);
+  color:var(--text);
+  font-family:'Cairo',sans-serif; font-size:0.85rem; font-weight:600;
+  outline:none; transition:border-color 0.15s, box-shadow 0.15s;
+  -webkit-appearance:none;
+}
+.fld-input:focus, .fld-select:focus {
+  border-color:var(--blue);
+  box-shadow:0 0 0 3px rgba(37,99,235,0.12);
+  background:var(--white);
+}
+.fld-input::placeholder { color:var(--text3); font-weight:400; }
+.fld-input[readonly] { cursor:pointer; }
+.fld-input[type="number"] { text-align:center; }
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; }
 
-/* FILTER */
-.frow{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap}
-.frow select{flex:1;min-width:70px;padding:10px 11px;background:var(--white);border:2px solid var(--border);border-radius:var(--r2);color:var(--text);font-weight:600;font-family:'Cairo',sans-serif;font-size:0.75rem;outline:none;-webkit-appearance:none}
-.cbtn{padding:10px 12px;background:var(--white);border:2px solid var(--border);border-radius:var(--r2);font-family:'Cairo',sans-serif;font-size:0.73rem;font-weight:700;cursor:pointer;color:var(--blue2)}
-.pbtn{padding:10px 12px;background:#fff5f4;border:2px solid #f0c0b8;border-radius:var(--r2);font-family:'Cairo',sans-serif;font-size:0.73rem;font-weight:700;cursor:pointer;color:var(--red)}
+/* ═══════════════════════════════
+   TYPE TOGGLE (CB / FA)
+═══════════════════════════════ */
+.type-seg {
+  display:flex; border-radius:var(--r2);
+  border:1.5px solid var(--border);
+  background:var(--bg2); overflow:hidden;
+}
+.type-seg-btn {
+  flex:1; padding:10px 8px; border:none;
+  background:transparent;
+  font-family:'Cairo',sans-serif; font-size:0.82rem; font-weight:700;
+  color:var(--text2); cursor:pointer;
+  transition:all 0.18s; text-align:center;
+}
+.type-seg-btn.active-cb { background:var(--cb); color:#fff; }
+.type-seg-btn.active-fa { background:var(--fa); color:#fff; }
 
-/* LIST */
-.rinfo{font-size:0.73rem;color:var(--text2);font-weight:600;margin-bottom:10px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px}
-.rinfo b{color:var(--blue2)}
-.tsum{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
-.tfa{font-size:0.68rem;padding:4px 12px;border-radius:20px;font-weight:700;background:#eff6ff;color:var(--fa);border:1.5px solid #bfdbfe}
-.tcb{font-size:0.68rem;padding:4px 12px;border-radius:20px;font-weight:700;background:#f5f3ff;color:var(--cb);border:1.5px solid #ddd6fe}
-.ccard{background:var(--white);border-radius:var(--r);margin-bottom:11px;box-shadow:0 3px 16px rgba(10,32,53,0.1);border:1.5px solid var(--border);overflow:hidden;animation:up 0.25s ease}
-@keyframes up{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.ccard-head{display:flex;justify-content:space-between;align-items:center;padding:14px 15px 10px}
-.ccard-doc{font-size:0.95rem;font-weight:900;color:var(--text)}
-.ccard-pat{font-size:0.7rem;color:var(--text2);margin-top:2px;font-weight:600}
-.ccard-badge{background:linear-gradient(135deg,#2d7aaa,#0d2d4a);color:#fff;padding:7px 14px;border-radius:30px;font-weight:900;font-size:0.88rem;white-space:nowrap;box-shadow:0 3px 10px rgba(13,45,74,0.3);flex-shrink:0}
-.ctags{display:flex;flex-wrap:wrap;gap:5px;padding:0 15px 11px}
-.ctag{font-size:0.65rem;padding:3px 10px;border-radius:20px;font-weight:700}
-.ctag-d{background:var(--lb);color:var(--blue2)}
-.ctag-s{background:#fdf5e0;color:#7a5500}
-.ctag-fa{background:#eff6ff;color:var(--fa)}
-.ctag-cb{background:#f5f3ff;color:var(--cb)}
-.cacts{display:flex;border-top:1.5px solid var(--border)}
-.ace,.acd{flex:1;padding:12px;border:none;background:none;font-family:'Cairo',sans-serif;font-size:0.77rem;font-weight:700;cursor:pointer;transition:background 0.15s}
-.ace{color:var(--blue2);border-left:1.5px solid var(--border)}.ace:active{background:var(--lb)}
-.acd{color:var(--red)}.acd:active{background:#fde8e5}
+/* ═══════════════════════════════
+   SHADE BUTTON
+═══════════════════════════════ */
+.shade-trigger {
+  width:100%; padding:9px 12px;
+  background:var(--bg2); border:1.5px solid var(--border);
+  border-radius:var(--r2); cursor:pointer;
+  display:flex; align-items:center; justify-content:space-between;
+  font-family:'Cairo',sans-serif; transition:all 0.15s;
+}
+.shade-trigger.picked { border-color:#b45309; background:#fefce8; }
+.shade-left { display:flex; align-items:center; gap:8px; }
+.shade-swatch {
+  width:18px; height:18px; border-radius:50%;
+  border:1.5px solid var(--border); flex-shrink:0;
+  box-shadow:inset 0 1px 2px rgba(0,0,0,0.08);
+}
+.shade-text { font-size:0.85rem; font-weight:600; color:var(--text3); }
+.shade-trigger.picked .shade-text { color:#92400e; font-weight:700; }
+.shade-chevron { color:var(--text3); }
+.shade-chevron svg { width:14px; height:14px; }
 
-/* STATS */
-.stfrow{display:flex;gap:8px;margin-bottom:10px}
-.stfrow select{flex:1;padding:10px 11px;background:var(--white);border:2px solid var(--border);border-radius:var(--r2);color:var(--text);font-weight:600;font-family:'Cairo',sans-serif;font-size:0.75rem;outline:none;-webkit-appearance:none}
-.period{background:var(--white);border-radius:var(--r2);padding:10px;text-align:center;font-size:0.72rem;font-weight:700;color:var(--blue2);margin-bottom:12px;border:1.5px solid var(--border)}
-.sg4{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px}
-.sbox{background:var(--white);border-radius:var(--r);padding:15px 8px;text-align:center;box-shadow:0 3px 14px rgba(10,32,53,0.1);border:1.5px solid var(--border)}
-.sbox-n{font-size:1.55rem;font-weight:900;margin-bottom:3px}
-.sbox-l{font-size:0.62rem;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:0.3px}
-.tsrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px}
-.tsbox{border-radius:var(--r);padding:14px 10px;text-align:center;border:2px solid}
-.tsbox.fa{background:#eff6ff;border-color:#bfdbfe}
-.tsbox.cb{background:#f5f3ff;border-color:#ddd6fe}
-.tsbox-n{font-size:1.45rem;font-weight:900;margin-bottom:2px}
-.tsbox-l{font-size:0.63rem;font-weight:700}
-.doc-item{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.doc-rk{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:900;flex-shrink:0}
-.rk-gold{background:linear-gradient(135deg,#f0c040,#d4a017);color:#5a3a00;box-shadow:0 3px 10px rgba(212,160,23,0.4)}
-.rk-silver{background:linear-gradient(135deg,#d8d8d8,#a0a0a0);color:#3a3a3a;box-shadow:0 2px 6px rgba(0,0,0,0.12)}
-.rk-green{background:linear-gradient(135deg,#2ecc71,#1e8a4a);color:#fff;box-shadow:0 2px 6px rgba(30,138,74,0.3)}
-.doc-inf{flex:1;min-width:0}
-.doc-nm{font-size:0.87rem;font-weight:700;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.doc-bw{margin-top:5px;height:6px;background:var(--lb);border-radius:3px;overflow:hidden}
-.doc-b{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--blue),var(--blue3));transition:width 0.6s}
-.doc-n{font-size:0.87rem;font-weight:900;color:var(--blue2);flex-shrink:0}
-.mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
-.mbox{background:var(--bg2);border-radius:11px;padding:9px 4px;text-align:center;border:1.5px solid var(--border)}
-.mbox-n{font-size:0.92rem;font-weight:900}
-.mbox-l{font-size:0.56rem;color:var(--text2);margin-top:1px;font-weight:600}
-.sdist{display:flex;flex-direction:column;gap:9px}
-.sd-r{display:flex;align-items:center;gap:10px}
-.sd-nm{font-size:0.74rem;color:var(--text2);font-weight:700;min-width:52px}
-.sd-bw{flex:1;height:7px;background:var(--lb);border-radius:4px;overflow:hidden}
-.sd-b{height:100%;border-radius:4px;background:linear-gradient(90deg,#d4a017,#f0c040)}
-.sd-c{font-size:0.7rem;font-weight:700;color:var(--text2);min-width:18px;text-align:left}
+/* ═══════════════════════════════
+   PRIMARY BUTTON
+═══════════════════════════════ */
+.btn-primary {
+  width:100%; padding:13px;
+  background:var(--blue); color:#fff;
+  border:none; border-radius:var(--r);
+  font-family:'Cairo',sans-serif; font-size:0.9rem; font-weight:800;
+  cursor:pointer; display:flex; align-items:center; justify-content:center; gap:7px;
+  box-shadow:0 4px 14px rgba(37,99,235,0.35);
+  transition:transform 0.15s, box-shadow 0.15s;
+  letter-spacing:0.2px;
+}
+.btn-primary:active { transform:scale(0.98); box-shadow:0 2px 6px rgba(37,99,235,0.2); }
+.btn-primary svg { width:16px; height:16px; }
+.btn-ghost {
+  padding:8px 12px; background:var(--white);
+  border:1.5px solid var(--border); border-radius:var(--r2);
+  font-family:'Cairo',sans-serif; font-size:0.72rem; font-weight:700;
+  color:var(--text2); cursor:pointer; display:flex; align-items:center; gap:5px;
+  transition:all 0.15s;
+}
+.btn-ghost:active { background:var(--bg); }
+.btn-ghost svg { width:13px; height:13px; }
+.btn-danger {
+  padding:8px 12px; background:#fef2f2;
+  border:1.5px solid #fecaca; border-radius:var(--r2);
+  font-family:'Cairo',sans-serif; font-size:0.72rem; font-weight:700;
+  color:var(--red); cursor:pointer; display:flex; align-items:center; gap:5px;
+  transition:all 0.15s;
+}
+.btn-danger:active { background:#fee2e2; }
+.btn-danger svg { width:13px; height:13px; }
 
-/* ACCOUNT */
-.acc-card{background:linear-gradient(145deg,#061520,#1a5070);border-radius:var(--r);padding:24px;text-align:center;margin-bottom:13px;box-shadow:0 10px 28px rgba(6,21,32,0.4)}
-.acc-av{width:68px;height:68px;border-radius:50%;margin:0 auto 11px;background:rgba(255,255,255,0.18);border:3px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;font-size:1.7rem;overflow:hidden}
-.acc-av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.acc-nm{font-size:1rem;font-weight:700;color:#fff}
-.acc-em{font-size:0.71rem;color:rgba(255,255,255,0.65);margin-top:3px}
-.info-c{background:var(--white);border-radius:13px;padding:14px 15px;margin-bottom:10px;display:flex;align-items:center;gap:13px;box-shadow:0 3px 12px rgba(10,32,53,0.08);border:1.5px solid var(--border)}
-.info-ico{width:40px;height:40px;border-radius:12px;background:var(--lb);display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0}
-.info-ti{font-size:0.82rem;font-weight:700;color:var(--text)}
-.info-de{font-size:0.69rem;color:var(--text2);margin-top:2px}
-.ltog{display:flex;border-radius:var(--r2);overflow:hidden;border:2px solid var(--border);background:var(--bg2);margin-top:9px}
-.lbtn{flex:1;padding:12px;border:none;background:transparent;font-family:'Cairo',sans-serif;font-size:0.87rem;font-weight:700;color:var(--text2);cursor:pointer;transition:all 0.2s}
-.lbtn.active{background:var(--blue);color:#fff}
-.logout-btn{width:100%;padding:14px;border:2px solid #f0b8b0;border-radius:var(--r);background:var(--white);color:var(--red);font-family:'Cairo',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;margin-top:4px}
-.logout-btn:active{background:#fde8e5}
+/* ═══════════════════════════════
+   FILTER ROW
+═══════════════════════════════ */
+.filter-row { display:flex; gap:6px; margin-bottom:10px; flex-wrap:wrap; }
+.filter-select {
+  flex:1; min-width:70px;
+  padding:8px 10px; background:var(--white);
+  border:1.5px solid var(--border); border-radius:var(--r2);
+  color:var(--text); font-weight:600;
+  font-family:'Cairo',sans-serif; font-size:0.72rem;
+  outline:none; -webkit-appearance:none;
+}
+.filter-actions { display:flex; gap:6px; }
 
-/* MODALS */
-.ovb{position:fixed;inset:0;background:rgba(6,21,32,0.55);backdrop-filter:blur(8px);z-index:500;display:none;align-items:flex-end}
-.ovb.on{display:flex}
-.modal{background:var(--white);border-radius:24px 24px 0 0;padding:20px;width:100%;max-height:88vh;overflow-y:auto;animation:su 0.28s ease;border-top:3px solid var(--blue)}
-@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.modal-t{font-size:0.97rem;font-weight:900;color:var(--text);margin-bottom:15px}
-.macts{display:flex;gap:10px;margin-top:14px}
-.mcan{flex:1;padding:13px;background:var(--bg2);border:2px solid var(--border);border-radius:var(--r2);color:var(--text2);font-family:'Cairo',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer}
-.msav{flex:2;padding:13px;background:linear-gradient(135deg,var(--blue),var(--blue3));color:#fff;border:none;border-radius:var(--r2);font-family:'Cairo',sans-serif;font-size:0.88rem;font-weight:900;cursor:pointer;box-shadow:0 5px 16px rgba(13,45,74,0.4)}
-.del-box{text-align:center;padding:10px 0}
-.del-ico{font-size:3rem;margin-bottom:14px}
-.del-t{font-size:1rem;font-weight:900;color:var(--text);margin-bottom:7px}
-.del-s{font-size:0.79rem;color:var(--text2);margin-bottom:22px}
-.del-yes{width:100%;padding:14px;background:var(--red);color:#fff;border:none;border-radius:var(--r2);font-family:'Cairo',sans-serif;font-size:0.93rem;font-weight:700;cursor:pointer;margin-bottom:9px;box-shadow:0 5px 16px rgba(192,57,43,0.3)}
+/* ═══════════════════════════════
+   RESULT INFO
+═══════════════════════════════ */
+.result-info {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:8px; flex-wrap:wrap; gap:4px;
+}
+.result-count { font-size:0.72rem; font-weight:700; color:var(--text2); }
+.result-sum { font-size:0.72rem; font-weight:700; color:var(--blue); }
+.type-badges { display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap; }
+.badge-fa {
+  font-size:0.65rem; padding:3px 10px; border-radius:20px;
+  font-weight:700; background:var(--lb); color:var(--fa);
+  border:1px solid var(--lb2);
+}
+.badge-cb {
+  font-size:0.65rem; padding:3px 10px; border-radius:20px;
+  font-weight:700; background:#f5f3ff; color:var(--cb);
+  border:1px solid #ddd6fe;
+}
 
-/* DOC PICKER */
-#docOv{position:fixed;inset:0;background:rgba(6,21,32,0.55);backdrop-filter:blur(8px);z-index:700;display:none;align-items:flex-end}
-#docOv.on{display:flex}
-.doc-box{background:var(--white);border-radius:24px 24px 0 0;padding:20px;width:100%;max-height:70vh;overflow-y:auto;animation:su 0.28s ease;border-top:3px solid var(--blue)}
-.doc-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-.doc-t{font-size:0.95rem;font-weight:900;color:var(--text)}
-.xb{width:30px;height:30px;border-radius:50%;background:var(--lb);border:none;cursor:pointer;font-size:0.9rem;color:var(--text2);font-weight:700;display:flex;align-items:center;justify-content:center}
-.doc-search{width:100%;padding:12px 14px;background:var(--bg2);border:2px solid var(--border);border-radius:var(--r2);color:var(--text);font-family:'Cairo',sans-serif;font-size:0.88rem;font-weight:600;outline:none;margin-bottom:11px}
-.doc-search:focus{border-color:var(--blue)}
-.doc-search::placeholder{color:var(--text3);font-weight:400}
-.doc-list{display:flex;flex-direction:column;gap:7px;margin-bottom:9px}
-.doc-opt{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg2);border-radius:var(--r2);cursor:pointer;border:1.5px solid var(--border);transition:all 0.15s}
-.doc-opt:active{background:var(--lb);border-color:var(--blue)}
-.doc-ico{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue3));color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.88rem;font-weight:700;flex-shrink:0}
-.doc-nm{font-size:0.9rem;font-weight:700;color:var(--text)}
-.doc-ct{font-size:0.7rem;color:var(--text2);margin-top:1px}
-.doc-new{width:100%;padding:13px;background:var(--white);border:2px dashed var(--blue);border-radius:var(--r2);color:var(--blue2);font-family:'Cairo',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;display:none;align-items:center;justify-content:center;gap:8px}
-.doc-empty{text-align:center;padding:20px;color:var(--text3);font-size:0.82rem}
+/* ═══════════════════════════════
+   CASE CARD
+═══════════════════════════════ */
+.case-card {
+  background:var(--white); border-radius:var(--r);
+  border:1px solid var(--border); box-shadow:var(--shadow);
+  margin-bottom:8px; overflow:hidden;
+  animation:fadeUp 0.22s ease;
+}
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(5px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.case-card-top {
+  display:flex; justify-content:space-between; align-items:flex-start;
+  padding:12px 13px 8px;
+}
+.case-card-info {}
+.case-card-doc { font-size:0.88rem; font-weight:800; color:var(--text); }
+.case-card-pat { font-size:0.68rem; color:var(--text2); margin-top:2px; font-weight:500; }
+.case-card-badge {
+  background:var(--blue); color:#fff;
+  padding:5px 12px; border-radius:20px;
+  font-weight:800; font-size:0.82rem; white-space:nowrap;
+  flex-shrink:0; margin-right:4px;
+}
+.case-card-tags { display:flex; flex-wrap:wrap; gap:4px; padding:0 13px 9px; }
+.ctag {
+  font-size:0.62rem; padding:2px 8px; border-radius:20px; font-weight:700;
+}
+.ctag-date { background:#f1f5f9; color:#475569; }
+.ctag-shade { background:#fef9c3; color:#854d0e; }
+.ctag-fa { background:var(--lb); color:var(--fa); }
+.ctag-cb { background:#f5f3ff; color:var(--cb); }
+.case-card-actions {
+  display:flex; border-top:1px solid var(--border);
+}
+.case-action {
+  flex:1; padding:10px; border:none; background:none;
+  font-family:'Cairo',sans-serif; font-size:0.72rem; font-weight:700;
+  cursor:pointer; display:flex; align-items:center; justify-content:center; gap:5px;
+  transition:background 0.15s;
+}
+.case-action svg { width:12px; height:12px; }
+.case-action-del { color:var(--red); border-left:1px solid var(--border); }
+.case-action-del:active { background:#fef2f2; }
+.case-action-edit { color:var(--blue); }
+.case-action-edit:active { background:var(--lb); }
 
-/* SHADE MODAL */
-#shadeOv{position:fixed;inset:0;background:rgba(6,21,32,0.55);backdrop-filter:blur(8px);z-index:600;display:none;align-items:flex-end}
-#shadeOv.on{display:flex}
-.shade-box{background:var(--white);border-radius:24px 24px 0 0;padding:20px;width:100%;max-height:72vh;overflow-y:auto;animation:su 0.28s ease;border-top:3px solid var(--blue)}
-.shade-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}
-.sgrp{background:var(--bg2);border-radius:13px;padding:12px 13px;margin-bottom:8px;border:1.5px solid var(--border)}
-.sgrp-hdr{display:flex;align-items:center;gap:8px;font-size:0.67rem;font-weight:700;color:var(--text2);margin-bottom:9px;text-transform:uppercase;letter-spacing:0.4px}
-.sgrp-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;border:2px solid rgba(0,0,0,0.1)}
-.chips{display:flex;flex-wrap:wrap;gap:7px}
-.chip{padding:7px 13px;border-radius:20px;font-size:0.73rem;font-weight:700;cursor:pointer;border:2px solid var(--border);background:var(--white);color:var(--text2);font-family:'Cairo',sans-serif;transition:all 0.15s}
-.chip.on{background:#d4a017;border-color:#d4a017;color:#fff;box-shadow:0 2px 8px rgba(212,160,23,0.35)}
-.clear-shade{width:100%;padding:12px;background:var(--bg2);border:2px solid var(--border);border-radius:var(--r2);color:var(--text2);font-family:'Cairo',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;margin-top:10px}
+/* ═══════════════════════════════
+   STATS PAGE
+═══════════════════════════════ */
+.stat-period {
+  background:var(--white); border:1px solid var(--border);
+  border-radius:var(--r2); padding:8px 12px; text-align:center;
+  font-size:0.7rem; font-weight:700; color:var(--blue);
+  margin-bottom:10px; box-shadow:var(--shadow);
+}
+.stat-grid-4 { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px; }
+.stat-box {
+  background:var(--white); border-radius:var(--r);
+  border:1px solid var(--border); box-shadow:var(--shadow);
+  padding:12px 8px; text-align:center;
+}
+.stat-box-n { font-size:1.4rem; font-weight:900; margin-bottom:2px; }
+.stat-box-l { font-size:0.58rem; color:var(--text2); font-weight:700; text-transform:uppercase; letter-spacing:0.4px; }
+.type-stat-row { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px; }
+.type-stat-box {
+  border-radius:var(--r); padding:12px 10px; text-align:center; border:1.5px solid;
+}
+.type-stat-box.fa { background:var(--lb); border-color:var(--lb2); }
+.type-stat-box.cb { background:#f5f3ff; border-color:#ddd6fe; }
+.type-stat-n { font-size:1.3rem; font-weight:900; margin-bottom:2px; }
+.type-stat-l { font-size:0.6rem; font-weight:700; }
+.doc-item { display:flex; align-items:center; gap:9px; margin-bottom:11px; }
+.doc-rank {
+  width:28px; height:28px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.72rem; font-weight:900; flex-shrink:0;
+}
+.rk-gold { background:linear-gradient(135deg,#fbbf24,#d97706); color:#78350f; box-shadow:0 2px 8px rgba(217,119,6,0.35); }
+.rk-silver { background:linear-gradient(135deg,#e2e8f0,#94a3b8); color:#334155; box-shadow:0 2px 6px rgba(0,0,0,0.12); }
+.rk-green { background:linear-gradient(135deg,#34d399,#059669); color:#fff; box-shadow:0 2px 6px rgba(5,150,105,0.3); }
+.doc-info { flex:1; min-width:0; }
+.doc-name { font-size:0.82rem; font-weight:700; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.doc-bar-wrap { margin-top:4px; height:5px; background:var(--border); border-radius:3px; overflow:hidden; }
+.doc-bar { height:100%; border-radius:3px; background:var(--blue); transition:width 0.5s; }
+.doc-teeth { font-size:0.82rem; font-weight:800; color:var(--blue); flex-shrink:0; }
+.month-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:5px; }
+.month-box {
+  background:var(--bg2); border-radius:8px;
+  padding:7px 3px; text-align:center;
+  border:1px solid var(--border);
+}
+.month-n { font-size:0.85rem; font-weight:900; }
+.month-l { font-size:0.52rem; color:var(--text2); margin-top:1px; font-weight:600; }
+.shade-dist { display:flex; flex-direction:column; gap:7px; }
+.shade-row { display:flex; align-items:center; gap:8px; }
+.shade-name { font-size:0.7rem; color:var(--text2); font-weight:700; min-width:50px; }
+.shade-bar-wrap { flex:1; height:6px; background:var(--border); border-radius:3px; overflow:hidden; }
+.shade-bar { height:100%; border-radius:3px; background:linear-gradient(90deg,#d97706,#fbbf24); }
+.shade-count { font-size:0.68rem; font-weight:700; color:var(--text2); min-width:16px; text-align:left; }
 
-/* PDF MODAL */
-#pdfOv{position:fixed;inset:0;background:rgba(6,21,32,0.55);backdrop-filter:blur(8px);z-index:600;display:none;align-items:center;justify-content:center;padding:20px}
-#pdfOv.on{display:flex}
-.pdf-box{background:var(--white);border-radius:var(--r);padding:24px;width:100%;max-width:320px;box-shadow:0 16px 48px rgba(6,21,32,0.3);border:1.5px solid var(--border)}
-.pdf-box-t{font-size:0.97rem;font-weight:900;color:var(--text);margin-bottom:15px}
-.pdf-box .fld{margin-bottom:12px}
-.pdf-box select{width:100%;padding:12px 14px;background:var(--bg2);border:2px solid var(--border);border-radius:var(--r2);color:var(--text);font-family:'Cairo',sans-serif;font-size:0.9rem;outline:none;-webkit-appearance:none}
-.pdf-gen{width:100%;padding:14px;border:none;border-radius:var(--r2);background:linear-gradient(135deg,var(--red),#922b21);color:#fff;font-family:'Cairo',sans-serif;font-size:0.95rem;font-weight:900;cursor:pointer;box-shadow:0 6px 18px rgba(192,57,43,0.35);margin-bottom:10px}
-.pdf-gen:active{opacity:0.9}
+/* ═══════════════════════════════
+   ACCOUNT PAGE
+═══════════════════════════════ */
+.acc-hero {
+  background:var(--header); border-radius:var(--r);
+  padding:20px; text-align:center; margin-bottom:10px;
+  border:1px solid #1e293b; box-shadow:var(--shadow2);
+}
+.acc-avatar {
+  width:60px; height:60px; border-radius:50%; margin:0 auto 10px;
+  background:#1e293b; border:2px solid #334155;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5rem; overflow:hidden;
+}
+.acc-avatar img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+.acc-name { font-size:0.95rem; font-weight:700; color:#fff; }
+.acc-email { font-size:0.68rem; color:#64748b; margin-top:2px; }
+.info-row {
+  background:var(--white); border-radius:var(--r);
+  padding:12px 13px; margin-bottom:8px;
+  display:flex; align-items:center; gap:11px;
+  border:1px solid var(--border); box-shadow:var(--shadow);
+}
+.info-icon {
+  width:36px; height:36px; border-radius:10px;
+  background:var(--bg); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; color:var(--blue);
+}
+.info-icon svg { width:16px; height:16px; }
+.info-title { font-size:0.78rem; font-weight:700; color:var(--text); }
+.info-desc { font-size:0.65rem; color:var(--text2); margin-top:1px; }
+.lang-seg {
+  display:flex; border-radius:var(--r2); overflow:hidden;
+  border:1.5px solid var(--border); background:var(--bg2); margin-top:7px;
+}
+.lang-btn {
+  flex:1; padding:10px; border:none; background:transparent;
+  font-family:'Cairo',sans-serif; font-size:0.82rem; font-weight:700;
+  color:var(--text2); cursor:pointer; transition:all 0.18s;
+}
+.lang-btn.active { background:var(--blue); color:#fff; }
+.logout-btn {
+  width:100%; padding:12px;
+  border:1.5px solid #fecaca; border-radius:var(--r);
+  background:var(--white); color:var(--red);
+  font-family:'Cairo',sans-serif; font-size:0.85rem; font-weight:700;
+  cursor:pointer; display:flex; align-items:center; justify-content:center; gap:7px;
+  margin-top:4px; transition:background 0.15s;
+}
+.logout-btn:active { background:#fef2f2; }
+.logout-btn svg { width:15px; height:15px; }
 
-/* TOAST */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(18px);background:var(--text);color:#fff;padding:12px 22px;border-radius:30px;font-size:0.79rem;font-weight:700;z-index:9000;opacity:0;transition:all 0.3s;white-space:nowrap;box-shadow:0 6px 24px rgba(0,0,0,0.25)}
-.toast.ok{background:var(--green)}.toast.err{background:var(--red)}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* ═══════════════════════════════
+   MODALS & OVERLAYS
+═══════════════════════════════ */
+.overlay {
+  position:fixed; inset:0;
+  background:rgba(15,23,42,0.6);
+  backdrop-filter:blur(6px);
+  z-index:500; display:none; align-items:flex-end;
+}
+.overlay.on { display:flex; }
+.sheet {
+  background:var(--white); border-radius:20px 20px 0 0;
+  padding:18px; width:100%; max-height:88vh; overflow-y:auto;
+  animation:slideUp 0.26s ease;
+  border-top:2.5px solid var(--blue);
+}
+@keyframes slideUp {
+  from { transform:translateY(100%); }
+  to   { transform:translateY(0); }
+}
+.sheet-header {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:13px;
+}
+.sheet-title { font-size:0.9rem; font-weight:800; color:var(--text); }
+.sheet-close {
+  width:28px; height:28px; border-radius:50%;
+  background:var(--bg); border:1px solid var(--border);
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  color:var(--text2);
+}
+.sheet-close svg { width:14px; height:14px; }
+.modal-actions { display:flex; gap:8px; margin-top:12px; }
+.modal-cancel {
+  flex:1; padding:11px; background:var(--bg2);
+  border:1.5px solid var(--border); border-radius:var(--r2);
+  color:var(--text2); font-family:'Cairo',sans-serif;
+  font-size:0.82rem; font-weight:700; cursor:pointer;
+}
+.modal-save {
+  flex:2; padding:11px;
+  background:var(--blue); color:#fff; border:none;
+  border-radius:var(--r2); font-family:'Cairo',sans-serif;
+  font-size:0.82rem; font-weight:800; cursor:pointer;
+  box-shadow:0 3px 10px rgba(37,99,235,0.3);
+}
 
-/* MISC */
-.empty{text-align:center;padding:58px 20px;color:var(--text3)}
-.empty-ico{font-size:3rem;display:block;margin-bottom:12px;opacity:0.35}
-.empty-t{font-size:0.84rem;font-weight:600}
-.loading{text-align:center;padding:50px;color:var(--text3)}
-.spin{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:sp 0.8s linear infinite;margin:0 auto 12px}
-@keyframes sp{to{transform:rotate(360deg)}}
-::-webkit-scrollbar{width:0}
+/* ── Doc Picker ── */
+#docOv { z-index:700; }
+.doc-search-input {
+  width:100%; padding:10px 13px;
+  background:var(--bg2); border:1.5px solid var(--border);
+  border-radius:var(--r2); color:var(--text);
+  font-family:'Cairo',sans-serif; font-size:0.85rem; font-weight:600;
+  outline:none; margin-bottom:10px;
+}
+.doc-search-input:focus { border-color:var(--blue); }
+.doc-search-input::placeholder { color:var(--text3); font-weight:400; }
+.doc-option {
+  display:flex; align-items:center; gap:10px; padding:10px 12px;
+  background:var(--bg2); border-radius:var(--r2);
+  cursor:pointer; border:1px solid var(--border);
+  margin-bottom:5px; transition:all 0.15s;
+}
+.doc-option:active { background:var(--lb); border-color:var(--blue2); }
+.doc-option-icon {
+  width:32px; height:32px; border-radius:50%;
+  background:var(--blue); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.82rem; font-weight:700; flex-shrink:0;
+}
+.doc-option-name { font-size:0.85rem; font-weight:700; color:var(--text); }
+.doc-option-count { font-size:0.65rem; color:var(--text2); margin-top:1px; }
+.doc-add-btn {
+  width:100%; padding:11px;
+  background:var(--white); border:1.5px dashed var(--blue);
+  border-radius:var(--r2); color:var(--blue);
+  font-family:'Cairo',sans-serif; font-size:0.82rem; font-weight:700;
+  cursor:pointer; display:none; align-items:center; justify-content:center; gap:7px;
+}
+.doc-empty { text-align:center; padding:20px; color:var(--text3); font-size:0.78rem; }
+
+/* ── Shade Picker ── */
+#shadeOv { z-index:600; }
+.shade-group {
+  background:var(--bg2); border-radius:var(--r2);
+  padding:10px 12px; margin-bottom:7px;
+  border:1px solid var(--border);
+}
+.shade-group-header {
+  display:flex; align-items:center; gap:7px;
+  font-size:0.62rem; font-weight:700; color:var(--text2);
+  margin-bottom:8px; text-transform:uppercase; letter-spacing:0.4px;
+}
+.shade-swatch-sm {
+  width:12px; height:12px; border-radius:50%;
+  flex-shrink:0; border:1.5px solid rgba(0,0,0,0.08);
+}
+.shade-chips { display:flex; flex-wrap:wrap; gap:5px; }
+.shade-chip {
+  padding:5px 11px; border-radius:20px;
+  font-size:0.68rem; font-weight:700; cursor:pointer;
+  border:1.5px solid var(--border);
+  background:var(--white); color:var(--text2);
+  font-family:'Cairo',sans-serif; transition:all 0.15s;
+}
+.shade-chip.on {
+  background:var(--gold); border-color:var(--gold);
+  color:#fff; box-shadow:0 2px 6px rgba(217,119,6,0.3);
+}
+.shade-clear {
+  width:100%; padding:10px;
+  background:var(--bg2); border:1.5px solid var(--border);
+  border-radius:var(--r2); color:var(--text2);
+  font-family:'Cairo',sans-serif; font-size:0.78rem; font-weight:700;
+  cursor:pointer; margin-top:9px;
+}
+
+/* ── PDF Overlay ── */
+#pdfOv {
+  position:fixed; inset:0;
+  background:rgba(15,23,42,0.6); backdrop-filter:blur(6px);
+  z-index:600; display:none;
+  align-items:center; justify-content:center; padding:20px;
+}
+#pdfOv.on { display:flex; }
+.pdf-card {
+  background:var(--white); border-radius:var(--r);
+  padding:22px; width:100%; max-width:300px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.2);
+  border:1px solid var(--border);
+}
+.pdf-title { font-size:0.9rem; font-weight:800; color:var(--text); margin-bottom:14px; }
+.pdf-select {
+  width:100%; padding:10px 13px;
+  background:var(--bg2); border:1.5px solid var(--border);
+  border-radius:var(--r2); color:var(--text);
+  font-family:'Cairo',sans-serif; font-size:0.85rem;
+  outline:none; -webkit-appearance:none; margin-bottom:8px;
+}
+.pdf-gen-btn {
+  width:100%; padding:12px; border:none;
+  border-radius:var(--r2);
+  background:var(--red); color:#fff;
+  font-family:'Cairo',sans-serif; font-size:0.88rem; font-weight:800;
+  cursor:pointer; display:flex; align-items:center; justify-content:center; gap:7px;
+  box-shadow:0 4px 12px rgba(220,38,38,0.3); margin-bottom:8px;
+}
+.pdf-gen-btn svg { width:15px; height:15px; }
+.pdf-cancel {
+  width:100%; padding:10px; background:var(--bg2);
+  border:1.5px solid var(--border); border-radius:var(--r2);
+  color:var(--text2); font-family:'Cairo',sans-serif;
+  font-size:0.82rem; font-weight:700; cursor:pointer;
+}
+
+/* ── Delete Confirm ── */
+.del-confirm { text-align:center; padding:10px 0; }
+.del-icon {
+  width:52px; height:52px; border-radius:50%;
+  background:#fef2f2; margin:0 auto 12px;
+  display:flex; align-items:center; justify-content:center;
+  color:var(--red);
+}
+.del-icon svg { width:24px; height:24px; }
+.del-title { font-size:0.95rem; font-weight:800; color:var(--text); margin-bottom:5px; }
+.del-subtitle { font-size:0.74rem; color:var(--text2); margin-bottom:18px; }
+.del-confirm-btn {
+  width:100%; padding:12px; background:var(--red); color:#fff;
+  border:none; border-radius:var(--r2);
+  font-family:'Cairo',sans-serif; font-size:0.88rem; font-weight:800;
+  cursor:pointer; margin-bottom:8px;
+  box-shadow:0 3px 10px rgba(220,38,38,0.3);
+}
+
+/* ═══════════════════════════════
+   UTILITIES
+═══════════════════════════════ */
+.empty-state { text-align:center; padding:50px 20px; color:var(--text3); }
+.empty-icon { font-size:2.5rem; display:block; margin-bottom:10px; opacity:0.3; }
+.empty-text { font-size:0.78rem; font-weight:600; }
+.loading { text-align:center; padding:48px; color:var(--text3); }
+.spinner {
+  width:28px; height:28px; border:2.5px solid var(--border);
+  border-top-color:var(--blue); border-radius:50%;
+  animation:spin 0.75s linear infinite; margin:0 auto 12px;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+.toast {
+  position:fixed; bottom:22px; left:50%;
+  transform:translateX(-50%) translateY(16px);
+  background:var(--text); color:#fff;
+  padding:10px 20px; border-radius:24px;
+  font-size:0.75rem; font-weight:700; z-index:9000;
+  opacity:0; transition:all 0.28s; white-space:nowrap;
+  box-shadow:0 8px 24px rgba(0,0,0,0.22);
+}
+.toast.ok { background:var(--green); }
+.toast.err { background:var(--red); }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+::-webkit-scrollbar { width:0; }
 </style>
 </head>
 <body translate="no">
 
-<!-- LOGIN -->
+<!-- ══ LOGIN ══ -->
 <div id="login">
-  <div><div class="lmas">MAS</div><div class="ldl">Dental Lab</div></div>
-  <div class="lsub" id="loginSub">نظام إدارة حالات طب الأسنان</div>
-  <button class="gbtn" onclick="doLogin()">
-    <div class="gico"><svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.8 2.3 30.2 0 24 0 14.7 0 6.7 5.4 2.9 13.3l7.9 6.2C12.7 13.2 17.9 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.6c0-1.6-.1-3.1-.4-4.6H24v8.7h12.4c-.5 2.8-2.1 5.2-4.5 6.8l7.1 5.5c4.2-3.8 6.6-9.4 6.6-16.4z"/><path fill="#FBBC05" d="M10.8 28.5c-.5-1.5-.8-3-.8-4.5s.3-3 .8-4.5L2.9 13.3C1 16.9 0 20.8 0 24s1 7.1 2.9 10.7l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.1-5.5c-2 1.4-4.6 2.2-8.1 2.2-6.1 0-11.3-3.7-13.2-9l-7.9 6.2C6.7 42.6 14.7 48 24 48z"/></svg></div>
+  <div class="login-logo">
+    <div class="login-mas">MAS</div>
+    <div class="login-divider"></div>
+    <div class="login-dl">Dental Lab</div>
+  </div>
+  <div class="login-subtitle" id="loginSub">نظام إدارة حالات طب الأسنان</div>
+  <button class="login-btn" onclick="doLogin()">
+    <svg viewBox="0 0 48 48" fill="none"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.8 2.3 30.2 0 24 0 14.7 0 6.7 5.4 2.9 13.3l7.9 6.2C12.7 13.2 17.9 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.6c0-1.6-.1-3.1-.4-4.6H24v8.7h12.4c-.5 2.8-2.1 5.2-4.5 6.8l7.1 5.5c4.2-3.8 6.6-9.4 6.6-16.4z"/><path fill="#FBBC05" d="M10.8 28.5c-.5-1.5-.8-3-.8-4.5s.3-3 .8-4.5L2.9 13.3C1 16.9 0 20.8 0 24s1 7.1 2.9 10.7l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.1-5.5c-2 1.4-4.6 2.2-8.1 2.2-6.1 0-11.3-3.7-13.2-9l-7.9 6.2C6.7 42.6 14.7 48 24 48z"/></svg>
     <span id="loginBtn">تسجيل الدخول بـ Google</span>
   </button>
-  <div class="lnote" id="loginNote">بياناتك خاصة ومحمية بحسابك</div>
+  <p class="login-note" id="loginNote">بياناتك خاصة ومحمية بحسابك</p>
 </div>
 
-<!-- APP -->
+<!-- ══ APP ══ -->
 <div id="app">
+  <!-- Header -->
   <div class="hdr">
     <div class="hdr-top">
-      <div><div class="hmas">MAS</div><div class="hdl">Dental Lab</div></div>
-      <div class="hav" id="hdrAv">؟</div>
+      <div class="hdr-brand">
+        <div class="hdr-mas">MAS</div>
+        <div class="hdr-dl">Dental Lab</div>
+      </div>
+      <div class="hdr-av" id="hdrAv">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
     </div>
-    <div class="srow">
-      <div class="sp"><div class="spn" id="hT">0</div><div class="spl" id="hTl">🦷 سن</div></div>
-      <div class="sp"><div class="spn" id="hC">0</div><div class="spl" id="hCl">📋 حالة</div></div>
-      <div class="sp"><div class="spn" id="hD">0</div><div class="spl" id="hDl">👨‍⚕️ طبيب</div></div>
-      <div class="sp"><div class="spn" id="hM">0</div><div class="spl" id="hMl">هذا الشهر</div></div>
+    <div class="stats-ribbon">
+      <div class="stat-pill"><div class="stat-pill-n" id="hT">0</div><div class="stat-pill-l" id="hTl">سن</div></div>
+      <div class="stat-pill"><div class="stat-pill-n" id="hC">0</div><div class="stat-pill-l" id="hCl">حالة</div></div>
+      <div class="stat-pill"><div class="stat-pill-n" id="hD">0</div><div class="stat-pill-l" id="hDl">طبيب</div></div>
+      <div class="stat-pill"><div class="stat-pill-n" id="hM">0</div><div class="stat-pill-l" id="hMl">هذا الشهر</div></div>
     </div>
   </div>
 
+  <!-- Tab Bar -->
   <div class="tabs">
-    <button class="tb on" onclick="showPg('add',this)"><span class="tbico">➕</span><span id="tbA">إضافة</span></button>
-    <button class="tb" onclick="showPg('list',this)"><span class="tbico">📋</span><span id="tbL">الحالات</span></button>
-    <button class="tb" onclick="showPg('stats',this)"><span class="tbico">📊</span><span id="tbS">إحصائيات</span></button>
-    <button class="tb" onclick="showPg('account',this)"><div class="tbav" id="tabAv">👤</div><span id="tbAc">حسابي</span></button>
+    <button class="tab on" onclick="showPg('add',this)">
+      <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      <span id="tbA">إضافة</span>
+    </button>
+    <button class="tab" onclick="showPg('list',this)">
+      <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1" fill="currentColor"/><circle cx="3" cy="12" r="1" fill="currentColor"/><circle cx="3" cy="18" r="1" fill="currentColor"/></svg></div>
+      <span id="tbL">الحالات</span>
+    </button>
+    <button class="tab" onclick="showPg('stats',this)">
+      <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></div>
+      <span id="tbS">إحصائيات</span>
+    </button>
+    <button class="tab" onclick="showPg('account',this)">
+      <div class="tab-av" id="tabAv">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <span id="tbAc">حسابي</span>
+    </button>
   </div>
 
+  <!-- Content -->
   <div class="content">
 
-    <!-- ADD -->
-    <div class="pg on" id="pg-add">
-      <div style="height:2px"></div>
-      <div class="slbl" id="addSlbl">بيانات الحالة الجديدة</div>
+    <!-- ADD PAGE -->
+    <div class="page on" id="pg-add">
+      <div style="height:4px"></div>
+      <div class="sec-label" id="addSlbl">حالة جديدة</div>
       <div class="card">
-        <div class="g2">
-          <div class="fld"><label id="lDoc">👨‍⚕️ الطبيب</label><input type="text" id="fDoc" readonly onclick="openDoc('add')" style="cursor:pointer" placeholder="اختر أو أضف طبيب"></div>
-          <div class="fld"><label id="lPat">🧑 المريض</label><input type="text" id="fPat" placeholder="اسم المريض"></div>
-        </div>
-        <div class="g3">
-          <div class="fld"><label id="lTth">🔢 عدد الأسنان</label><input type="number" id="fTth" placeholder="0" min="1" style="text-align:center"></div>
-          <div class="fld"><label id="lMon">📅 الشهر</label>
-            <select id="fMon"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select>
+        <!-- Doctor + Patient -->
+        <div class="grid-2">
+          <div class="fld">
+            <div class="fld-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span id="lDoc">الطبيب</span>
+            </div>
+            <input class="fld-input" type="text" id="fDoc" readonly onclick="openDoc('add')" placeholder="اختر أو أضف">
           </div>
-          <div class="fld"><label id="lYr">📆 السنة</label><select id="fYr"></select></div>
-        </div>
-        <div class="fld">
-          <label id="lType">🏷️ نوع الحالة</label>
-          <div class="type-toggle">
-            <button class="tbtn acb" id="btnCB" onclick="setType('CB')">Cut Back</button>
-            <button class="tbtn" id="btnFA" onclick="setType('FA')">Full Anatomy</button>
+          <div class="fld">
+            <div class="fld-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span id="lPat">المريض</span>
+            </div>
+            <input class="fld-input" type="text" id="fPat" placeholder="الاسم">
           </div>
         </div>
+        <!-- Teeth + Month + Year -->
+        <div class="grid-3">
+          <div class="fld">
+            <div class="fld-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
+              <span id="lTth">الأسنان</span>
+            </div>
+            <input class="fld-input" type="number" id="fTth" placeholder="0" min="1">
+          </div>
+          <div class="fld">
+            <div class="fld-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span id="lMon">الشهر</span>
+            </div>
+            <select class="fld-select" id="fMon"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select>
+          </div>
+          <div class="fld">
+            <div class="fld-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span id="lYr">السنة</span>
+            </div>
+            <select class="fld-select" id="fYr"></select>
+          </div>
+        </div>
+        <!-- Case Type -->
         <div class="fld">
-          <label id="lShade">🎨 لون السن</label>
-          <button class="shade-btn" id="sTrig" onclick="openShade('add')">
-            <div class="shade-l"><span class="shade-dot" id="sDot"></span><span id="sTxt">اختر اللون</span></div>
-            <span class="shade-arr">▾</span>
+          <div class="fld-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            <span id="lType">نوع الحالة</span>
+          </div>
+          <div class="type-seg">
+            <button class="type-seg-btn active-cb" id="btnCB" onclick="setType('CB')">Cut Back</button>
+            <button class="type-seg-btn" id="btnFA" onclick="setType('FA')">Full Anatomy</button>
+          </div>
+        </div>
+        <!-- Shade -->
+        <div class="fld" style="margin-bottom:0">
+          <div class="fld-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+            <span id="lShade">لون السن</span>
+          </div>
+          <button class="shade-trigger" id="sTrig" onclick="openShade('add')">
+            <div class="shade-left">
+              <span class="shade-swatch" id="sDot"></span>
+              <span class="shade-text" id="sTxt">اختر اللون</span>
+            </div>
+            <span class="shade-chevron">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
           </button>
         </div>
       </div>
-      <button class="save-btn" id="btnSave" onclick="addCase()">💾 حفظ الحالة</button>
+      <button class="btn-primary" id="btnSave" onclick="addCase()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>حفظ الحالة</span>
+      </button>
     </div>
 
-    <!-- LIST -->
-    <div class="pg" id="pg-list">
-      <div style="height:2px"></div>
-      <div class="frow">
-        <select id="flYr" onchange="renderList()"><option value="">كل السنوات</option></select>
-        <select id="flMon" onchange="renderList()">
+    <!-- LIST PAGE -->
+    <div class="page" id="pg-list">
+      <div style="height:4px"></div>
+      <div class="filter-row">
+        <select class="filter-select" id="flYr" onchange="renderList()"><option value="">كل السنوات</option></select>
+        <select class="filter-select" id="flMon" onchange="renderList()">
           <option value="">كل الأشهر</option>
           <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
         </select>
-        <select id="flDoc" onchange="renderList()"><option value="">كل الأطباء</option></select>
-        <select id="flType" onchange="renderList()"><option value="">كل الأنواع</option><option value="FA">Full Anatomy</option><option value="CB">Cut Back</option></select>
+        <select class="filter-select" id="flDoc" onchange="renderList()"><option value="">كل الأطباء</option></select>
+        <select class="filter-select" id="flType" onchange="renderList()"><option value="">كل الأنواع</option><option value="FA">Full Anatomy</option><option value="CB">Cut Back</option></select>
       </div>
-      <div class="frow" style="margin-top:-4px">
-        <button class="cbtn" onclick="doCSV()">⬇️ CSV</button>
-        <button class="pbtn" onclick="openPDF()">📄 PDF</button>
+      <div class="filter-actions" style="margin-bottom:10px">
+        <button class="btn-ghost" onclick="doCSV()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          CSV
+        </button>
+        <button class="btn-danger" onclick="openPDF()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          PDF
+        </button>
       </div>
-      <div class="rinfo"><span id="lCnt">0 حالة</span><b id="lSum"></b></div>
-      <div class="tsum" id="typeSummary"></div>
-      <div id="listEl"><div class="loading"><div class="spin"></div>جارٍ التحميل...</div></div>
+      <div class="result-info"><span class="result-count" id="lCnt">0 حالة</span><span class="result-sum" id="lSum"></span></div>
+      <div class="type-badges" id="typeBadges"></div>
+      <div id="listEl"><div class="loading"><div class="spinner"></div>جارٍ التحميل...</div></div>
     </div>
 
-    <!-- STATS -->
-    <div class="pg" id="pg-stats">
-      <div style="height:2px"></div>
-      <div class="stfrow">
-        <select id="stYr" onchange="renderStats()"><option value="">كل السنوات</option></select>
-        <select id="stMon" onchange="renderStats()">
+    <!-- STATS PAGE -->
+    <div class="page" id="pg-stats">
+      <div style="height:4px"></div>
+      <div class="filter-row">
+        <select class="filter-select" id="stYr" onchange="renderStats()"><option value="">كل السنوات</option></select>
+        <select class="filter-select" id="stMon" onchange="renderStats()">
           <option value="">كل الأشهر</option>
           <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
         </select>
       </div>
-      <div class="period" id="per">📊 جميع البيانات</div>
-      <div class="sg4" id="stGrid"></div>
-      <div class="tsrow" id="typeStats"></div>
-      <div class="card"><div class="slbl" id="stDocLbl">🏆 الأطباء</div><div id="stDoc"></div></div>
-      <div class="card" id="mCard"><div class="slbl" id="stMonLbl">📅 الإنتاج الشهري</div><div class="mgrid" id="stMonEl"></div></div>
-      <div class="card"><div class="slbl" id="stShadeLbl">🎨 ألوان الأسنان</div><div class="sdist" id="stShade"></div></div>
+      <div class="stat-period" id="per">جميع البيانات</div>
+      <div class="stat-grid-4" id="stGrid"></div>
+      <div class="type-stat-row" id="typeStats"></div>
+      <div class="card"><div class="sec-label" id="stDocLbl">الأطباء</div><div id="stDoc"></div></div>
+      <div class="card" id="mCard"><div class="sec-label" id="stMonLbl">الإنتاج الشهري</div><div class="month-grid" id="stMonEl"></div></div>
+      <div class="card"><div class="sec-label" id="stShadeLbl">ألوان الأسنان</div><div class="shade-dist" id="stShade"></div></div>
     </div>
 
-    <!-- ACCOUNT -->
-    <div class="pg" id="pg-account">
-      <div style="height:2px"></div>
-      <div class="acc-card">
-        <div class="acc-av" id="accAv">👤</div>
-        <div class="acc-nm" id="accNm">—</div>
-        <div class="acc-em" id="accEm">—</div>
+    <!-- ACCOUNT PAGE -->
+    <div class="page" id="pg-account">
+      <div style="height:4px"></div>
+      <div class="acc-hero">
+        <div class="acc-avatar" id="accAv">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div class="acc-name" id="accNm">—</div>
+        <div class="acc-email" id="accEm">—</div>
       </div>
-      <div class="info-c">
-        <div class="info-ico">🌐</div>
+      <!-- Language -->
+      <div class="info-row">
+        <div class="info-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
         <div style="flex:1">
-          <div class="info-ti" id="langLbl">اللغة / Language</div>
-          <div class="ltog" style="margin-top:8px">
-            <button class="lbtn active" id="btnAr" onclick="setLang('ar')">العربية</button>
-            <button class="lbtn" id="btnEn" onclick="setLang('en')">English</button>
+          <div class="info-title" id="langLbl">اللغة / Language</div>
+          <div class="lang-seg">
+            <button class="lang-btn active" id="btnAr" onclick="setLang('ar')">العربية</button>
+            <button class="lang-btn" id="btnEn" onclick="setLang('en')">English</button>
           </div>
         </div>
       </div>
-      <div class="info-c"><div class="info-ico">☁️</div><div><div class="info-ti" id="i1t">نسخ احتياطي تلقائي</div><div class="info-de" id="i1d">بياناتك تحفظ فورياً على Google Cloud</div></div></div>
-      <div class="info-c"><div class="info-ico">🔄</div><div><div class="info-ti" id="i2t">استعادة من أي جهاز</div><div class="info-de" id="i2d">سجّل دخول بنفس حساب Google</div></div></div>
-      <div class="info-c"><div class="info-ico">🔒</div><div><div class="info-ti" id="i3t">بياناتك خاصة 100%</div><div class="info-de" id="i3d">محمية بحسابك فقط</div></div></div>
-      <button class="logout-btn" id="btnLogout" onclick="doOut()">🚪 تسجيل الخروج</button>
+      <div class="info-row">
+        <div class="info-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <div><div class="info-title" id="i1t">نسخ احتياطي تلقائي</div><div class="info-desc" id="i1d">بياناتك تحفظ فورياً على Google Cloud</div></div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
+        </div>
+        <div><div class="info-title" id="i2t">استعادة من أي جهاز</div><div class="info-desc" id="i2d">سجّل دخول بنفس حساب Google</div></div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div><div class="info-title" id="i3t">بياناتك خاصة 100%</div><div class="info-desc" id="i3d">محمية بحسابك فقط</div></div>
+      </div>
+      <button class="logout-btn" id="btnLogout" onclick="doOut()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span>تسجيل الخروج</span>
+      </button>
     </div>
   </div>
 </div>
 
 <!-- DOC PICKER -->
-<div id="docOv">
-  <div class="doc-box">
-    <div class="doc-hdr"><div class="doc-t" id="docTitle">👨‍⚕️ اختر الطبيب</div><button class="xb" onclick="closeDoc()">✕</button></div>
-    <input type="text" class="doc-search" id="docSearch" placeholder="ابحث أو اكتب اسم طبيب جديد" oninput="filterDocs()">
-    <div class="doc-list" id="docList"></div>
-    <button class="doc-new" id="docNewBtn" onclick="addNewDoc()">➕ إضافة</button>
+<div class="overlay" id="docOv">
+  <div class="sheet">
+    <div class="sheet-header">
+      <span class="sheet-title" id="docTitle">اختر الطبيب</span>
+      <button class="sheet-close" onclick="closeDoc()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <input type="text" class="doc-search-input" id="docSearch" placeholder="ابحث أو اكتب اسم جديد" oninput="filterDocs()">
+    <div id="docList"></div>
+    <button class="doc-add-btn" id="docAddBtn" onclick="addNewDoc()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      إضافة
+    </button>
   </div>
 </div>
 
-<!-- SHADE -->
-<div id="shadeOv">
-  <div class="shade-box">
-    <div class="shade-hdr">
-      <span style="font-size:0.95rem;font-weight:900;color:var(--text)" id="shadeTitle">🎨 اختر لون السن</span>
-      <button class="xb" onclick="closeShade()">✕</button>
+<!-- SHADE PICKER -->
+<div class="overlay" id="shadeOv">
+  <div class="shade-box" style="background:var(--white);border-radius:20px 20px 0 0;padding:18px;width:100%;max-height:70vh;overflow-y:auto;animation:slideUp 0.26s ease;border-top:2.5px solid var(--blue)">
+    <div class="sheet-header">
+      <span class="sheet-title" id="shadeTitle">اختر لون السن</span>
+      <button class="sheet-close" onclick="closeShade()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <div id="shadeGrps"></div>
-    <button class="clear-shade" id="clearShadeBtn" onclick="clearShade()">🗑️ إزالة اللون</button>
+    <button class="shade-clear" id="clearShadeBtn" onclick="clearShade()">إزالة اللون</button>
   </div>
 </div>
 
-<!-- PDF -->
+<!-- PDF MODAL -->
 <div id="pdfOv">
-  <div class="pdf-box">
-    <div class="pdf-box-t" id="pdfTitle">📄 تصدير تقرير PDF</div>
-    <div class="fld"><label id="pdfMonLbl">📅 الشهر</label>
-      <select id="pdfMon"><option value="1">شهر 1</option><option value="2">شهر 2</option><option value="3">شهر 3</option><option value="4">شهر 4</option><option value="5">شهر 5</option><option value="6">شهر 6</option><option value="7">شهر 7</option><option value="8">شهر 8</option><option value="9">شهر 9</option><option value="10">شهر 10</option><option value="11">شهر 11</option><option value="12">شهر 12</option></select>
+  <div class="pdf-card">
+    <div class="pdf-title" id="pdfTitle">تصدير تقرير PDF</div>
+    <div class="fld"><div class="fld-label"><span id="pdfMonLbl">الشهر</span></div>
+      <select class="pdf-select" id="pdfMon"><option value="1">شهر 1</option><option value="2">شهر 2</option><option value="3">شهر 3</option><option value="4">شهر 4</option><option value="5">شهر 5</option><option value="6">شهر 6</option><option value="7">شهر 7</option><option value="8">شهر 8</option><option value="9">شهر 9</option><option value="10">شهر 10</option><option value="11">شهر 11</option><option value="12">شهر 12</option></select>
     </div>
-    <div class="fld"><label id="pdfYrLbl">📆 السنة</label><select id="pdfYr"></select></div>
-    <button class="pdf-gen" id="pdfGenBtn" onclick="genPDF()">📄 توليد التقرير</button>
-    <button class="mcan" onclick="closePDF()" style="width:100%" id="pdfCan">إلغاء</button>
+    <div class="fld"><div class="fld-label"><span id="pdfYrLbl">السنة</span></div><select class="pdf-select" id="pdfYr"></select></div>
+    <button class="pdf-gen-btn" id="pdfGenBtn" onclick="genPDF()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      توليد التقرير
+    </button>
+    <button class="pdf-cancel" id="pdfCan" onclick="closePDF()">إلغاء</button>
   </div>
 </div>
 
-<!-- EDIT -->
-<div class="ovb" id="editOv">
-  <div class="modal">
-    <div class="modal-t" id="editTitle">✏️ تعديل الحالة</div>
-    <input type="hidden" id="eId">
-    <div class="g2">
-      <div class="fld"><label id="eLDoc">👨‍⚕️ الطبيب</label><input type="text" id="eDoc" readonly onclick="openDoc('edit')" style="cursor:pointer"></div>
-      <div class="fld"><label id="eLPat">🧑 المريض</label><input type="text" id="ePat"></div>
+<!-- EDIT MODAL -->
+<div class="overlay" id="editOv">
+  <div class="sheet">
+    <div class="sheet-header">
+      <span class="sheet-title" id="editTitle">تعديل الحالة</span>
+      <button class="sheet-close" onclick="closeOv('editOv')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
-    <div class="g3">
-      <div class="fld"><label id="eLTth">🔢 أسنان</label><input type="number" id="eTth" min="1" style="text-align:center"></div>
-      <div class="fld"><label>📅 شهر</label><select id="eMon"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select></div>
-      <div class="fld"><label>📆 سنة</label><select id="eYr"></select></div>
+    <input type="hidden" id="eId">
+    <div class="grid-2">
+      <div class="fld"><div class="fld-label"><span id="eLDoc">الطبيب</span></div><input class="fld-input" type="text" id="eDoc" readonly onclick="openDoc('edit')" style="cursor:pointer"></div>
+      <div class="fld"><div class="fld-label"><span id="eLPat">المريض</span></div><input class="fld-input" type="text" id="ePat"></div>
+    </div>
+    <div class="grid-3">
+      <div class="fld"><div class="fld-label"><span id="eLTth">أسنان</span></div><input class="fld-input" type="number" id="eTth" min="1"></div>
+      <div class="fld"><div class="fld-label">شهر</div><select class="fld-select" id="eMon"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select></div>
+      <div class="fld"><div class="fld-label">سنة</div><select class="fld-select" id="eYr"></select></div>
     </div>
     <div class="fld">
-      <label id="eLType">🏷️ نوع الحالة</label>
-      <div class="type-toggle">
-        <button class="tbtn acb" id="eBtnCB" onclick="setEditType('CB')">Cut Back</button>
-        <button class="tbtn" id="eBtnFA" onclick="setEditType('FA')">Full Anatomy</button>
+      <div class="fld-label"><span id="eLType">نوع الحالة</span></div>
+      <div class="type-seg">
+        <button class="type-seg-btn active-cb" id="eBtnCB" onclick="setEditType('CB')">Cut Back</button>
+        <button class="type-seg-btn" id="eBtnFA" onclick="setEditType('FA')">Full Anatomy</button>
       </div>
     </div>
-    <div class="fld"><label id="eLShade">🎨 لون السن</label>
-      <button class="shade-btn" id="eSTrig" onclick="openShade('edit')">
-        <div class="shade-l"><span class="shade-dot" id="eSDot"></span><span id="eSTxt">اختر اللون</span></div>
-        <span class="shade-arr">▾</span>
+    <div class="fld" style="margin-bottom:0">
+      <div class="fld-label"><span id="eLShade">لون السن</span></div>
+      <button class="shade-trigger" id="eSTrig" onclick="openShade('edit')">
+        <div class="shade-left"><span class="shade-swatch" id="eSDot"></span><span class="shade-text" id="eSTxt">اختر اللون</span></div>
+        <span class="shade-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span>
       </button>
     </div>
-    <div class="macts">
-      <button class="mcan" id="editCan" onclick="closeOv('editOv')">إلغاء</button>
-      <button class="msav" id="editSav" onclick="saveEdit()">💾 حفظ</button>
+    <div class="modal-actions">
+      <button class="modal-cancel" id="editCan" onclick="closeOv('editOv')">إلغاء</button>
+      <button class="modal-save" id="editSav" onclick="saveEdit()">حفظ التعديلات</button>
     </div>
   </div>
 </div>
 
-<!-- DELETE -->
-<div class="ovb" id="delOv">
-  <div class="modal">
-    <div class="del-box">
-      <div class="del-ico">🗑️</div>
-      <div class="del-t" id="delTitle">حذف الحالة</div>
-      <div class="del-s" id="delSub">هل أنت متأكد؟ لا يمكن التراجع.</div>
+<!-- DELETE MODAL -->
+<div class="overlay" id="delOv">
+  <div class="sheet">
+    <div class="del-confirm">
+      <div class="del-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m5 0V4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2"/></svg></div>
+      <div class="del-title" id="delTitle">حذف الحالة</div>
+      <div class="del-subtitle" id="delSub">هل أنت متأكد؟ لا يمكن التراجع.</div>
       <input type="hidden" id="delId">
-      <button class="del-yes" id="delYes" onclick="confirmDel()">حذف</button>
-      <button class="mcan" onclick="closeOv('delOv')" style="width:100%" id="delCan">إلغاء</button>
+      <button class="del-confirm-btn" id="delYes" onclick="confirmDel()">تأكيد الحذف</button>
+      <button class="modal-cancel" onclick="closeOv('delOv')" style="width:100%" id="delCan">إلغاء</button>
     </div>
   </div>
 </div>
@@ -467,14 +1011,14 @@ html,body{height:100%;overflow:hidden;font-family:'Cairo',sans-serif;background:
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import{getDatabase,ref,push,onValue,update,remove}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-const app=initializeApp({apiKey:"AIzaSyBjEd3UPOTkK143j1rZ6WQtnxhN5AS5nEU",authDomain:"dental-app-c95ce.firebaseapp.com",databaseURL:"https://dental-app-c95ce-default-rtdb.firebaseio.com",projectId:"dental-app-c95ce",storageBucket:"dental-app-c95ce.firebasestorage.app",messagingSenderId:"13518342618",appId:"dental-mas-v8"});
+const app=initializeApp({apiKey:"AIzaSyBjEd3UPOTkK143j1rZ6WQtnxhN5AS5nEU",authDomain:"dental-app-c95ce.firebaseapp.com",databaseURL:"https://dental-app-c95ce-default-rtdb.firebaseio.com",projectId:"dental-app-c95ce",storageBucket:"dental-app-c95ce.firebasestorage.app",messagingSenderId:"13518342618",appId:"dental-mas-v9"});
 const auth=getAuth(app),db=getDatabase(app);
 let uid=null,cRef=null,all={};
 
 // ── LANGUAGE ──
 const TR={
-  ar:{loginSub:'نظام إدارة حالات طب الأسنان',loginBtn:'تسجيل الدخول بـ Google',loginNote:'بياناتك خاصة ومحمية بحسابك',hTl:'🦷 سن',hCl:'📋 حالة',hDl:'👨‍⚕️ طبيب',hMl:'هذا الشهر',tbA:'إضافة',tbL:'الحالات',tbS:'إحصائيات',tbAc:'حسابي',addSlbl:'بيانات الحالة الجديدة',lDoc:'👨‍⚕️ الطبيب',lPat:'🧑 المريض',lTth:'🔢 عدد الأسنان',lMon:'📅 الشهر',lYr:'📆 السنة',lType:'🏷️ نوع الحالة',lShade:'🎨 لون السن',btnSave:'💾 حفظ الحالة',shadeTitle:'🎨 اختر لون السن',clearShadeBtn:'🗑️ إزالة اللون',docTitle:'👨‍⚕️ اختر الطبيب',pdfTitle:'📄 تصدير تقرير PDF',pdfMonLbl:'📅 الشهر',pdfYrLbl:'📆 السنة',pdfGenBtn:'📄 توليد التقرير',pdfCan:'إلغاء',editTitle:'✏️ تعديل الحالة',editCan:'إلغاء',editSav:'💾 حفظ',eLDoc:'👨‍⚕️ الطبيب',eLPat:'🧑 المريض',eLTth:'🔢 أسنان',eLType:'🏷️ نوع الحالة',eLShade:'🎨 لون السن',delTitle:'حذف الحالة',delSub:'هل أنت متأكد؟ لا يمكن التراجع.',delYes:'حذف',delCan:'إلغاء',langLbl:'اللغة / Language',i1t:'نسخ احتياطي تلقائي',i1d:'بياناتك تحفظ فورياً على Google Cloud',i2t:'استعادة من أي جهاز',i2d:'سجّل دخول بنفس حساب Google',i3t:'بياناتك خاصة 100%',i3d:'محمية بحسابك فقط',btnLogout:'🚪 تسجيل الخروج',stDocLbl:'🏆 الأطباء',stMonLbl:'📅 الإنتاج الشهري',stShadeLbl:'🎨 ألوان الأسنان',per:'📊 جميع البيانات',totalTeeth:'إجمالي الأسنان',totalCases:'عدد الحالات',avgPerCase:'متوسط / حالة',totalDoctors:'عدد الأطباء',noData:'لا توجد بيانات',noCases:'لا توجد حالات',noDocYet:'لا يوجد أطباء مسجلون',savedOk:'✅ تم حفظ الحالة',editOk:'✅ تم التعديل',delOk:'تم الحذف',csvOk:'✅ تم التصدير',pdfOk:'✅ جارٍ فتح التقرير',errDoc:'اختر اسم الطبيب',errTth:'أدخل عدد الأسنان',errNoCases:'لا توجد حالات لهذا الشهر',errLogin:'خطأ في تسجيل الدخول',cases:'حالة',teeth:'سن',month:'شهر',allYears:'كل السنوات',allMonths:'كل الأشهر',allDocs:'كل الأطباء',allTypes:'كل الأنواع'},
-  en:{loginSub:'Dental Cases Management System',loginBtn:'Sign in with Google',loginNote:'Your data is private and protected',hTl:'🦷 Teeth',hCl:'📋 Cases',hDl:'👨‍⚕️ Doctors',hMl:'This Month',tbA:'Add',tbL:'Cases',tbS:'Stats',tbAc:'Account',addSlbl:'New Case Details',lDoc:'👨‍⚕️ Doctor',lPat:'🧑 Patient',lTth:'🔢 Tooth Count',lMon:'📅 Month',lYr:'📆 Year',lType:'🏷️ Case Type',lShade:'🎨 Shade',btnSave:'💾 Save Case',shadeTitle:'🎨 Select Shade',clearShadeBtn:'🗑️ Clear Shade',docTitle:'👨‍⚕️ Select Doctor',pdfTitle:'📄 Export PDF Report',pdfMonLbl:'📅 Month',pdfYrLbl:'📆 Year',pdfGenBtn:'📄 Generate Report',pdfCan:'Cancel',editTitle:'✏️ Edit Case',editCan:'Cancel',editSav:'💾 Save',eLDoc:'👨‍⚕️ Doctor',eLPat:'🧑 Patient',eLTth:'🔢 Teeth',eLType:'🏷️ Case Type',eLShade:'🎨 Shade',delTitle:'Delete Case',delSub:'Are you sure? This cannot be undone.',delYes:'Delete',delCan:'Cancel',langLbl:'Language / اللغة',i1t:'Auto Backup',i1d:'Your data saves instantly to Google Cloud',i2t:'Restore from Any Device',i2d:'Sign in with same Google account',i3t:'100% Private Data',i3d:'Protected by your account only',btnLogout:'🚪 Sign Out',stDocLbl:'🏆 Doctors',stMonLbl:'📅 Monthly Production',stShadeLbl:'🎨 Shade Distribution',per:'📊 All Data',totalTeeth:'Total Teeth',totalCases:'Total Cases',avgPerCase:'Avg / Case',totalDoctors:'Total Doctors',noData:'No data available',noCases:'No cases found',noDocYet:'No doctors registered',savedOk:'✅ Case saved!',editOk:'✅ Updated!',delOk:'Deleted',csvOk:'✅ Exported',pdfOk:'✅ Opening report...',errDoc:'Select doctor name',errTth:'Enter tooth count',errNoCases:'No cases for this month',errLogin:'Login error',cases:'cases',teeth:'teeth',month:'Month',allYears:'All Years',allMonths:'All Months',allDocs:'All Doctors',allTypes:'All Types'}
+  ar:{loginSub:'نظام إدارة حالات طب الأسنان',loginBtn:'تسجيل الدخول بـ Google',loginNote:'بياناتك خاصة ومحمية بحسابك',hTl:'سن',hCl:'حالة',hDl:'طبيب',hMl:'هذا الشهر',tbA:'إضافة',tbL:'الحالات',tbS:'إحصائيات',tbAc:'حسابي',addSlbl:'حالة جديدة',lDoc:'الطبيب',lPat:'المريض',lTth:'الأسنان',lMon:'الشهر',lYr:'السنة',lType:'نوع الحالة',lShade:'لون السن',shadeTitle:'اختر لون السن',clearShadeBtn:'إزالة اللون',docTitle:'اختر الطبيب',pdfTitle:'تصدير تقرير PDF',pdfMonLbl:'الشهر',pdfYrLbl:'السنة',pdfGenBtn:'توليد التقرير',pdfCan:'إلغاء',editTitle:'تعديل الحالة',editCan:'إلغاء',editSav:'حفظ التعديلات',eLDoc:'الطبيب',eLPat:'المريض',eLTth:'أسنان',eLType:'نوع الحالة',eLShade:'لون السن',delTitle:'حذف الحالة',delSub:'هل أنت متأكد؟ لا يمكن التراجع.',delYes:'تأكيد الحذف',delCan:'إلغاء',langLbl:'اللغة / Language',i1t:'نسخ احتياطي تلقائي',i1d:'بياناتك تحفظ فورياً على Google Cloud',i2t:'استعادة من أي جهاز',i2d:'سجّل دخول بنفس حساب Google',i3t:'بياناتك خاصة 100%',i3d:'محمية بحسابك فقط',btnLogout:'تسجيل الخروج',stDocLbl:'الأطباء',stMonLbl:'الإنتاج الشهري',stShadeLbl:'ألوان الأسنان',per:'جميع البيانات',totalTeeth:'إجمالي الأسنان',totalCases:'عدد الحالات',avgPerCase:'متوسط / حالة',totalDoctors:'الأطباء',noData:'لا توجد بيانات',noCases:'لا توجد حالات',noDocYet:'لا يوجد أطباء مسجلون',savedOk:'تم حفظ الحالة',editOk:'تم التعديل',delOk:'تم الحذف',csvOk:'تم التصدير',pdfOk:'جارٍ فتح التقرير',errDoc:'اختر اسم الطبيب',errTth:'أدخل عدد الأسنان',errNoCases:'لا توجد حالات لهذا الشهر',errLogin:'خطأ في تسجيل الدخول',cases:'حالة',teeth:'سن',allYears:'كل السنوات',allMonths:'كل الأشهر',allDocs:'كل الأطباء',allTypes:'كل الأنواع'},
+  en:{loginSub:'Dental Cases Management System',loginBtn:'Sign in with Google',loginNote:'Your data is private and protected',hTl:'Teeth',hCl:'Cases',hDl:'Doctors',hMl:'This Month',tbA:'Add',tbL:'Cases',tbS:'Stats',tbAc:'Account',addSlbl:'New Case',lDoc:'Doctor',lPat:'Patient',lTth:'Teeth',lMon:'Month',lYr:'Year',lType:'Case Type',lShade:'Shade',shadeTitle:'Select Shade',clearShadeBtn:'Clear Shade',docTitle:'Select Doctor',pdfTitle:'Export PDF Report',pdfMonLbl:'Month',pdfYrLbl:'Year',pdfGenBtn:'Generate Report',pdfCan:'Cancel',editTitle:'Edit Case',editCan:'Cancel',editSav:'Save Changes',eLDoc:'Doctor',eLPat:'Patient',eLTth:'Teeth',eLType:'Case Type',eLShade:'Shade',delTitle:'Delete Case',delSub:'Are you sure? This cannot be undone.',delYes:'Confirm Delete',delCan:'Cancel',langLbl:'Language / اللغة',i1t:'Auto Backup',i1d:'Your data saves instantly to Google Cloud',i2t:'Restore from Any Device',i2d:'Sign in with same Google account',i3t:'100% Private Data',i3d:'Protected by your account only',btnLogout:'Sign Out',stDocLbl:'Doctors',stMonLbl:'Monthly Production',stShadeLbl:'Shade Distribution',per:'All Data',totalTeeth:'Total Teeth',totalCases:'Total Cases',avgPerCase:'Avg / Case',totalDoctors:'Doctors',noData:'No data available',noCases:'No cases found',noDocYet:'No doctors registered',savedOk:'Case saved!',editOk:'Updated!',delOk:'Deleted',csvOk:'Exported',pdfOk:'Opening report...',errDoc:'Select doctor name',errTth:'Enter tooth count',errNoCases:'No cases for this month',errLogin:'Login error',cases:'cases',teeth:'teeth',allYears:'All Years',allMonths:'All Months',allDocs:'All Doctors',allTypes:'All Types'}
 };
 let lang=localStorage.getItem('lang')||'ar';
 const t=k=>TR[lang]?.[k]||TR.ar[k]||k;
@@ -487,40 +1031,40 @@ function applyLang(){
   document.getElementById('btnAr').classList.toggle('active',isAr);
   document.getElementById('btnEn').classList.toggle('active',!isAr);
   [{id:'flYr',k:'allYears'},{id:'flMon',k:'allMonths'},{id:'flDoc',k:'allDocs'},{id:'flType',k:'allTypes'},{id:'stYr',k:'allYears'},{id:'stMon',k:'allMonths'}].forEach(({id,k})=>{const s=document.getElementById(id);if(s?.options[0])s.options[0].text=t(k);});
-  document.getElementById('fDoc').placeholder=isAr?'اختر أو أضف طبيب':'Select or add doctor';
-  document.getElementById('docSearch').placeholder=isAr?'ابحث أو اكتب اسم طبيب جديد':'Search or add doctor';
+  document.getElementById('fDoc').placeholder=isAr?'اختر أو أضف':'Select or add';
+  document.getElementById('docSearch').placeholder=isAr?'ابحث أو اكتب اسم جديد':'Search or type new name';
   renderList();renderStats();
 }
 window.setLang=l=>{lang=l;localStorage.setItem('lang',l);applyLang();};
 
 // ── SHADES ──
 const shades=[
-  {label:"المجموعة 1 / Group 1",color:"#f5f0e8",list:["0M1","0M2","0M3"]},
-  {label:"المجموعة 2 / Group 2",color:"#ede4cc",list:["1M1","1M2"]},
-  {label:"المجموعة 3 / Group 3",color:"#e0ceaa",list:["2M1","2M2","2M3","2L1.5","2L2.5","2R1.5","2R2.5"]},
-  {label:"المجموعة 4 / Group 4",color:"#d4b87e",list:["3M1","3M2","3M3","3L1.5","3L2.5","3R1.5","3R2.5"]},
-  {label:"المجموعة 5 / Group 5",color:"#c8a25c",list:["4M1","4M2","4M3","4L1.5","4L2.5","4R1.5","4R2.5"]},
-  {label:"المجموعة 6 / Group 6",color:"#b8903a",list:["5M1","5M2","5M3"]},
+  {label:"Group 1",color:"#f5f0e8",list:["0M1","0M2","0M3"]},
+  {label:"Group 2",color:"#ede4cc",list:["1M1","1M2"]},
+  {label:"Group 3",color:"#e0ceaa",list:["2M1","2M2","2M3","2L1.5","2L2.5","2R1.5","2R2.5"]},
+  {label:"Group 4",color:"#d4b87e",list:["3M1","3M2","3M3","3L1.5","3L2.5","3R1.5","3R2.5"]},
+  {label:"Group 5",color:"#c8a25c",list:["4M1","4M2","4M3","4L1.5","4L2.5","4R1.5","4R2.5"]},
+  {label:"Group 6",color:"#b8903a",list:["5M1","5M2","5M3"]},
 ];
-function getClr(s){for(const g of shades)if(g.list.includes(s))return g.color;return '#c8dde8';}
-document.getElementById('shadeGrps').innerHTML=shades.map(g=>`<div class="sgrp"><div class="sgrp-hdr"><span class="sgrp-dot" style="background:${g.color}"></span>${g.label}</div><div class="chips">${g.list.map(s=>`<button class="chip" data-s="${s}" onclick="pick('${s}')">${s}</button>`).join('')}</div></div>`).join('');
+function getClr(s){for(const g of shades)if(g.list.includes(s))return g.color;return '#e2e8f0';}
+document.getElementById('shadeGrps').innerHTML=shades.map(g=>`<div class="shade-group"><div class="shade-group-header"><span class="shade-swatch-sm" style="background:${g.color}"></span>${g.label}</div><div class="shade-chips">${g.list.map(s=>`<button class="shade-chip" data-s="${s}" onclick="pick('${s}')">${s}</button>`).join('')}</div></div>`).join('');
 
 let sel="",esel="",shadeMode="add",docMode="add";
 let caseType="CB",editType="CB";
 
 function setShadeUI(tId,txId,dId,s){
   const btn=document.getElementById(tId),tx=document.getElementById(txId),d=document.getElementById(dId);
-  if(s){tx.textContent=s;d.style.background=getClr(s);d.style.borderColor='transparent';btn.classList.add('picked');}
-  else{tx.textContent=lang==='ar'?'اختر اللون':'Select shade';d.style.background='#c8dde8';d.style.borderColor='var(--border)';btn.classList.remove('picked');}
+  if(s){tx.textContent=s;d.style.background=getClr(s);d.style.borderColor='rgba(0,0,0,0.12)';btn.classList.add('picked');}
+  else{tx.textContent=t('lShade');d.style.background='';d.style.borderColor='';btn.classList.remove('picked');}
 }
-window.openShade=m=>{shadeMode=m;const c=m==='add'?sel:esel;document.querySelectorAll('#shadeGrps .chip').forEach(x=>x.classList.toggle('on',x.dataset.s===c));document.getElementById('shadeOv').classList.add('on');};
+window.openShade=m=>{shadeMode=m;const c=m==='add'?sel:esel;document.querySelectorAll('#shadeGrps .shade-chip').forEach(x=>x.classList.toggle('on',x.dataset.s===c));document.getElementById('shadeOv').classList.add('on');};
 window.closeShade=()=>document.getElementById('shadeOv').classList.remove('on');
 window.clearShade=()=>{if(shadeMode==='add'){sel='';setShadeUI('sTrig','sTxt','sDot','');}else{esel='';setShadeUI('eSTrig','eSTxt','eSDot','');}closeShade();};
-window.pick=s=>{if(shadeMode==='add'){sel=s;setShadeUI('sTrig','sTxt','sDot',s);}else{esel=s;setShadeUI('eSTrig','eSTxt','eSDot',s);}closeShade();showToast(`✅ ${s}`,'ok');};
+window.pick=s=>{if(shadeMode==='add'){sel=s;setShadeUI('sTrig','sTxt','sDot',s);}else{esel=s;setShadeUI('eSTrig','eSTxt','eSDot',s);}closeShade();showToast(s,'ok');};
 document.getElementById('shadeOv').addEventListener('click',e=>{if(e.target===document.getElementById('shadeOv'))closeShade();});
 
-window.setType=tp=>{caseType=tp;document.getElementById('btnCB').className=`tbtn${tp==='CB'?' acb':''}`;document.getElementById('btnFA').className=`tbtn${tp==='FA'?' afa':''}`;};
-window.setEditType=tp=>{editType=tp;document.getElementById('eBtnCB').className=`tbtn${tp==='CB'?' acb':''}`;document.getElementById('eBtnFA').className=`tbtn${tp==='FA'?' afa':''}`;};
+window.setType=tp=>{caseType=tp;document.getElementById('btnCB').className=`type-seg-btn${tp==='CB'?' active-cb':''}`;document.getElementById('btnFA').className=`type-seg-btn${tp==='FA'?' active-fa':''}`;};
+window.setEditType=tp=>{editType=tp;document.getElementById('eBtnCB').className=`type-seg-btn${tp==='CB'?' active-cb':''}`;document.getElementById('eBtnFA').className=`type-seg-btn${tp==='FA'?' active-fa':''}`;};
 
 // ── DOC PICKER ──
 window.openDoc=function(mode){
@@ -536,11 +1080,11 @@ function renderDocList(q){
   let docs=Object.entries(dm).sort((a,b)=>b[1]-a[1]);
   if(q)docs=docs.filter(([d])=>d.includes(q)||d.toLowerCase().includes(q.toLowerCase()));
   const el=document.getElementById('docList');
-  if(!docs.length&&!q){el.innerHTML=`<div class="doc-empty">${t('noDocYet')}</div>`;document.getElementById('docNewBtn').style.display='none';return;}
-  el.innerHTML=docs.map(([d,c])=>`<div class="doc-opt" onclick="selectDoc('${d}')"><div class="doc-ico">${d.charAt(0)}</div><div><div class="doc-nm">${d}</div><div class="doc-ct">🦷${c}</div></div></div>`).join('');
-  const nb=document.getElementById('docNewBtn');
+  if(!docs.length&&!q){el.innerHTML=`<div class="doc-empty">${t('noDocYet')}</div>`;document.getElementById('docAddBtn').style.display='none';return;}
+  el.innerHTML=docs.map(([d,c])=>`<div class="doc-option" onclick="selectDoc('${d}')"><div class="doc-option-icon">${d.charAt(0)}</div><div><div class="doc-option-name">${d}</div><div class="doc-option-count">🦷 ${c}</div></div></div>`).join('');
+  const nb=document.getElementById('docAddBtn');
   const exists=docs.some(([d])=>d===q);
-  if(q&&!exists){nb.style.display='flex';nb.textContent=`➕ ${q}`;}else nb.style.display='none';
+  if(q&&!exists){nb.style.display='flex';nb.childNodes[nb.childNodes.length-1].textContent=` ${q}`;}else nb.style.display='none';
 }
 window.filterDocs=()=>renderDocList(document.getElementById('docSearch').value.trim());
 window.selectDoc=function(name){document.getElementById(docMode==='add'?'fDoc':'eDoc').value=name;closeDoc();};
@@ -568,7 +1112,9 @@ onAuthStateChanged(auth,u=>{
     uid=u.uid;
     document.getElementById('login').style.display='none';
     document.getElementById('app').classList.add('on');
-    ['hdrAv','tabAv','accAv'].forEach(id=>{const el=document.getElementById(id);if(u.photoURL)el.innerHTML=`<img src="${u.photoURL}">`;else el.textContent=u.displayName?.[0]||'؟';});
+    // Set avatars
+    const setAv=(id,isImg)=>{const el=document.getElementById(id);if(u.photoURL){el.innerHTML=`<img src="${u.photoURL}">`;}else if(isImg){el.innerHTML=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;}else{el.innerHTML=`<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;}};
+    setAv('hdrAv',true);setAv('tabAv',true);setAv('accAv',false);
     document.getElementById('accNm').textContent=u.displayName||'User';
     document.getElementById('accEm').textContent=u.email||'';
     cRef=ref(db,`users/${uid}/cases`);
@@ -608,43 +1154,46 @@ window.renderList=function(){
   const faT=list.filter(c=>(c.type||'CB')==='FA').reduce((s,c)=>s+(+c.teeth||0),0);
   const cbT=list.filter(c=>(c.type||'CB')==='CB').reduce((s,c)=>s+(+c.teeth||0),0);
   document.getElementById('lCnt').textContent=`${list.length} ${t('cases')}`;
-  document.getElementById('lSum').textContent=list.length?`🦷 ${sum} ${t('teeth')}`:'';
-  document.getElementById('typeSummary').innerHTML=list.length?`<span class="tfa">FA: 🦷${faT}</span><span class="tcb">CB: 🦷${cbT}</span>`:'';
+  document.getElementById('lSum').textContent=list.length?`${sum} ${t('teeth')}`:'';
+  document.getElementById('typeBadges').innerHTML=list.length?`<span class="badge-fa">FA · ${faT}</span><span class="badge-cb">CB · ${cbT}</span>`:'';
   const el=document.getElementById('listEl');
-  if(!list.length){el.innerHTML=`<div class="empty"><span class="empty-ico">📭</span><div class="empty-t">${t('noCases')}</div></div>`;return;}
-  el.innerHTML=list.map(c=>{const tp=c.type||'CB';return`<div class="ccard"><div class="ccard-head"><div><div class="ccard-doc">👨‍⚕️ ${c.doc||'—'}</div><div class="ccard-pat">🧑 ${c.pat||'—'}</div></div><div class="ccard-badge">🦷 ${c.teeth||0}</div></div><div class="ctags"><span class="ctag ctag-d">📅 ${c.month||'—'}/${c.year||'—'}</span><span class="ctag ${tp==='FA'?'ctag-fa':'ctag-cb'}">${tp}</span>${c.shade?`<span class="ctag ctag-s">🎨 ${c.shade}</span>`:''}</div><div class="cacts"><button class="acd" onclick="openDel('${c.id}')">🗑️ ${lang==='ar'?'حذف':'Delete'}</button><button class="ace" onclick="openEdit('${c.id}')">✏️ ${lang==='ar'?'تعديل':'Edit'}</button></div></div>`;}).join('');
+  if(!list.length){el.innerHTML=`<div class="empty-state"><span class="empty-icon">📋</span><div class="empty-text">${t('noCases')}</div></div>`;return;}
+  el.innerHTML=list.map(c=>{const tp=c.type||'CB';return`<div class="case-card"><div class="case-card-top"><div class="case-card-info"><div class="case-card-doc">${c.doc||'—'}</div><div class="case-card-pat">${c.pat||'—'}</div></div><div class="case-card-badge">${c.teeth||0}</div></div><div class="case-card-tags"><span class="ctag ctag-date">${c.month||'—'} / ${c.year||'—'}</span><span class="ctag ${tp==='FA'?'ctag-fa':'ctag-cb'}">${tp}</span>${c.shade?`<span class="ctag ctag-shade">${c.shade}</span>`:''}</div><div class="case-card-actions"><button class="case-action case-action-edit" onclick="openEdit('${c.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>${lang==='ar'?'تعديل':'Edit'}</button><button class="case-action case-action-del" onclick="openDel('${c.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>${lang==='ar'?'حذف':'Delete'}</button></div></div>`;}).join('');
 };
 
 window.renderStats=function(){
   const fy=document.getElementById('stYr').value,fm=document.getElementById('stMon').value;
   let list=Object.values(all);
   if(fy)list=list.filter(c=>String(c.year)===fy);if(fm)list=list.filter(c=>String(c.month)===fm);
-  let p=t('per');if(fy&&fm)p=`📊 ${lang==='ar'?'شهر':'Month'} ${fm}←${fy}`;else if(fy)p=`📊 ${fy}`;else if(fm)p=`📊 ${lang==='ar'?'شهر':'Month'} ${fm}`;
+  let p=t('per');if(fy&&fm)p=`${lang==='ar'?'شهر':'Month'} ${fm} · ${fy}`;else if(fy)p=`${fy}`;else if(fm)p=`${lang==='ar'?'شهر':'Month'} ${fm}`;
   document.getElementById('per').textContent=p;
   document.getElementById('mCard').style.display=fm?'none':'block';
   const tt=list.reduce((s,c)=>s+(+c.teeth||0),0),avg=list.length?Math.round(tt/list.length):0;
-  document.getElementById('stGrid').innerHTML=`<div class="sbox"><div class="sbox-n" style="color:var(--blue2)">${tt}</div><div class="sbox-l">${t('totalTeeth')}</div></div><div class="sbox"><div class="sbox-n" style="color:var(--green)">${list.length}</div><div class="sbox-l">${t('totalCases')}</div></div><div class="sbox"><div class="sbox-n" style="color:var(--gold)">${avg}</div><div class="sbox-l">${t('avgPerCase')}</div></div><div class="sbox"><div class="sbox-n" style="color:var(--blue)">${new Set(list.map(c=>c.doc).filter(Boolean)).size}</div><div class="sbox-l">${t('totalDoctors')}</div></div>`;
+  document.getElementById('stGrid').innerHTML=`<div class="stat-box"><div class="stat-box-n" style="color:var(--blue)">${tt}</div><div class="stat-box-l">${t('totalTeeth')}</div></div><div class="stat-box"><div class="stat-box-n" style="color:var(--green)">${list.length}</div><div class="stat-box-l">${t('totalCases')}</div></div><div class="stat-box"><div class="stat-box-n" style="color:var(--gold)">${avg}</div><div class="stat-box-l">${t('avgPerCase')}</div></div><div class="stat-box"><div class="stat-box-n" style="color:#7c3aed">${new Set(list.map(c=>c.doc).filter(Boolean)).size}</div><div class="stat-box-l">${t('totalDoctors')}</div></div>`;
   const faT=list.filter(c=>(c.type||'CB')==='FA').reduce((s,c)=>s+(+c.teeth||0),0);
   const cbT=list.filter(c=>(c.type||'CB')==='CB').reduce((s,c)=>s+(+c.teeth||0),0);
   const faC=list.filter(c=>(c.type||'CB')==='FA').length,cbC=list.filter(c=>(c.type||'CB')==='CB').length;
-  document.getElementById('typeStats').innerHTML=`<div class="tsbox fa"><div class="tsbox-n" style="color:var(--fa)">🦷${faT}</div><div class="tsbox-l" style="color:var(--fa)">Full Anatomy</div><div style="font-size:0.65rem;color:#93c5fd;margin-top:3px">${faC} ${t('cases')}</div></div><div class="tsbox cb"><div class="tsbox-n" style="color:var(--cb)">🦷${cbT}</div><div class="tsbox-l" style="color:var(--cb)">Cut Back</div><div style="font-size:0.65rem;color:#c4b5fd;margin-top:3px">${cbC} ${t('cases')}</div></div>`;
+  document.getElementById('typeStats').innerHTML=`<div class="type-stat-box fa"><div class="type-stat-n" style="color:var(--fa)">${faT}</div><div class="type-stat-l" style="color:var(--fa)">Full Anatomy</div><div style="font-size:0.6rem;color:#93c5fd;margin-top:2px">${faC} ${t('cases')}</div></div><div class="type-stat-box cb"><div class="type-stat-n" style="color:var(--cb)">${cbT}</div><div class="type-stat-l" style="color:var(--cb)">Cut Back</div><div style="font-size:0.6rem;color:#c4b5fd;margin-top:2px">${cbC} ${t('cases')}</div></div>`;
   const dm={};list.forEach(c=>{if(!c.doc)return;dm[c.doc]=(dm[c.doc]||0)+(+c.teeth||0);});
   const ds=Object.entries(dm).sort((a,b)=>b[1]-a[1]),mx=ds[0]?.[1]||1;
   function rk(i){if(i===0)return['rk-gold','🥇'];if(i===1||i===2)return['rk-silver','🥈'];return['rk-green',i+1];}
-  document.getElementById('stDoc').innerHTML=ds.length?ds.map(([d,v],i)=>{const[c,ic]=rk(i);return`<div class="doc-item"><div class="doc-rk ${c}">${ic}</div><div class="doc-inf"><div class="doc-nm">${d}</div><div class="doc-bw"><div class="doc-b" style="width:${(v/mx*100).toFixed(1)}%"></div></div></div><div class="doc-n">🦷${v}</div></div>`;}).join(''):`<div style="color:var(--text3);text-align:center;padding:14px;font-size:0.8rem">${t('noData')}</div>`;
-  if(!fm){const mm={};list.forEach(c=>{const m=c.month;if(!m)return;if(!mm[m]){mm[m]={t:0};}mm[m].t+=+c.teeth||0;});document.getElementById('stMonEl').innerHTML=Array.from({length:12},(_,i)=>i+1).map(m=>{const d=mm[m]||{t:0};return`<div class="mbox"><div class="mbox-n" style="color:${d.t?'var(--blue2)':'var(--text3)'}">${d.t}</div><div class="mbox-l">${m}</div></div>`;}).join('');}
+  document.getElementById('stDoc').innerHTML=ds.length?ds.map(([d,v],i)=>{const[c,ic]=rk(i);return`<div class="doc-item"><div class="doc-rank ${c}">${ic}</div><div class="doc-info"><div class="doc-name">${d}</div><div class="doc-bar-wrap"><div class="doc-bar" style="width:${(v/mx*100).toFixed(1)}%"></div></div></div><div class="doc-teeth">${v}</div></div>`;}).join(''):`<div style="color:var(--text3);text-align:center;padding:12px;font-size:0.76rem">${t('noData')}</div>`;
+  if(!fm){const mm={};list.forEach(c=>{const m=c.month;if(!m)return;if(!mm[m])mm[m]=0;mm[m]+=+c.teeth||0;});document.getElementById('stMonEl').innerHTML=Array.from({length:12},(_,i)=>i+1).map(m=>{const v=mm[m]||0;return`<div class="month-box"><div class="month-n" style="color:${v?'var(--blue)':'var(--text3)'}">${v}</div><div class="month-l">${m}</div></div>`;}).join('');}
   const sm={};list.forEach(c=>{if(!c.shade)return;sm[c.shade]=(sm[c.shade]||0)+1;});
   const sl=Object.entries(sm).sort((a,b)=>b[1]-a[1]).slice(0,8),smx=sl[0]?.[1]||1;
-  document.getElementById('stShade').innerHTML=sl.length?sl.map(([s,n])=>`<div class="sd-r"><div class="sd-nm">${s}</div><div class="sd-bw"><div class="sd-b" style="width:${(n/smx*100).toFixed(1)}%"></div></div><div class="sd-c">${n}</div></div>`).join(''):`<div style="color:var(--text3);text-align:center;padding:12px;font-size:0.78rem">${t('noData')}</div>`;
+  document.getElementById('stShade').innerHTML=sl.length?sl.map(([s,n])=>`<div class="shade-row"><div class="shade-name">${s}</div><div class="shade-bar-wrap"><div class="shade-bar" style="width:${(n/smx*100).toFixed(1)}%"></div></div><div class="shade-count">${n}</div></div>`).join(''):`<div style="color:var(--text3);text-align:center;padding:12px;font-size:0.76rem">${t('noData')}</div>`;
 };
 
 window.addCase=async function(){
   const doc=document.getElementById('fDoc').value.trim(),tth=+document.getElementById('fTth').value;
   if(!doc){showToast(t('errDoc'),'err');return;}if(!tth||tth<1){showToast(t('errTth'),'err');return;}
-  await push(cRef,{doc,pat:document.getElementById('fPat').value.trim(),teeth:tth,month:+document.getElementById('fMon').value,year:+document.getElementById('fYr').value,shade:sel,type:caseType,ts:Date.now()});
-  document.getElementById('fDoc').value='';document.getElementById('fPat').value='';document.getElementById('fTth').value='';
-  sel='';setShadeUI('sTrig','sTxt','sDot','');setType('CB');
-  showToast(t('savedOk'),'ok');
+  const btn=document.getElementById('btnSave');btn.style.opacity='0.7';btn.style.pointerEvents='none';
+  try{
+    await push(cRef,{doc,pat:document.getElementById('fPat').value.trim(),teeth:tth,month:+document.getElementById('fMon').value,year:+document.getElementById('fYr').value,shade:sel,type:caseType,ts:Date.now()});
+    document.getElementById('fDoc').value='';document.getElementById('fPat').value='';document.getElementById('fTth').value='';
+    sel='';setShadeUI('sTrig','sTxt','sDot','');setType('CB');
+    showToast(t('savedOk'),'ok');
+  }finally{btn.style.opacity='';btn.style.pointerEvents='';}
 };
 window.openEdit=function(id){
   const c=all[id];if(!c)return;
@@ -663,7 +1212,7 @@ window.doCSV=function(){
   let list=Object.values(all);const fy=document.getElementById('flYr').value,fm=document.getElementById('flMon').value,fd=document.getElementById('flDoc').value,ftp=document.getElementById('flType').value;
   if(fy)list=list.filter(c=>String(c.year)===fy);if(fm)list=list.filter(c=>String(c.month)===fm);if(fd)list=list.filter(c=>c.doc===fd);if(ftp)list=list.filter(c=>(c.type||'CB')===ftp);
   const csv='\uFEFF'+'Year,Month,Doctor,Patient,Teeth,Type,Shade\n'+list.map(c=>`${c.year||''},${c.month||''},${c.doc||''},${c.pat||''},${c.teeth||0},${c.type||'CB'},${c.shade||''}`).join('\n');
-  Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})),download:`dental-${Date.now()}.csv`}).click();showToast(t('csvOk'),'ok');
+  Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})),download:`mas-dental-${Date.now()}.csv`}).click();showToast(t('csvOk'),'ok');
 };
 window.openPDF=function(){document.getElementById('pdfMon').value=document.getElementById('flMon').value||now.getMonth()+1;document.getElementById('pdfOv').classList.add('on');};
 window.closePDF=()=>document.getElementById('pdfOv').classList.remove('on');
@@ -678,24 +1227,28 @@ window.genPDF=function(){
   const cbT=list.filter(c=>(c.type||'CB')==='CB').reduce((s,c)=>s+(+c.teeth||0),0);
   const secs=Object.entries(byDoc).map(([doc,cases])=>{
     const tot=cases.reduce((s,c)=>s+(+c.teeth||0),0);
+    const rows=cases.map(c=>`<tr><td style="padding:8px 14px;border-bottom:1px solid #f1f5f9;font-size:15px;font-weight:700;color:#0f172a">${c.teeth||0}</td><td style="padding:8px 14px;border-bottom:1px solid #f1f5f9;font-size:14px;color:#334155">${c.pat||'—'}</td><td style="padding:8px 14px;border-bottom:1px solid #f1f5f9;font-size:13px;color:${(c.type||'CB')==='FA'?'#1d4ed8':'#7c3aed'};font-weight:700">${c.type||'CB'}</td><td style="padding:8px 14px;border-bottom:1px solid #f1f5f9;font-size:13px;color:#92400e;font-weight:600">${c.shade||'—'}</td></tr>`).join('');
     const faD=cases.filter(c=>(c.type||'CB')==='FA').reduce((s,c)=>s+(+c.teeth||0),0);
     const cbD=cases.filter(c=>(c.type||'CB')==='CB').reduce((s,c)=>s+(+c.teeth||0),0);
-    const rows=cases.map(c=>`<tr><td style="padding:7px 12px;border-bottom:1px solid #e0eaf0;font-size:14px;font-weight:700;color:#0d2d4a">${c.teeth||0}</td><td style="padding:7px 12px;border-bottom:1px solid #e0eaf0;font-size:14px;color:#1a3a5c">${c.pat||'—'}</td><td style="padding:7px 12px;border-bottom:1px solid #e0eaf0;font-size:13px;color:${(c.type||'CB')==='FA'?'#1d4ed8':'#7c3aed'};font-weight:700">${c.type||'CB'}</td><td style="padding:7px 12px;border-bottom:1px solid #e0eaf0;font-size:13px;color:#7a5500;font-weight:600">${c.shade||'—'}</td></tr>`).join('');
-    return`<div style="margin-bottom:22px;border:1.5px solid #b0cfe0;border-radius:12px;overflow:hidden;page-break-inside:avoid"><div style="background:linear-gradient(135deg,#0d2d4a,#1a5070);padding:12px 16px;display:flex;justify-content:space-between;align-items:center"><div style="font-size:17px;font-weight:900;color:#fff">${doc}</div><div style="display:flex;gap:8px">${faD?`<span style="background:rgba(29,78,216,0.3);color:#93c5fd;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700">FA:🦷${faD}</span>`:''} ${cbD?`<span style="background:rgba(124,58,237,0.3);color:#c4b5fd;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700">CB:🦷${cbD}</span>`:''}<span style="background:rgba(255,255,255,0.15);color:#fff;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700">🦷${tot}</span></div></div><table style="width:100%;border-collapse:collapse;direction:rtl"><thead><tr style="background:#e8f2f8"><th style="padding:7px 12px;text-align:right;font-size:11px;color:#2a5070">أسنان</th><th style="padding:7px 12px;text-align:right;font-size:11px;color:#2a5070">المريض</th><th style="padding:7px 12px;text-align:right;font-size:11px;color:#2a5070">النوع</th><th style="padding:7px 12px;text-align:right;font-size:11px;color:#2a5070">اللون</th></tr></thead><tbody>${rows}</tbody><tfoot><tr style="background:#f0f8ff"><td colspan="4" style="padding:7px 12px;text-align:left;font-size:12px;font-weight:700;color:#2670a0">المجموع: ${cases.length} — 🦷${tot}</td></tr></tfoot></table></div>`;
+    return`<div style="margin-bottom:24px;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;page-break-inside:avoid"><div style="background:#0f172a;padding:13px 18px;display:flex;justify-content:space-between;align-items:center"><div style="font-size:17px;font-weight:900;color:#fff">${doc}</div><div style="display:flex;gap:8px;align-items:center">${faD?`<span style="background:#1e3a8a;color:#93c5fd;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700">FA·${faD}</span>`:''} ${cbD?`<span style="background:#4c1d95;color:#c4b5fd;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700">CB·${cbD}</span>`:''}<span style="background:#1e293b;color:#94a3b8;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700">🦷 ${tot}</span></div></div><table style="width:100%;border-collapse:collapse;direction:rtl"><thead><tr style="background:#f8fafc"><th style="padding:8px 14px;text-align:right;font-size:11px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:0.5px">أسنان</th><th style="padding:8px 14px;text-align:right;font-size:11px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:0.5px">المريض</th><th style="padding:8px 14px;text-align:right;font-size:11px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:0.5px">النوع</th><th style="padding:8px 14px;text-align:right;font-size:11px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:0.5px">اللون</th></tr></thead><tbody>${rows}</tbody><tfoot><tr style="background:#f8fafc"><td colspan="4" style="padding:8px 14px;text-align:left;font-size:12px;font-weight:700;color:#475569">المجموع · ${cases.length} حالة · 🦷 ${tot}</td></tr></tfoot></table></div>`;
   }).join('');
-  const html=`<!DOCTYPE html><html dir="rtl" lang="ar"><head><meta charset="UTF-8"><title>MAS Dental Lab</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;padding:20px;direction:rtl;color:#0a2035}@media print{body{padding:12px}}</style></head><body><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:14px;border-bottom:3px solid #1a5070"><div><div style="font-size:24px;font-weight:900;letter-spacing:4px">MAS</div><div style="font-size:10px;color:#6a90a8;letter-spacing:3px">DENTAL LAB</div><div style="font-size:12px;color:#2a5070;margin-top:6px">تقرير شهر ${month} / ${year}</div></div><div style="text-align:left"><div style="font-size:13px;color:#2a5070">الحالات: <b>${list.length}</b></div><div style="font-size:13px;color:#1a5070;margin-top:3px">🦷 ${total}</div><div style="font-size:12px;margin-top:3px;color:#1d4ed8">FA:🦷${faT} | <span style="color:#7c3aed">CB:🦷${cbT}</span></div></div></div>${secs}<div style="margin-top:16px;padding-top:10px;border-top:1.5px solid #b0cfe0;text-align:center;color:#6a90a8;font-size:11px">MAS Dental Lab — ${new Date().toLocaleDateString()}</div></body></html>`;
-  const w=window.open('','_blank','width=800,height=900');w.document.write(html);w.document.close();setTimeout(()=>w.print(),500);closePDF();showToast(t('pdfOk'),'ok');
+  const html=`<!DOCTYPE html><html dir="rtl" lang="ar"><head><meta charset="UTF-8"><title>MAS Dental Lab</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Helvetica Neue',Arial,sans-serif;padding:24px;color:#0f172a;background:#fff;font-size:14px}@media print{body{padding:16px;font-size:13px}}</style></head><body><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid #0f172a"><div><div style="font-size:22px;font-weight:900;letter-spacing:4px;color:#0f172a">MAS</div><div style="font-size:9px;color:#94a3b8;letter-spacing:3px;text-transform:uppercase;margin-top:2px">DENTAL LAB</div><div style="font-size:12px;color:#64748b;margin-top:8px">تقرير · شهر ${month} / ${year}</div></div><div style="text-align:left"><div style="font-size:13px;color:#475569">الحالات: <strong>${list.length}</strong></div><div style="font-size:13px;color:#2563eb;margin-top:4px;font-weight:700">🦷 ${total} سن</div><div style="font-size:12px;margin-top:4px"><span style="color:#1d4ed8">FA: ${faT}</span> · <span style="color:#7c3aed">CB: ${cbT}</span></div></div></div>${secs}<div style="margin-top:20px;padding-top:12px;border-top:1px solid #e2e8f0;text-align:center;color:#94a3b8;font-size:11px">MAS Dental Lab · ${new Date().toLocaleDateString()}</div></body></html>`;
+  const w=window.open('','_blank','width=820,height=920');w.document.write(html);w.document.close();setTimeout(()=>w.print(),600);closePDF();showToast(t('pdfOk'),'ok');
 };
 
 window.showPg=function(n,btn){
-  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
-  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
   document.getElementById('pg-'+n).classList.add('on');if(btn)btn.classList.add('on');
   if(n==='stats')renderStats();
 };
 window.closeOv=id=>document.getElementById(id).classList.remove('on');
-document.querySelectorAll('.ovb').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('on');}));
-function showToast(msg,type='ok'){const el=document.getElementById('toast');el.textContent=msg;el.className=`toast ${type} show`;setTimeout(()=>el.classList.remove('show'),2500);}
+document.querySelectorAll('.overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('on');}));
+function showToast(msg,type='ok'){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.className=`toast ${type} show`;
+  clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2400);
+}
 window.showToast=showToast;
 applyLang();
 </script>
