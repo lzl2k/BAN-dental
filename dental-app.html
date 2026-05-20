@@ -2237,54 +2237,33 @@ window.renderDocManager = function() {
   });
 };
 
-window.openRename = function(oldName) {
-  const ov  = document.getElementById('renameOv');
-  const inp = document.getElementById('renameInp');
-  const old = document.getElementById('renameOld');
-  if (!ov || !inp || !old) { alert('خطأ: عنصر مفقود'); return; }
-  old.value = oldName;
-  inp.value = oldName;
-  ov.style.display = 'flex';
-  ov.classList.add('on');
-  setTimeout(() => { inp.focus(); inp.select(); }, 300);
-};
+window.openRename = async function(oldName) {
+  const newName = prompt('اسم الطبيب الجديد:', oldName);
+  if (!newName || newName.trim() === '' || newName.trim() === oldName) return;
+  const trimmed = newName.trim();
 
-window.confirmRename = async function() {
-  const oldName = document.getElementById('renameOld').value.trim();
-  const newName = document.getElementById('renameInp').value.trim();
-  if (!newName) { toast(lang==='ar'?'أدخل الاسم الجديد':'Enter new name','err'); return; }
-  if (newName === oldName) { closeOv('renameOv'); return; }
-
-  // ابحث عن كل الحالات المرتبطة بالاسم القديم وحدّثها
-  const updates = {};
+  // حدّث كل الحالات دفعة واحدة
+  const promises = [];
   Object.entries(all).forEach(([id, c]) => {
-    if (c.doc === oldName) updates[`users/${uid}/cases/${id}/doc`] = newName;
+    if (c.doc === oldName) {
+      promises.push(update(ref(db, 'users/' + uid + '/cases/' + id), { doc: trimmed }));
+    }
   });
 
-  if (!Object.keys(updates).length) { closeOv('renameOv'); return; }
+  if (!promises.length) { toast('لا توجد حالات بهذا الاسم', 'err'); return; }
 
   try {
-    const { ref: dbRef, update: dbUpdate } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js");
-    await dbUpdate(dbRef(db), updates);
-  } catch(e) {
-    // fallback: update one by one
-    for (const [id, c] of Object.entries(all)) {
-      if (c.doc === oldName) {
-        await update(ref(db, `users/${uid}/cases/${id}`), { doc: newName });
-      }
+    await Promise.all(promises);
+    if (lastDoc === oldName) {
+      lastDoc = trimmed;
+      localStorage.setItem('lastDoc', trimmed);
+      document.getElementById('fDoc').value = trimmed;
     }
+    toast('تم تغيير "' + oldName + '" إلى "' + trimmed + '" ✓', 'ok');
+    setTimeout(() => renderDocManager(), 600);
+  } catch(e) {
+    toast('حدث خطأ، حاول مجدداً', 'err');
   }
-
-  // حدّث lastDoc لو كان نفس الاسم
-  if (lastDoc === oldName) {
-    lastDoc = newName;
-    localStorage.setItem('lastDoc', newName);
-    document.getElementById('fDoc').value = newName;
-  }
-
-  closeOv('renameOv');
-  toast('تم تغيير الاسم بنجاح ✓', 'ok');
-  setTimeout(() => renderDocManager(), 500);
 };
 
 </script>
