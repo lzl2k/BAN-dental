@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>استيراد بيانات — MAS Dental</title>
+<style>
+  body { font-family: Cairo, sans-serif; background: #f8fafc; padding: 20px; color: #0f172a; direction: rtl; }
+  .card { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  h2 { color: #2563eb; margin-bottom: 4px; }
+  .stat { display: inline-block; background: #eff6ff; color: #2563eb; padding: 6px 14px; border-radius: 20px; font-weight: 800; margin: 4px; font-size: 0.85rem; }
+  .btn { width: 100%; padding: 14px; background: #2563eb; color: #fff; border: none; border-radius: 10px; font-family: Cairo, sans-serif; font-size: 1rem; font-weight: 800; cursor: pointer; margin-top: 10px; }
+  .btn:disabled { background: #94a3b8; cursor: not-allowed; }
+  .btn-danger { background: #ef4444; }
+  #log { background: #f1f5f9; border-radius: 8px; padding: 12px; font-size: 0.75rem; max-height: 200px; overflow-y: auto; margin-top: 12px; white-space: pre-wrap; color: #475569; }
+  .progress { height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; margin: 8px 0; }
+  .progress-bar { height: 100%; background: #2563eb; border-radius: 4px; transition: width 0.3s; width: 0%; }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h2>📥 استيراد سجل أكتوبر 2025</h2>
+  <p style="color:#64748b;font-size:0.85rem;margin:8px 0">سيتم إضافة الحالات لحسابك في Firebase</p>
+  <div>
+    <span class="stat">78 حالة</span>
+    <span class="stat">438 سن</span>
+    <span class="stat">14 طبيب</span>
+    <span class="stat">شهر 10 / 2025</span>
+  </div>
+</div>
+
+<div class="card">
+  <div id="statusMsg" style="font-size:0.85rem;color:#64748b;margin-bottom:8px">اضغط استيراد للبدء</div>
+  <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+  <button class="btn" id="importBtn" onclick="startImport()">🚀 بدء الاستيراد</button>
+  <div id="log"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBjEd3UPOTkK143j1rZ6WQtnxhN5AS5nEU",
+  authDomain: "dental-app-c95ce.firebaseapp.com",
+  databaseURL: "https://dental-app-c95ce-default-rtdb.firebaseio.com",
+  projectId: "dental-app-c95ce",
+  storageBucket: "dental-app-c95ce.firebasestorage.app",
+  messagingSenderId: "13518342618",
+  appId: "dental-mas-v10"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getDatabase(app);
+
+const cases = [{"doc": "جلال عروس", "pat": "محمد رضا", "teeth": 1, "month": 10, "year": 2025, "shade": "", "type": "CB", "ts": 1727740800000}, {"doc": "جلال عروس", "pat": "اتهام جبار", "teeth": 2, "month": 10, "year": 2025, "shade": "2M2", "type": "CB", "ts": 1727740801000}, {"doc": "جلال عروس", "pat": "فائزه", "teeth": 2, "month": 10, "year": 2025, "shade": "2M2", "type": "CB", "ts": 1727740802000}, {"doc": "جلال عروس", "pat": "علي هاشم", "teeth": 2, "month": 10, "year": 2025, "shade": "1M2", "type": "CB", "ts": 1727740803000}, {"doc": "جلال عروس", "pat": "ساره حسن", "teeth": 6, "month": 10, "year": 2025, "shade": "2R1.5", "type": "CB", "ts": 1727740804000}, {"doc": "جلال عروس", "pat": "صباح عبد", "teeth": 2, "month": 10, "year": 2025, "shade": "2R1.5", "type": "CB", "ts": 1727740805000}, {"doc": "جلال عروس", "pat": "صوله داخل", "teeth": 8, "month": 10, "year": 2025, "shade": "1M2", "type": "CB", "ts": 1727740806000}, {"doc": "جلال عروس", "pat": "نور حميد", "teeth": 2, "month": 10, "year": 2025, "shade": "2M2", "type": "CB", "ts": 1727740807000}, {"doc": "جلال عروس", "pat": "نور ضمار", "teeth": 1, "month": 10, "year": 2025, "shade": "2M2", "type": "CB", "ts": 1727740808000}, {"doc": "جلال عروس", "pat": "وليد حنين", "teeth": 4, "month": 10, "year": 2025, "shade": "2M1", "type": "CB", "ts": 1727740809000}, {"doc": "جلال عروس", "pat": "فاطمه كريم", "teeth": 2, "month": 10, "year": 2025, "shade": "2M2", "type": "CB", "ts": 1727740810000}, {"doc": "جلال عروس", "pat": "علي ثابت فارس", "teeth": 14, "month": 10, "year": 2025, "shade": "2R1.5", "type": "CB", "ts": 1727740811000}, {"doc": "جلال عروس", "pat": "محمد بداح", "teeth": 9, "month": 10, "year": 2025, "shade": "0M3", "type": "CB", "ts": 1727740812000}, {"doc": "جلال عروس", "pat": "حسين سعد", "teeth": 3, "month": 10, "year": 2025, "shade": "2M1", "type": "CB", "ts": 1727740813000}, {"doc": "جلال عروس", "pat": "ضياء حاتم", "teeth": 6, "month": 10, "year": 2025, "shade": "2M2", "type": "CB", "ts": 1727740814000}, {"doc": "جلال عروس", "pat": "مهدي عوده", "teeth": 23, "month": 10, "year": 2025, "shade": "2M2", "type": "CB", "ts": 1727740815000}, {"doc": "جلال عروس", "pat": "حيدر حسين", "teeth": 3, "month": 10, "year": 2025, "shade": "3R1.5", "type": "CB", "ts": 1727740816000}, {"doc": "جلال عروس", "pat": "زهراء حسين", "teeth": 2, "month": 10, "year": 2025, "shade": "2R1.5", "type": "CB", "ts": 1727740817000}, {"doc": "جلال عروس", "pat": "رقيه جاسم", "teeth": 11, "month": 10, "year": 2025, "shade": "2M2", "type": "CB", "ts": 1727740818000}, {"doc": "جلال عروس", "pat": "ثائر", "teeth": 1, "month": 10, "year": 2025, "shade": "2R1.5", "type": "CB", "ts": 1727740819000}, {"doc": "جلال عروس", "pat": "فالح", "teeth": 25, "month": 10, "year": 2025, "shade": "1M1", "type": "CB", "ts": 1727740820000}, {"doc": "جلال عروس", "pat": "كاضميه", "teeth": 7, "month": 10, "year": 2025, "shade": "2R1.5", "type": "CB", "ts": 1727740821000}, {"doc": "جلال عروس", "pat": "عادل", "teeth": 1, "month": 10, "year": 2025, "shade": "2R1.5", "type": "CB", "ts": 1727740822000}, {"doc": "علي رمضان", "pat": "اسماء عبد", "teeth": 3, "month": 10, "year": 2025, "shade": "2R1.5", "type": "CB", "ts": 1727740823000}, {"doc": "علي رمضان", "pat": "زينب كامل", "teeth": 10, "month": 10, "year": 2025, "shade": "2M2", "type": "CB", "ts": 1727740824000}, {"doc": "علي رمضان", "pat": "شفاء هاشم", "teeth": 5, "month": 10, "year": 2025, "shade": "2R2.5", "type": "CB", "ts": 1727740825000}, {"doc": "علي رمضان", "pat": "فاطمه", "teeth": 19, "month": 10, "year": 2025, "shade": "1M1", "type": "CB", "ts": 1727740826000}, {"doc": "علي رمضان", "pat": "عهود قاسم", "teeth": 13, "month": 10, "year": 2025, "shade": "1M1", "type": "CB", "ts": 1727740827000}, {"doc": "علي رمضان", "pat": "باسم حسن", "teeth": 4, "month": 10, "year": 2025, "shade": "2R1.5", "type": "CB", "ts": 1727740828000}, {"doc": "علي رمضان", "pat": "بشرى حواس", "teeth": 2, "month": 10, "year": 2025, "shade": "2R1.5", "type": "CB", "ts": 1727740829000}, {"doc": "علي رمضان", "pat": "وفيه جاسم", "teeth": 11, "month": 10, "year": 2025, "shade": "2M2", "type": "CB", "ts": 1727740830000}, {"doc": "علي رمضان", "pat": "عدنان نصير", "teeth": 1, "month": 10, "year": 2025, "shade": "2L2.5", "type": "CB", "ts": 1727740831000}, {"doc": "مفيد", "pat": "محمد ناضم", "teeth": 6, "month": 10, "year": 2025, "shade": "1M1", "type": "CB", "ts": 1727740832000}, {"doc": "مفيد", "pat": "حسن عبد الامير", "teeth": 11, "month": 10, "year": 2025, "shade": "1M2", "type": "CB", "ts": 1727740833000}, {"doc": "مفيد", "pat": "نور الدين", "teeth": 18, "month": 10, "year": 2025, "shade": "B", "type": "CB", "ts": 1727740834000}, {"doc": "محمد عجيل", "pat": "بسام كريم", "teeth": 3, "month": 10, "year": 2025, "shade": "2M2", "type": "CB", "ts": 1727740835000}, {"doc": "محمد عجيل", "pat": "حميد احسان", "teeth": 6, "month": 10, "year": 2025, "shade": "2R2.5", "type": "CB", "ts": 1727740836000}, {"doc": "محمد عجيل", "pat": "مريم محمد", "teeth": 3, "month": 10, "year": 2025, "shade": "2R1.5", "type": "CB", "ts": 1727740837000}, {"doc": "محمد عجيل", "pat": "عبد الحسين", "teeth": 3, "month": 10, "year": 2025, "shade": "2R2.5", "type": "CB", "ts": 1727740838000}, {"doc": "محمد عجيل", "pat": "بيداء حسين", "teeth": 4, "month": 10, "year": 2025, "shade": "2R2.5", "type": "CB", "ts": 1727740839000}, {"doc": "محمد عجيل", "pat": "سعديه هاشم", "teeth": 4, "month": 10, "year": 2025, "shade": "4M2", "type": "CB", "ts": 1727740840000}, {"doc": "محمد عجيل", "pat": "بنين حسن", "teeth": 3, "month": 10, "year": 2025, "shade": "2R2.5", "type": "CB", "ts": 1727740841000}, {"doc": "محمد عجيل", "pat": "سميره", "teeth": 4, "month": 10, "year": 2025, "shade": "", "type": "CB", "ts": 1727740842000}, {"doc": "محمد عجيل", "pat": "غفران شعلان", "teeth": 2, "month": 10, "year": 2025, "shade": "2R2.5", "type": "CB", "ts": 1727740843000}, {"doc": "محمد عجيل", "pat": "وفيه شنان", "teeth": 5, "month": 10, "year": 2025, "shade": "C2", "type": "CB", "ts": 1727740844000}, {"doc": "محمد عجيل", "pat": "علي خلف", "teeth": 2, "month": 10, "year": 2025, "shade": "2R1.5", "type": "CB", "ts": 1727740845000}, {"doc": "محمد عجيل", "pat": "عدي عبد الله", "teeth": 3, "month": 10, "year": 2025, "shade": "2R2.5", "type": "CB", "ts": 1727740846000}, {"doc": "محمد عجيل", "pat": "رباب", "teeth": 3, "month": 10, "year": 2025, "shade": "2R2.5", "type": "CB", "ts": 1727740847000}, {"doc": "محمد عجيل", "pat": "بهيه حسين", "teeth": 3, "month": 10, "year": 2025, "shade": "2R2.5", "type": "CB", "ts": 1727740848000}, {"doc": "محمد كريم", "pat": "", "teeth": 14, "month": 10, "year": 2025, "shade": "", "type": "CB", "ts": 1727740849000}, {"doc": "رضوان", "pat": "حسين عباس", "teeth": 8, "month": 10, "year": 2025, "shade": "1M2", "type": "CB", "ts": 1727740850000}, {"doc": "رضوان", "pat": "خديجه", "teeth": 3, "month": 10, "year": 2025, "shade": "2L2.5", "type": "CB", "ts": 1727740851000}, {"doc": "رضوان", "pat": "غفران", "teeth": 20, "month": 10, "year": 2025, "shade": "1M1", "type": "CB", "ts": 1727740852000}, {"doc": "علي فالح", "pat": "ناديه", "teeth": 3, "month": 10, "year": 2025, "shade": "2M2", "type": "CB", "ts": 1727740853000}, {"doc": "بانو", "pat": "عدنان عبد", "teeth": 1, "month": 10, "year": 2025, "shade": "3M3", "type": "CB", "ts": 1727740854000}, {"doc": "علي الخفاجي", "pat": "لمياء قاسم", "teeth": 5, "month": 10, "year": 2025, "shade": "2R1.5", "type": "CB", "ts": 1727740855000}, {"doc": "علي الخفاجي", "pat": "محمد اسعد", "teeth": 1, "month": 10, "year": 2025, "shade": "1M1", "type": "CB", "ts": 1727740856000}, {"doc": "علي الخفاجي", "pat": "فاطمه صالح", "teeth": 4, "month": 10, "year": 2025, "shade": "1M1", "type": "CB", "ts": 1727740857000}, {"doc": "علي الخفاجي", "pat": "علياء حسين", "teeth": 4, "month": 10, "year": 2025, "shade": "1M2", "type": "CB", "ts": 1727740858000}, {"doc": "علي الخفاجي", "pat": "ساجده محمد", "teeth": 8, "month": 10, "year": 2025, "shade": "2M2", "type": "CB", "ts": 1727740859000}, {"doc": "علي الخفاجي", "pat": "وفاء جبار", "teeth": 1, "month": 10, "year": 2025, "shade": "2M1", "type": "CB", "ts": 1727740860000}, {"doc": "علي الخفاجي", "pat": "محمد", "teeth": 2, "month": 10, "year": 2025, "shade": "2M3", "type": "CB", "ts": 1727740861000}, {"doc": "علي الخفاجي", "pat": "حسين كريم", "teeth": 4, "month": 10, "year": 2025, "shade": "", "type": "CB", "ts": 1727740862000}, {"doc": "علي الخفاجي", "pat": "سجاد علي", "teeth": 12, "month": 10, "year": 2025, "shade": "0M2", "type": "CB", "ts": 1727740863000}, {"doc": "علي الخفاجي", "pat": "علي حنون", "teeth": 8, "month": 10, "year": 2025, "shade": "0M2", "type": "CB", "ts": 1727740864000}, {"doc": "علي الخفاجي", "pat": "زهراء محمد", "teeth": 4, "month": 10, "year": 2025, "shade": "2M2", "type": "CB", "ts": 1727740865000}, {"doc": "علي الخفاجي", "pat": "رغد رشيد", "teeth": 1, "month": 10, "year": 2025, "shade": "2M2", "type": "CB", "ts": 1727740866000}, {"doc": "علي الخفاجي", "pat": "زهراء", "teeth": 10, "month": 10, "year": 2025, "shade": "0M1", "type": "CB", "ts": 1727740867000}, {"doc": "محمد صلاح", "pat": "بسعاد ضريو", "teeth": 1, "month": 10, "year": 2025, "shade": "A2", "type": "CB", "ts": 1727740868000}, {"doc": "محمد صلاح", "pat": "زهراء حسنA2", "teeth": 3, "month": 10, "year": 2025, "shade": "", "type": "CB", "ts": 1727740869000}, {"doc": "محمد صلاح", "pat": "وليد سمير", "teeth": 3, "month": 10, "year": 2025, "shade": "A2", "type": "CB", "ts": 1727740870000}, {"doc": "محمد صلاح", "pat": "نور", "teeth": 2, "month": 10, "year": 2025, "shade": "B1", "type": "CB", "ts": 1727740871000}, {"doc": "بانو", "pat": "وفيه حسين", "teeth": 5, "month": 10, "year": 2025, "shade": "", "type": "CB", "ts": 1727740872000}, {"doc": "علي مضفر", "pat": "فاطمه حسين", "teeth": 3, "month": 10, "year": 2025, "shade": "3M2", "type": "CB", "ts": 1727740873000}, {"doc": "علي مضفر", "pat": "زينب حميد", "teeth": 6, "month": 10, "year": 2025, "shade": "3M1", "type": "CB", "ts": 1727740874000}, {"doc": "احمد مكي", "pat": "اميره", "teeth": 7, "month": 10, "year": 2025, "shade": "4M2", "type": "CB", "ts": 1727740875000}, {"doc": "يوسف خضير", "pat": "سالم لفته", "teeth": 6, "month": 10, "year": 2025, "shade": "2M1", "type": "CB", "ts": 1727740876000}, {"doc": "unknown", "pat": "فاطمه ابراهيم", "teeth": 1, "month": 10, "year": 2025, "shade": "1M1", "type": "CB", "ts": 1727740877000}];
+
+let uid = null;
+
+onAuthStateChanged(auth, u => {
+  if (u) {
+    uid = u.uid;
+    document.getElementById('statusMsg').textContent = 'مرحباً ' + u.displayName + ' — جاهز للاستيراد';
+    document.getElementById('importBtn').disabled = false;
+  } else {
+    document.getElementById('statusMsg').textContent = 'يجب تسجيل الدخول أولاً';
+    document.getElementById('importBtn').textContent = '🔑 تسجيل الدخول';
+    document.getElementById('importBtn').onclick = async () => {
+      await signInWithPopup(auth, new GoogleAuthProvider());
+    };
+  }
+});
+
+window.startImport = async function() {
+  if (!uid) return;
+  const btn = document.getElementById('importBtn');
+  const log = document.getElementById('log');
+  const bar = document.getElementById('progressBar');
+  const msg = document.getElementById('statusMsg');
+  btn.disabled = true;
+  btn.textContent = 'جارٍ الاستيراد...';
+  log.textContent = '';
+  let done = 0;
+  const cRef = ref(db, 'users/' + uid + '/cases');
+  for (const c of cases) {
+    try {
+      await push(cRef, c);
+      done++;
+      const pct = Math.round(done / cases.length * 100);
+      bar.style.width = pct + '%';
+      msg.textContent = 'تم ' + done + ' من ' + cases.length;
+      log.textContent += '✓ ' + c.doc + ' — ' + (c.pat||'—') + ' (' + c.teeth + ' سن)\n';
+      log.scrollTop = log.scrollHeight;
+    } catch(e) {
+      log.textContent += '✗ خطأ: ' + c.pat + '\n';
+    }
+  }
+  msg.textContent = '✅ اكتمل الاستيراد! ' + done + ' حالة';
+  btn.textContent = '✅ تم';
+  bar.style.background = '#10b981';
+};
+</script>
+</body>
+</html>
