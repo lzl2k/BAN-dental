@@ -1,0 +1,2311 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" translate="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="google" content="notranslate">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#2563eb">
+<title>MAS Dental Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════
+   MAS Dental Lab — styles.css
+   ══════════════════════════════════════ */
+
+:root {
+  --blue:    #2563eb;
+  --blue2:   #1d4ed8;
+  --blue3:   #1e3a8a;
+  --sky:     #eff6ff;
+  --sky2:    #dbeafe;
+  --bg:      #f8fafc;
+  --white:   #ffffff;
+  --text:    #0f172a;
+  --text2:   #64748b;
+  --text3:   #94a3b8;
+  --border:  #e2e8f0;
+  --green:   #10b981;
+  --red:     #ef4444;
+  --gold:    #f59e0b;
+  --violet:  #7c3aed;
+  --r:       10px;
+  --r2:      7px;
+  --sh:      0 1px 2px rgba(0,0,0,0.05), 0 2px 8px rgba(0,0,0,0.06);
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html, body { height:100%; overflow:hidden; font-family:'Cairo',sans-serif; background:var(--bg); color:var(--text); }
+
+/* ══ SVG ICON HELPER ══ */
+.ico { display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
+
+/* ══ LOGIN ══ */
+#login {
+  position:fixed; inset:0; z-index:9999;
+  background:linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #0ea5e9 100%);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:32px; gap:18px; text-align:center;
+}
+.l-logo { background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); border-radius:20px; padding:20px 32px; }
+.l-mas { font-size:2.8rem; font-weight:900; color:#fff; letter-spacing:10px; line-height:1; }
+.l-line { width:36px; height:2px; background:rgba(255,255,255,0.4); margin:8px auto; border-radius:1px; }
+.l-dl { font-size:0.62rem; color:rgba(255,255,255,0.6); letter-spacing:4px; text-transform:uppercase; }
+.l-sub { font-size:0.82rem; color:rgba(255,255,255,0.7); }
+.l-btn {
+  display:flex; align-items:center; gap:10px; justify-content:center;
+  background:#fff; color:#1e3a8a; padding:13px 24px;
+  border-radius:40px; border:none; cursor:pointer;
+  font-family:'Cairo',sans-serif; font-size:0.9rem; font-weight:800;
+  width:100%; max-width:270px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.2);
+  transition:transform 0.15s;
+}
+.l-btn:active { transform:scale(0.97); }
+.l-note { font-size:0.65rem; color:rgba(255,255,255,0.4); }
+
+/* ══ APP SHELL ══ */
+#app { display:none; flex-direction:column; height:100%; }
+#app.on { display:flex; }
+
+/* ══ HEADER ══ */
+.hdr {
+  background:var(--white);
+  border-bottom:3px solid var(--blue);
+  padding:0;
+  flex-shrink:0;
+  box-shadow:0 2px 12px rgba(37,99,235,0.1);
+}
+.hdr-main {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 14px;
+}
+.hdr-brand { display:flex; flex-direction:column; }
+.hdr-mas { font-size:1.1rem; font-weight:900; color:var(--blue); letter-spacing:4px; line-height:1; }
+.hdr-sub { font-size:0.46rem; color:var(--text3); letter-spacing:2px; text-transform:uppercase; margin-top:1px; }
+.hdr-av {
+  width:34px; height:34px; border-radius:50%;
+  background:var(--sky); border:2px solid var(--sky2);
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; cursor:pointer; flex-shrink:0;
+  color:var(--blue);
+}
+.hdr-av img { width:100%; height:100%; object-fit:cover; }
+
+/* Stats bar */
+.stats-bar {
+  display:flex; background:var(--sky); border-top:1px solid var(--sky2);
+}
+.stat-item {
+  flex:1; padding:8px 4px; text-align:center;
+  border-left:1px solid var(--sky2); position:relative;
+}
+.stat-item:last-child { border-left:none; }
+.stat-n { font-size:1.15rem; font-weight:900; color:var(--blue); line-height:1; }
+.stat-l { font-size:0.5rem; color:var(--text2); margin-top:2px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
+
+/* ══ TAB BAR ══ */
+.tabs {
+  background:var(--white); display:flex; flex-shrink:0;
+  border-bottom:1px solid var(--border);
+}
+.tab {
+  flex:1; padding:8px 2px 7px; text-align:center;
+  cursor:pointer; border:none; background:none;
+  font-family:'Cairo',sans-serif; font-size:0.52rem; font-weight:700;
+  color:var(--text3); transition:color 0.15s; position:relative;
+}
+.tab.on { color:var(--blue); }
+.tab.on::after {
+  content:''; position:absolute; bottom:0; left:25%; right:25%;
+  height:2px; background:var(--blue); border-radius:2px 2px 0 0;
+}
+.t-ico { width:18px; height:18px; margin:0 auto 2px; color:inherit; }
+.t-ico svg { width:18px; height:18px; }
+.t-av {
+  width:18px; height:18px; border-radius:50%;
+  margin:0 auto 2px; background:var(--border);
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; color:var(--text2);
+}
+.t-av img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+.t-av svg { width:11px; height:11px; }
+
+/* ══ CONTENT ══ */
+.content { flex:1; overflow-y:auto; background:var(--bg); }
+.page { display:none; padding:12px 12px 24px; }
+.page.on { display:block; }
+
+/* ══ SECTION TITLE ══ */
+.sec-title {
+  font-size:0.65rem; font-weight:800; color:var(--text3);
+  text-transform:uppercase; letter-spacing:1px;
+  margin-bottom:8px;
+}
+
+/* ══ CARD ══ */
+.card {
+  background:var(--white); border-radius:var(--r);
+  border:1px solid var(--border); box-shadow:var(--sh);
+  padding:13px; margin-bottom:10px;
+}
+.card-accent {
+  background:var(--white); border-radius:var(--r);
+  border:1px solid var(--border); box-shadow:var(--sh);
+  border-right:4px solid var(--blue);
+  padding:13px; margin-bottom:8px; overflow:hidden;
+}
+
+/* ══ FORM ══ */
+.row2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; }
+.fld { margin-bottom:9px; }
+.fld:last-child { margin-bottom:0; }
+.lbl {
+  font-size:0.62rem; font-weight:800; color:var(--text2);
+  text-transform:uppercase; letter-spacing:0.6px;
+  margin-bottom:4px; display:flex; align-items:center; gap:4px;
+}
+.lbl svg { width:11px; height:11px; }
+.inp, .sel {
+  width:100%; padding:9px 11px;
+  background:var(--bg); border:1.5px solid var(--border);
+  border-radius:var(--r2); color:var(--text);
+  font-family:'Cairo',sans-serif; font-size:0.84rem; font-weight:600;
+  outline:none; -webkit-appearance:none;
+  transition:border-color 0.15s, box-shadow 0.15s;
+}
+.inp:focus, .sel:focus {
+  border-color:var(--blue);
+  box-shadow:0 0 0 3px rgba(37,99,235,0.1);
+  background:var(--white);
+}
+.inp::placeholder { color:var(--text3); font-weight:400; }
+.inp[readonly] { cursor:pointer; }
+.inp[type="number"] { text-align:center; }
+
+/* ══ TYPE TOGGLE ══ */
+.type-toggle {
+  display:flex; border-radius:var(--r2);
+  border:1.5px solid var(--border); overflow:hidden;
+  background:var(--bg);
+}
+.t-btn {
+  flex:1; padding:11px 6px; border:none; background:transparent;
+  font-family:'Cairo',sans-serif; font-size:0.84rem; font-weight:700;
+  color:var(--text2); cursor:pointer; transition:all 0.18s; text-align:center;
+}
+.t-btn.cb { background:var(--violet); color:#fff; }
+.t-btn.fa { background:var(--blue); color:#fff; }
+
+/* ══ SHADE ══ */
+.shade-btn {
+  width:100%; padding:9px 11px;
+  background:var(--bg); border:1.5px solid var(--border);
+  border-radius:var(--r2); cursor:pointer;
+  display:flex; align-items:center; justify-content:space-between;
+  font-family:'Cairo',sans-serif; transition:all 0.15s;
+}
+.shade-btn.picked { border-color:#d97706; background:#fffbeb; }
+.sh-left { display:flex; align-items:center; gap:8px; }
+.sh-dot {
+  width:16px; height:16px; border-radius:50%;
+  border:1.5px solid var(--border); flex-shrink:0;
+  box-shadow:inset 0 1px 2px rgba(0,0,0,0.06);
+}
+.sh-txt { font-size:0.84rem; font-weight:600; color:var(--text3); }
+.shade-btn.picked .sh-txt { color:#92400e; font-weight:700; }
+.sh-arr { color:var(--text3); }
+.sh-arr svg { width:13px; height:13px; }
+
+/* ══ PRIMARY BUTTON ══ */
+.btn-save {
+  width:100%; padding:14px;
+  background:var(--blue); color:#fff;
+  border:none; border-radius:var(--r);
+  font-family:'Cairo',sans-serif; font-size:0.92rem; font-weight:800;
+  cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;
+  box-shadow:0 4px 14px rgba(37,99,235,0.4);
+  transition:transform 0.15s, box-shadow 0.15s;
+  letter-spacing:0.3px;
+}
+.btn-save:active { transform:scale(0.98); box-shadow:0 2px 6px rgba(37,99,235,0.2); }
+.btn-save svg { width:16px; height:16px; }
+
+/* ══ SEARCH ══ */
+.srch-wrap { margin-bottom: 10px; }
+.srch-box {
+  display: flex; align-items: center;
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: var(--r); padding: 0 11px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  gap: 8px;
+}
+.srch-box:focus-within {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+.srch-ico { width: 15px; height: 15px; color: var(--text3); flex-shrink: 0; }
+.srch-inp {
+  flex: 1; padding: 11px 0; border: none; background: transparent;
+  font-family: 'Cairo', sans-serif; font-size: 0.86rem; font-weight: 500;
+  color: var(--text); outline: none;
+}
+.srch-inp::placeholder { color: var(--text3); font-weight: 400; }
+.srch-clr {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--border); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text2); flex-shrink: 0; padding: 0;
+}
+.srch-clr svg { width: 10px; height: 10px; }
+.srch-chips { display: flex; gap: 6px; margin-top: 8px; }
+.srch-chip {
+  padding: 5px 13px; border-radius: 20px; border: 1.5px solid var(--border);
+  background: var(--white); color: var(--text2);
+  font-family: 'Cairo', sans-serif; font-size: 0.68rem; font-weight: 700;
+  cursor: pointer; transition: all 0.15s;
+}
+.srch-chip.on { background: var(--blue); border-color: var(--blue); color: #fff; }
+mark.hl {
+  background: #fef08a; color: #713f12;
+  border-radius: 3px; padding: 0 1px;
+  font-style: normal; font-weight: 700;
+}
+
+/* ══ FILTER ══ */
+.flt-row { display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap; }
+.flt-sel {
+  flex:1; min-width:60px; padding:8px 10px;
+  background:var(--white); border:1.5px solid var(--border);
+  border-radius:var(--r2); color:var(--text);
+  font-family:'Cairo',sans-serif; font-size:0.7rem; font-weight:600;
+  outline:none; -webkit-appearance:none;
+}
+.act-row { display:flex; gap:6px; margin-bottom:10px; }
+.btn-act {
+  padding:8px 12px; border-radius:var(--r2);
+  font-family:'Cairo',sans-serif; font-size:0.7rem; font-weight:700;
+  cursor:pointer; display:flex; align-items:center; gap:5px;
+  transition:all 0.15s;
+}
+.btn-act svg { width:12px; height:12px; }
+.btn-csv { background:var(--white); border:1.5px solid var(--border); color:var(--text2); }
+.btn-csv:active { background:var(--bg); }
+.btn-pdf { background:#fef2f2; border:1.5px solid #fecaca; color:var(--red); }
+.btn-pdf:active { background:#fee2e2; }
+
+/* ══ RESULT INFO ══ */
+.res-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:4px; }
+.res-cnt { font-size:0.7rem; font-weight:700; color:var(--text2); }
+.res-sum { font-size:0.7rem; font-weight:800; color:var(--blue); }
+.type-pills { display:flex; gap:5px; margin-bottom:8px; }
+.pill-fa { font-size:0.62rem; padding:3px 9px; border-radius:20px; font-weight:700; background:var(--sky); color:var(--blue); border:1px solid var(--sky2); }
+.pill-cb { font-size:0.62rem; padding:3px 9px; border-radius:20px; font-weight:700; background:#f5f3ff; color:var(--violet); border:1px solid #ddd6fe; }
+
+/* ══ CASE CARD ══ */
+.cc {
+  background:var(--white); border-radius:var(--r);
+  border:1px solid var(--border); box-shadow:var(--sh);
+  margin-bottom:8px; overflow:hidden;
+  animation:fup 0.2s ease;
+}
+@keyframes fup { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+.cc-top { display:flex; justify-content:space-between; align-items:center; padding:11px 12px 7px; }
+.cc-doc { font-size:0.88rem; font-weight:800; color:var(--text); }
+.cc-pat { font-size:0.67rem; color:var(--text2); margin-top:1px; font-weight:500; }
+.cc-badge {
+  background:var(--blue); color:#fff;
+  padding:4px 11px; border-radius:20px;
+  font-weight:900; font-size:0.8rem; white-space:nowrap; flex-shrink:0;
+}
+.cc-tags { display:flex; flex-wrap:wrap; gap:4px; padding:0 12px 8px; }
+.tag { font-size:0.6rem; padding:2px 8px; border-radius:20px; font-weight:700; }
+.tag-d { background:#f1f5f9; color:#475569; }
+.tag-s { background:#fef9c3; color:#854d0e; }
+.tag-fa { background:var(--sky); color:var(--blue); }
+.tag-cb { background:#f5f3ff; color:var(--violet); }
+.cc-acts { display:flex; border-top:1px solid var(--border); }
+.cc-act {
+  flex:1; padding:9px; border:none; background:none;
+  font-family:'Cairo',sans-serif; font-size:0.7rem; font-weight:700;
+  cursor:pointer; display:flex; align-items:center; justify-content:center; gap:4px;
+  transition:background 0.12s;
+}
+.cc-act svg { width:12px; height:12px; }
+.cc-edit { color:var(--blue); border-left:1px solid var(--border); }
+.cc-edit:active { background:var(--sky); }
+.cc-del { color:var(--red); }
+.cc-del:active { background:#fef2f2; }
+
+/* ══ STATS ══ */
+.per-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  background:var(--sky); border:1px solid var(--sky2);
+  border-radius:20px; padding:5px 13px;
+  font-size:0.7rem; font-weight:700; color:var(--blue);
+  margin-bottom:10px;
+}
+.per-badge svg { width:12px; height:12px; }
+.sg { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px; }
+.sbox {
+  background:var(--white); border-radius:var(--r);
+  border:1px solid var(--border); box-shadow:var(--sh);
+  padding:12px 8px; text-align:center;
+}
+.sbox-n { font-size:1.5rem; font-weight:900; margin-bottom:1px; }
+.sbox-l { font-size:0.57rem; color:var(--text2); font-weight:700; text-transform:uppercase; letter-spacing:0.4px; }
+.tsr { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px; }
+.tsb { border-radius:var(--r); padding:12px 8px; text-align:center; border:1.5px solid; }
+.tsb-n { font-size:1.35rem; font-weight:900; margin-bottom:1px; }
+.tsb-l { font-size:0.6rem; font-weight:700; }
+.tsb-c { font-size:0.57rem; margin-top:3px; opacity:0.7; }
+.di { display:flex; align-items:center; gap:9px; margin-bottom:10px; }
+.drk { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:900; flex-shrink:0; }
+.g1 { background:linear-gradient(135deg,#fcd34d,#d97706); color:#78350f; }
+.g2 { background:linear-gradient(135deg,#e2e8f0,#94a3b8); color:#1e293b; }
+.g3 { background:linear-gradient(135deg,#6ee7b7,#059669); color:#fff; }
+.dinfo { flex:1; min-width:0; }
+.dnm { font-size:0.82rem; font-weight:700; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.dbw { margin-top:4px; height:5px; background:var(--border); border-radius:3px; overflow:hidden; }
+.db { height:100%; border-radius:3px; background:var(--blue); transition:width 0.5s; }
+.dtth { font-size:0.82rem; font-weight:900; color:var(--blue); flex-shrink:0; }
+.mgr { display:grid; grid-template-columns:repeat(4,1fr); gap:5px; }
+.mb {
+  background:var(--white); border-radius:8px;
+  padding:8px 3px; text-align:center;
+  border:1px solid var(--border);
+}
+.mb-n { font-size:0.88rem; font-weight:900; }
+.mb-l { font-size:0.5rem; color:var(--text2); margin-top:1px; font-weight:600; }
+.shdist { display:flex; flex-direction:column; gap:7px; }
+.shr { display:flex; align-items:center; gap:8px; }
+.shn { font-size:0.68rem; color:var(--text2); font-weight:700; min-width:48px; }
+.shbw { flex:1; height:6px; background:var(--border); border-radius:3px; overflow:hidden; }
+.shb { height:100%; border-radius:3px; background:linear-gradient(90deg,#d97706,#fbbf24); }
+.shc { font-size:0.67rem; font-weight:700; color:var(--text2); min-width:16px; text-align:left; }
+
+/* ══ CHARTS ══ */
+.chart-pie-wrap {
+  display: flex; align-items: center; gap: 16px; padding: 8px 0;
+}
+.pie-legend { flex: 1; display: flex; flex-direction: column; gap: 7px; }
+.pie-leg-item { display: flex; align-items: center; gap: 7px; }
+.pie-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.pie-lbl { font-size: 0.7rem; color: var(--text2); flex: 1; font-weight: 600; }
+.pie-val { font-size: 0.78rem; font-weight: 800; color: var(--text); }
+
+.chart-bar-wrap { width: 100%; overflow: hidden; margin-top: 8px; }
+.bar-svg { display: block; width: 100%; overflow: visible; }
+
+/* ══ ACCOUNT ══ */
+.acc-hero {
+  background:linear-gradient(135deg,#1e3a8a,#2563eb);
+  border-radius:var(--r); padding:20px; text-align:center;
+  margin-bottom:10px;
+}
+.acc-av {
+  width:60px; height:60px; border-radius:50%;
+  margin:0 auto 10px; background:rgba(255,255,255,0.15);
+  border:2px solid rgba(255,255,255,0.3);
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+}
+.acc-av img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+.acc-av svg { width:26px; height:26px; color:rgba(255,255,255,0.6); }
+.acc-name { font-size:0.95rem; font-weight:700; color:#fff; }
+.acc-email { font-size:0.67rem; color:rgba(255,255,255,0.55); margin-top:2px; }
+.info-item {
+  background:var(--white); border-radius:var(--r);
+  padding:11px 12px; margin-bottom:7px;
+  display:flex; align-items:center; gap:11px;
+  border:1px solid var(--border); box-shadow:var(--sh);
+}
+.info-ico {
+  width:34px; height:34px; border-radius:9px;
+  background:var(--sky); border:1px solid var(--sky2);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; color:var(--blue);
+}
+.info-ico svg { width:15px; height:15px; }
+.info-ti { font-size:0.77rem; font-weight:700; color:var(--text); }
+.info-de { font-size:0.63rem; color:var(--text2); margin-top:1px; }
+.lang-seg {
+  display:flex; border-radius:var(--r2); overflow:hidden;
+  border:1.5px solid var(--border); background:var(--bg); margin-top:7px;
+}
+.lb {
+  flex:1; padding:9px; border:none; background:transparent;
+  font-family:'Cairo',sans-serif; font-size:0.82rem; font-weight:700;
+  color:var(--text2); cursor:pointer; transition:all 0.15s;
+}
+.lb.on { background:var(--blue); color:#fff; }
+.btn-logout {
+  width:100%; padding:12px; border:1.5px solid #fecaca;
+  border-radius:var(--r); background:var(--white); color:var(--red);
+  font-family:'Cairo',sans-serif; font-size:0.84rem; font-weight:700;
+  cursor:pointer; display:flex; align-items:center; justify-content:center; gap:7px;
+  margin-top:4px; transition:background 0.15s;
+}
+.btn-logout svg { width:14px; height:14px; }
+.btn-logout:active { background:#fef2f2; }
+
+/* ══ OVERLAYS ══ */
+.ov { position:fixed; inset:0; background:rgba(15,23,42,0.55); backdrop-filter:blur(6px); z-index:500; display:none; align-items:flex-end; }
+.ov.on { display:flex; }
+.sheet { background:var(--white); border-radius:18px 18px 0 0; padding:16px; width:100%; max-height:88vh; overflow-y:auto; animation:sUp 0.25s ease; border-top:3px solid var(--blue); }
+@keyframes sUp { from { transform:translateY(100%); } to { transform:translateY(0); } }
+.sh-hdr { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+.sh-ttl { font-size:0.88rem; font-weight:800; color:var(--text); }
+.sh-x { width:26px; height:26px; border-radius:50%; background:var(--bg); border:1px solid var(--border); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text2); }
+.sh-x svg { width:13px; height:13px; }
+.m-acts { display:flex; gap:8px; margin-top:12px; }
+.m-can { flex:1; padding:11px; background:var(--bg); border:1.5px solid var(--border); border-radius:var(--r2); color:var(--text2); font-family:'Cairo',sans-serif; font-size:0.82rem; font-weight:700; cursor:pointer; }
+.m-sav { flex:2; padding:11px; background:var(--blue); color:#fff; border:none; border-radius:var(--r2); font-family:'Cairo',sans-serif; font-size:0.82rem; font-weight:800; cursor:pointer; box-shadow:0 3px 10px rgba(37,99,235,0.3); }
+
+/* DOC PICKER */
+#dOv { z-index:700; }
+.d-inp { width:100%; padding:9px 12px; background:var(--bg); border:1.5px solid var(--border); border-radius:var(--r2); color:var(--text); font-family:'Cairo',sans-serif; font-size:0.84rem; font-weight:600; outline:none; margin-bottom:9px; }
+.d-inp:focus { border-color:var(--blue); }
+.d-inp::placeholder { color:var(--text3); font-weight:400; }
+.d-opt { display:flex; align-items:center; gap:10px; padding:10px 11px; background:var(--bg); border-radius:var(--r2); cursor:pointer; border:1px solid var(--border); margin-bottom:5px; transition:all 0.12s; }
+.d-opt:active { background:var(--sky); border-color:var(--blue); }
+.d-ico { width:30px; height:30px; border-radius:50%; background:var(--blue); color:#fff; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; flex-shrink:0; }
+.d-nm { font-size:0.84rem; font-weight:700; color:var(--text); }
+.d-ct { font-size:0.65rem; color:var(--text2); margin-top:1px; }
+.d-add { width:100%; padding:11px; background:var(--white); border:1.5px dashed var(--blue); border-radius:var(--r2); color:var(--blue); font-family:'Cairo',sans-serif; font-size:0.82rem; font-weight:700; cursor:pointer; display:none; align-items:center; justify-content:center; gap:6px; }
+.d-add svg { width:13px; height:13px; }
+.d-empty { text-align:center; padding:18px; color:var(--text3); font-size:0.77rem; }
+
+/* SHADE PICKER */
+#sOv { z-index:600; }
+.sg-grp { background:var(--bg); border-radius:var(--r2); padding:10px 11px; margin-bottom:6px; border:1px solid var(--border); }
+.sg-hdr { display:flex; align-items:center; gap:6px; font-size:0.6rem; font-weight:800; color:var(--text2); margin-bottom:7px; text-transform:uppercase; letter-spacing:0.5px; }
+.sg-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; border:1.5px solid rgba(0,0,0,0.08); }
+.sg-chips { display:flex; flex-wrap:wrap; gap:5px; }
+.sg-chip { padding:5px 11px; border-radius:20px; font-size:0.67rem; font-weight:700; cursor:pointer; border:1.5px solid var(--border); background:var(--white); color:var(--text2); font-family:'Cairo',sans-serif; transition:all 0.12s; }
+.sg-chip.on { background:var(--gold); border-color:var(--gold); color:#fff; }
+.sg-clear { width:100%; padding:10px; background:var(--bg); border:1.5px solid var(--border); border-radius:var(--r2); color:var(--text2); font-family:'Cairo',sans-serif; font-size:0.78rem; font-weight:700; cursor:pointer; margin-top:8px; }
+
+/* PDF OVERLAY */
+#pOv { position:fixed; inset:0; background:rgba(15,23,42,0.55); backdrop-filter:blur(6px); z-index:600; display:none; align-items:center; justify-content:center; padding:20px; }
+#pOv.on { display:flex; }
+.p-card { background:var(--white); border-radius:var(--r); padding:20px; width:100%; max-width:300px; box-shadow:0 20px 50px rgba(0,0,0,0.18); border:1px solid var(--border); }
+.p-ttl { font-size:0.88rem; font-weight:800; color:var(--text); margin-bottom:13px; }
+.p-sel { width:100%; padding:9px 12px; background:var(--bg); border:1.5px solid var(--border); border-radius:var(--r2); color:var(--text); font-family:'Cairo',sans-serif; font-size:0.84rem; outline:none; -webkit-appearance:none; margin-bottom:8px; }
+.p-gen { width:100%; padding:12px; border:none; border-radius:var(--r2); background:var(--red); color:#fff; font-family:'Cairo',sans-serif; font-size:0.88rem; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:7px; margin-bottom:8px; box-shadow:0 4px 12px rgba(239,68,68,0.3); }
+.p-gen svg { width:14px; height:14px; }
+.p-can { width:100%; padding:10px; background:var(--bg); border:1.5px solid var(--border); border-radius:var(--r2); color:var(--text2); font-family:'Cairo',sans-serif; font-size:0.82rem; font-weight:700; cursor:pointer; }
+
+/* DELETE OVERLAY */
+.del-wrap { text-align:center; padding:8px 0; }
+.del-ico { width:50px; height:50px; border-radius:50%; background:#fef2f2; margin:0 auto 11px; display:flex; align-items:center; justify-content:center; color:var(--red); }
+.del-ico svg { width:22px; height:22px; }
+.del-t { font-size:0.92rem; font-weight:800; color:var(--text); margin-bottom:5px; }
+.del-s { font-size:0.72rem; color:var(--text2); margin-bottom:16px; }
+.del-yes { width:100%; padding:12px; background:var(--red); color:#fff; border:none; border-radius:var(--r2); font-family:'Cairo',sans-serif; font-size:0.88rem; font-weight:800; cursor:pointer; margin-bottom:8px; box-shadow:0 3px 10px rgba(239,68,68,0.3); }
+
+/* ══ TOAST ══ */
+.toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(14px); background:var(--text); color:#fff; padding:10px 18px; border-radius:22px; font-size:0.74rem; font-weight:700; z-index:9000; opacity:0; transition:all 0.25s; white-space:nowrap; box-shadow:0 6px 20px rgba(0,0,0,0.2); }
+.toast.ok { background:var(--green); }
+.toast.err { background:var(--red); }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* ══ MISC ══ */
+.empty { text-align:center; padding:50px 20px; color:var(--text3); }
+.ei { font-size:2.2rem; display:block; margin-bottom:10px; opacity:0.25; }
+.et { font-size:0.76rem; font-weight:600; }
+.loading { text-align:center; padding:44px; color:var(--text3); }
+.spin { width:26px; height:26px; border:2.5px solid var(--border); border-top-color:var(--blue); border-radius:50%; animation:sp 0.75s linear infinite; margin:0 auto 12px; }
+@keyframes sp { to { transform:rotate(360deg); } }
+::-webkit-scrollbar { width:0; }
+
+/* ── UX Enhancements v2 ───────────── */
+
+/* فلاتر مخفية / filter toggle */
+.flt-header-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0 4px;
+}
+.filter-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 12px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-family: Cairo, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.filter-toggle-btn.active {
+  background: var(--sky);
+  border-color: var(--blue);
+  color: var(--blue);
+}
+.act-row-inline {
+  display: flex;
+  gap: 6px;
+  margin-right: auto;
+}
+#filtersPanel {
+  animation: slideDown 0.2s ease;
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* زر نسخ الحالة */
+.cc-dup {
+  color: var(--text3) !important;
+  border-color: var(--border) !important;
+}
+.cc-dup:hover, .cc-dup:active {
+  background: var(--surface) !important;
+  color: var(--blue) !important;
+  border-color: var(--blue) !important;
+}
+
+/* Swipe feedback */
+.cc {
+  transition: transform 0.25s ease, background 0.2s;
+  touch-action: pan-y;
+}
+
+/* shade dot في القائمة */
+.tag-s { display: inline-flex; align-items: center; gap: 2px; }
+
+/* FAB */
+#fabBtn {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* logout confirm overlay */
+#logoutConfirmOv .sheet {
+  max-width: 300px;
+  width: 90%;
+}
+
+/* بطاقات الإحصائيات العليا */
+#topDocCard, #topShadeCard {
+  min-height: 62px;
+}
+#monthCompare {
+  padding: 14px;
+}
+
+
+/* ── Doctor Manager ── */
+.doc-mgr-row {
+  display:flex; align-items:center; gap:8px;
+  padding:8px 4px; border-bottom:1px solid var(--border);
+}
+.doc-mgr-row:last-child { border-bottom:none; }
+.doc-mgr-av {
+  width:30px; height:30px; border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),#1d4ed8);
+  color:#fff; display:flex; align-items:center; justify-content:center;
+  font-size:0.75rem; font-weight:900; flex-shrink:0;
+}
+.doc-mgr-name { flex:1; font-size:0.8rem; font-weight:700; color:var(--text); }
+.doc-mgr-cnt  { font-size:0.65rem; color:var(--text3); font-weight:600; }
+.doc-mgr-btn  {
+  padding:5px 10px; border-radius:6px; font-family:Cairo,sans-serif;
+  font-size:0.65rem; font-weight:700; cursor:pointer; border:1.5px solid;
+}
+.doc-mgr-btn-edit { background:var(--sky); color:var(--blue); border-color:var(--sky2); }
+/* Rename overlay */
+#renameOv .sheet { padding:20px 16px; }
+.rename-inp {
+  width:100%; padding:11px 14px; border:1.5px solid var(--border);
+  border-radius:var(--r2); font-family:Cairo,sans-serif; font-size:0.9rem;
+  font-weight:700; color:var(--text); background:var(--bg);
+  text-align:right; margin:12px 0; outline:none; box-sizing:border-box;
+}
+.rename-inp:focus { border-color:var(--blue); background:#fff; }
+</style>
+</head>
+<body translate="no">
+
+<!-- ══ LOGIN ══ -->
+<div id="login">
+  <div class="l-logo">
+    <div class="l-mas">MAS</div>
+    <div class="l-line"></div>
+    <div class="l-dl">Dental Lab</div>
+  </div>
+  <p class="l-sub" id="loginSub">نظام إدارة حالات طب الأسنان</p>
+  <button class="l-btn" onclick="doLogin()">
+    <svg width="18" height="18" viewBox="0 0 48 48">
+      <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.8 2.3 30.2 0 24 0 14.7 0 6.7 5.4 2.9 13.3l7.9 6.2C12.7 13.2 17.9 9.5 24 9.5z"/>
+      <path fill="#4285F4" d="M46.1 24.6c0-1.6-.1-3.1-.4-4.6H24v8.7h12.4c-.5 2.8-2.1 5.2-4.5 6.8l7.1 5.5c4.2-3.8 6.6-9.4 6.6-16.4z"/>
+      <path fill="#FBBC05" d="M10.8 28.5c-.5-1.5-.8-3-.8-4.5s.3-3 .8-4.5L2.9 13.3C1 16.9 0 20.8 0 24s1 7.1 2.9 10.7l7.9-6.2z"/>
+      <path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.1-5.5c-2 1.4-4.6 2.2-8.1 2.2-6.1 0-11.3-3.7-13.2-9l-7.9 6.2C6.7 42.6 14.7 48 24 48z"/>
+    </svg>
+    <span id="loginBtn">تسجيل الدخول بـ Google</span>
+  </button>
+  <p class="l-note" id="loginNote">بياناتك محمية بحسابك الشخصي</p>
+</div>
+
+<!-- ══ APP SHELL ══ -->
+<div id="app">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-main">
+      <div class="hdr-brand">
+        <div class="hdr-mas">MAS</div>
+        <div class="hdr-sub">Dental Lab</div>
+      </div>
+      <div class="hdr-av" id="hdrAv">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+    </div>
+    <div class="stats-bar">
+      <div class="stat-item"><div class="stat-n" id="hT">0</div><div class="stat-l" id="hTl">أسنان</div></div>
+      <div class="stat-item"><div class="stat-n" id="hC">0</div><div class="stat-l" id="hCl">حالة</div></div>
+      <div class="stat-item"><div class="stat-n" id="hD">0</div><div class="stat-l" id="hDl">طبيب</div></div>
+      <div class="stat-item"><div class="stat-n" id="hM">0</div><div class="stat-l" id="hMl">هذا الشهر</div></div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab on" onclick="showPg('add',this)">
+      <div class="t-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      <span id="tbA">إضافة</span>
+    </button>
+    <button class="tab" onclick="showPg('list',this)">
+      <div class="t-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+      <span id="tbL">الحالات</span>
+    </button>
+    <button class="tab" onclick="showPg('stats',this)">
+      <div class="t-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></div>
+      <span id="tbS">إحصائيات</span>
+    </button>
+    <button class="tab" onclick="showPg('account',this)">
+      <div class="t-av" id="tabAv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <span id="tbAc">حسابي</span>
+    </button>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ ADD PAGE ══ -->
+    <div class="page on" id="pg-add">
+      <div class="sec-title" id="addSlbl">حالة جديدة</div>
+      <div class="card">
+        <div class="row2">
+          <div class="fld">
+            <div class="lbl">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span id="lDoc">الطبيب</span>
+            </div>
+            <input class="inp" type="text" id="fDoc" readonly onclick="openDoc('add')" placeholder="اختر أو أضف">
+          </div>
+          <div class="fld">
+            <div class="lbl">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span id="lPat">المريض</span>
+            </div>
+            <input class="inp" type="text" id="fPat" placeholder="الاسم">
+          </div>
+        </div>
+        <div class="row3">
+          <div class="fld">
+            <div class="lbl">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
+              <span id="lTth">الأسنان</span>
+            </div>
+            <input class="inp" type="number" id="fTth" placeholder="0" min="1">
+          </div>
+          <div class="fld">
+            <div class="lbl">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span id="lMon">الشهر</span>
+            </div>
+            <select class="sel" id="fMon">
+              <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+              <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+              <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+              <option value="10">10</option><option value="11">11</option><option value="12">12</option>
+            </select>
+          </div>
+          <div class="fld">
+            <div class="lbl">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span id="lYr">السنة</span>
+            </div>
+            <select class="sel" id="fYr"></select>
+          </div>
+        </div>
+        <div class="fld">
+          <div class="lbl">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            <span id="lType">نوع الحالة</span>
+          </div>
+          <div class="type-toggle">
+            <button class="t-btn cb" id="btnCB" onclick="setType('CB')">Cut Back</button>
+            <button class="t-btn" id="btnFA" onclick="setType('FA')">Full Anatomy</button>
+          </div>
+        </div>
+        <div class="fld">
+          <div class="lbl">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+            <span id="lShade">لون السن</span>
+          </div>
+          <button class="shade-btn" id="sTrig" onclick="openShade('add')">
+            <div class="sh-left"><span class="sh-dot" id="sDot"></span><span class="sh-txt" id="sTxt">اختر اللون</span></div>
+            <span class="sh-arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+        </div>
+      </div>
+      <button class="btn-save" id="btnSave" onclick="addCase()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <span id="btnSaveTxt">حفظ الحالة</span>
+      </button>
+    </div>
+
+    <!-- ══ LIST PAGE ══ -->
+    <div class="page" id="pg-list">
+
+      <!-- Search Bar -->
+      <div class="srch-wrap">
+        <div class="srch-box">
+          <svg class="srch-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input class="srch-inp" type="text" id="srchQ" placeholder="ابحث بالمريض، الطبيب، اللون..." oninput="renderList()">
+          <button class="srch-clr" id="srchClr" onclick="clearSearch()" style="display:none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="srch-chips" id="srchChips">
+          <button class="srch-chip on" data-mode="all"     onclick="setSrchMode('all',this)"    id="scAll">الكل</button>
+          <button class="srch-chip"    data-mode="patient" onclick="setSrchMode('patient',this)" id="scPat">مريض</button>
+          <button class="srch-chip"    data-mode="doctor"  onclick="setSrchMode('doctor',this)"  id="scDoc">طبيب</button>
+          <button class="srch-chip"    data-mode="shade"   onclick="setSrchMode('shade',this)"   id="scShd">لون</button>
+        </div>
+      </div>
+
+      <div class="flt-header-row">
+        <button class="filter-toggle-btn" id="filterToggleBtn" onclick="toggleFilters()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+          فلترة
+        </button>
+        <div class="act-row-inline">
+          <button class="btn-act btn-csv" onclick="doCSV()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            CSV
+          </button>
+          <button class="btn-act btn-pdf" onclick="openPDF()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            PDF
+          </button>
+        </div>
+      </div>
+      <div id="filtersPanel" style="display:none">
+        <div class="flt-row">
+          <select class="flt-sel" id="flYr"   onchange="renderList()"><option value="">كل السنوات</option></select>
+          <select class="flt-sel" id="flMon"  onchange="renderList()">
+            <option value="">كل الأشهر</option>
+            <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+            <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+            <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+            <option value="10">10</option><option value="11">11</option><option value="12">12</option>
+          </select>
+          <select class="flt-sel" id="flDoc"  onchange="renderList()"><option value="">كل الأطباء</option></select>
+          <select class="flt-sel" id="flType" onchange="renderList()">
+            <option value="">كل الأنواع</option>
+            <option value="FA">Full Anatomy</option>
+            <option value="CB">Cut Back</option>
+          </select>
+        </div>
+      </div>
+      <div class="res-row">
+        <span class="res-cnt" id="lCnt">0 حالة</span>
+        <span class="res-sum" id="lSum"></span>
+      </div>
+      <div class="type-pills" id="typePills"></div>
+      <div id="listEl"><div class="loading"><div class="spin"></div>جارٍ التحميل...</div></div>
+    </div>
+
+    <!-- ══ STATS PAGE ══ -->
+    <div class="page" id="pg-stats">
+      <div class="flt-row">
+        <select class="flt-sel" id="stYr"  onchange="renderStats()"><option value="">كل السنوات</option></select>
+        <select class="flt-sel" id="stMon" onchange="renderStats()">
+          <option value="">كل الأشهر</option>
+          <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+          <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+          <option value="10">10</option><option value="11">11</option><option value="12">12</option>
+        </select>
+      </div>
+      <div class="per-badge" id="per">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+          <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+        </svg>
+        جميع البيانات
+      </div>
+      <!-- [10] مقارنة الشهر -->
+      <div class="card" id="monthCompare" style="display:none"></div>
+      <!-- [11] أبرز الأطباء والألوان -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+        <div class="card" id="topDocCard" style="display:none;padding:12px"></div>
+        <div class="card" id="topShadeCard" style="display:none;padding:12px"></div>
+      </div>
+      <div class="sg"  id="stGrid"></div>
+      <div class="tsr" id="typeStats"></div>
+
+      <!-- Pie Chart: FA vs CB -->
+      <div class="card">
+        <div class="sec-title" id="stTypePieLbl">توزيع أنواع الحالات</div>
+        <div class="chart-pie-wrap">
+          <svg id="pieChart" viewBox="0 0 160 160" width="140" height="140"></svg>
+          <div class="pie-legend" id="pieLegend"></div>
+        </div>
+      </div>
+
+      <!-- Bar Chart: Doctors -->
+      <div class="card"><div class="sec-title" id="stDocLbl">الأطباء</div>
+        <div id="stDoc"></div>
+        <div class="chart-bar-wrap" id="docBarWrap">
+          <svg id="docBarChart" class="bar-svg"></svg>
+        </div>
+      </div>
+
+      <!-- Monthly Line/Bar Graph -->
+      <div class="card" id="mCard">
+        <div class="sec-title" id="stMonLbl">الإنتاج الشهري</div>
+        <div class="chart-bar-wrap">
+          <svg id="monBarChart" class="bar-svg"></svg>
+        </div>
+      </div>
+
+      <!-- Shade Distribution -->
+      <div class="card"><div class="sec-title" id="stShadeLbl">ألوان الأسنان</div><div class="shdist" id="stShade"></div></div>
+    </div>
+
+    <!-- ══ ACCOUNT PAGE ══ -->
+    <div class="page" id="pg-account">
+      <div class="acc-hero">
+        <div class="acc-av" id="accAv">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div class="acc-name"  id="accNm">—</div>
+        <div class="acc-email" id="accEm">—</div>
+      </div>
+      <div class="info-item">
+        <div class="info-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <div style="flex:1">
+          <div class="info-ti" id="langLbl">اللغة / Language</div>
+          <div class="lang-seg">
+            <button class="lb on" id="btnAr" onclick="setLang('ar')">العربية</button>
+            <button class="lb"    id="btnEn" onclick="setLang('en')">English</button>
+          </div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <div><div class="info-ti" id="i1t">نسخ احتياطي تلقائي</div><div class="info-de" id="i1d">بياناتك تحفظ فورياً على Google Cloud</div></div>
+      </div>
+      <div class="info-item">
+        <div class="info-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg></div>
+        <div><div class="info-ti" id="i2t">استعادة من أي جهاز</div><div class="info-de" id="i2d">سجّل دخول بنفس حساب Google</div></div>
+      </div>
+      <div class="info-item">
+        <div class="info-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <div><div class="info-ti" id="i3t">بياناتك خاصة 100%</div><div class="info-de" id="i3d">محمية بحسابك فقط</div></div>
+      </div>
+      <!-- إدارة الأطباء -->
+      <div class="info-item" style="flex-direction:column;align-items:stretch;gap:0;padding:0;overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border)">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div class="info-ico" style="margin:0">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="info-ti" style="margin:0">إدارة الأطباء</div>
+          </div>
+          <button onclick="toggleDocManager()" id="docMgrToggle"
+            style="font-size:0.68rem;font-weight:700;color:var(--blue);background:var(--sky);border:none;padding:4px 10px;border-radius:6px;font-family:Cairo,sans-serif;cursor:pointer">
+            عرض
+          </button>
+        </div>
+        <div id="docMgrPanel" style="display:none">
+          <div id="docMgrList" style="padding:8px 10px;max-height:260px;overflow-y:auto"></div>
+        </div>
+      </div>
+
+      <button class="btn-logout" id="btnLogout" onclick="doOut()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span>تسجيل الخروج</span>
+      </button>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /app -->
+
+<!-- ══ OVERLAYS ══ -->
+
+<!-- Doctor Picker -->
+<div class="ov" id="dOv">
+  <div class="sheet">
+    <div class="sh-hdr">
+      <span class="sh-ttl" id="docTitle">اختر الطبيب</span>
+      <button class="sh-x" onclick="closeDoc()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <input class="d-inp" type="text" id="docSearch" placeholder="ابحث أو اكتب اسم جديد" oninput="filterDocs()">
+    <div id="docList"></div>
+    <button class="d-add" id="docAddBtn" onclick="addNewDoc()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      إضافة
+    </button>
+  </div>
+</div>
+
+<!-- Shade Picker -->
+<div class="ov" id="sOv">
+  <div class="sheet">
+    <div class="sh-hdr">
+      <span class="sh-ttl" id="shadeTitle">اختر لون السن</span>
+      <button class="sh-x" onclick="closeShade()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div id="shadeGrps"></div>
+    <button class="sg-clear" id="clearShadeBtn" onclick="clearShade()">إزالة اللون</button>
+  </div>
+</div>
+
+<!-- PDF Export -->
+<div id="pOv">
+  <div class="p-card">
+    <div class="p-ttl" id="pdfTitle">تصدير تقرير PDF</div>
+    <div class="lbl" id="pdfMonLbl" style="margin-bottom:4px">الشهر</div>
+    <select class="p-sel" id="pdfMon">
+      <option value="1">شهر 1</option><option value="2">شهر 2</option><option value="3">شهر 3</option>
+      <option value="4">شهر 4</option><option value="5">شهر 5</option><option value="6">شهر 6</option>
+      <option value="7">شهر 7</option><option value="8">شهر 8</option><option value="9">شهر 9</option>
+      <option value="10">شهر 10</option><option value="11">شهر 11</option><option value="12">شهر 12</option>
+    </select>
+    <div class="lbl" id="pdfYrLbl" style="margin-bottom:4px">السنة</div>
+    <select class="p-sel" id="pdfYr"></select>
+    <button class="p-gen" id="pdfGenBtn" onclick="genPDF()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      توليد التقرير
+    </button>
+    <button class="p-can" id="pdfCan" onclick="closePDF()">إلغاء</button>
+  </div>
+</div>
+
+<!-- Edit Case -->
+<div class="ov" id="editOv">
+  <div class="sheet">
+    <div class="sh-hdr">
+      <span class="sh-ttl" id="editTitle">تعديل الحالة</span>
+      <button class="sh-x" onclick="closeOv('editOv')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <input type="hidden" id="eId">
+    <div class="row2">
+      <div class="fld"><div class="lbl" id="eLDoc">الطبيب</div><input class="inp" type="text" id="eDoc" readonly onclick="openDoc('edit')" style="cursor:pointer"></div>
+      <div class="fld"><div class="lbl" id="eLPat">المريض</div><input class="inp" type="text" id="ePat"></div>
+    </div>
+    <div class="row3">
+      <div class="fld"><div class="lbl" id="eLTth">أسنان</div><input class="inp" type="number" id="eTth" min="1"></div>
+      <div class="fld">
+        <div class="lbl">شهر</div>
+        <select class="sel" id="eMon">
+          <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+          <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+          <option value="10">10</option><option value="11">11</option><option value="12">12</option>
+        </select>
+      </div>
+      <div class="fld"><div class="lbl">سنة</div><select class="sel" id="eYr"></select></div>
+    </div>
+    <div class="fld">
+      <div class="lbl" id="eLType">نوع الحالة</div>
+      <div class="type-toggle">
+        <button class="t-btn cb" id="eBtnCB" onclick="setEditType('CB')">Cut Back</button>
+        <button class="t-btn"    id="eBtnFA" onclick="setEditType('FA')">Full Anatomy</button>
+      </div>
+    </div>
+    <div class="fld">
+      <div class="lbl" id="eLShade">لون السن</div>
+      <button class="shade-btn" id="eSTrig" onclick="openShade('edit')">
+        <div class="sh-left"><span class="sh-dot" id="eSDot"></span><span class="sh-txt" id="eSTxt">اختر اللون</span></div>
+        <span class="sh-arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </button>
+    </div>
+    <div class="m-acts">
+      <button class="m-can" id="editCan" onclick="closeOv('editOv')">إلغاء</button>
+      <button class="m-sav" id="editSav" onclick="saveEdit()">حفظ</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Case -->
+<div class="ov" id="delOv">
+  <div class="sheet">
+    <div class="del-wrap">
+      <div class="del-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div>
+      <div class="del-t" id="delTitle">حذف الحالة</div>
+      <div class="del-s" id="delSub">هل أنت متأكد؟ لا يمكن التراجع.</div>
+      <input type="hidden" id="delId">
+      <button class="del-yes" id="delYes" onclick="confirmDel()">تأكيد الحذف</button>
+      <button class="m-can"   id="delCan" onclick="closeOv('delOv')" style="width:100%">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script type="module">
+// ══════════════════════════════════════
+//   MAS Dental Lab — app.js
+//   Application Logic — Enhanced UX v2
+// ══════════════════════════════════════
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+  getDatabase, ref, push, onValue, update, remove
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyBjEd3UPOTkK143j1rZ6WQtnxhN5AS5nEU",
+  authDomain:        "dental-app-c95ce.firebaseapp.com",
+  databaseURL:       "https://dental-app-c95ce-default-rtdb.firebaseio.com",
+  projectId:         "dental-app-c95ce",
+  storageBucket:     "dental-app-c95ce.firebasestorage.app",
+  messagingSenderId: "13518342618",
+  appId:             "dental-mas-v10"
+};
+const _app = initializeApp(firebaseConfig);
+const auth = getAuth(_app);
+const db   = getDatabase(_app);
+
+
+// ── State ────────────────────────────
+let uid    = null;
+let cRef   = null;
+let all    = {};
+const now  = new Date();
+
+// ── Persistent UX State ───────────────
+// يتذكر آخر إدخال لتسريع العمل
+let lastDoc   = localStorage.getItem('lastDoc')   || '';
+let lastMonth = +(localStorage.getItem('lastMonth') || (now.getMonth() + 1));
+let lastYear  = +(localStorage.getItem('lastYear')  || now.getFullYear());
+let filtersOpen = false;
+
+// ── Translations ─────────────────────
+const TR = {
+  ar: {
+    loginSub:'نظام إدارة حالات طب الأسنان',loginBtn:'تسجيل الدخول بـ Google',loginNote:'بياناتك محمية بحسابك الشخصي',
+    hTl:'أسنان',hCl:'حالة',hDl:'طبيب',hMl:'هذا الشهر',
+    tbA:'إضافة',tbL:'الحالات',tbS:'إحصائيات',tbAc:'حسابي',
+    addSlbl:'حالة جديدة',lDoc:'الطبيب',lPat:'المريض',lTth:'الأسنان',lMon:'الشهر',lYr:'السنة',lType:'نوع الحالة',lShade:'لون السن',
+    btnSaveTxt:'حفظ الحالة',shadeTitle:'اختر لون السن',clearShadeBtn:'إزالة اللون',
+    docTitle:'اختر الطبيب',pdfTitle:'تصدير تقرير PDF',pdfMonLbl:'الشهر',pdfYrLbl:'السنة',pdfGenBtn:'توليد التقرير',pdfCan:'إلغاء',
+    editTitle:'تعديل الحالة',editCan:'إلغاء',editSav:'حفظ',eLDoc:'الطبيب',eLPat:'المريض',eLTth:'أسنان',eLType:'نوع الحالة',eLShade:'لون السن',
+    delTitle:'حذف الحالة',delSub:'هل أنت متأكد؟',delYes:'تأكيد الحذف',delCan:'إلغاء',
+    langLbl:'اللغة / Language',i1t:'نسخ احتياطي تلقائي',i1d:'بياناتك تحفظ فورياً على Google Cloud',
+    i2t:'استعادة من أي جهاز',i2d:'سجّل دخول بنفس حساب Google',i3t:'بياناتك خاصة 100%',i3d:'محمية بحسابك فقط',
+    btnLogout:'تسجيل الخروج',
+    stDocLbl:'الأطباء',stMonLbl:'الإنتاج الشهري',stShadeLbl:'ألوان الأسنان',per:'جميع البيانات',
+    totalTeeth:'إجمالي الأسنان',totalCases:'الحالات',avgCase:'متوسط',doctors:'الأطباء',
+    noData:'لا توجد بيانات',noCases:'لا توجد حالات',noDocYet:'لا يوجد أطباء مسجلون',
+    savedOk:'تم الحفظ ✓',editOk:'تم التعديل ✓',delOk:'تم الحذف',csvOk:'تم التصدير',pdfOk:'جارٍ فتح التقرير',
+    errDoc:'اختر اسم الطبيب',errTth:'أدخل عدد الأسنان',errNoCases:'لا توجد حالات',errLogin:'خطأ في تسجيل الدخول',
+    cases:'حالة',teeth:'سن',allYrs:'كل السنوات',allMon:'كل الأشهر',allDoc:'كل الأطباء',allTyp:'كل الأنواع',
+    logoutConfirm:'تأكيد تسجيل الخروج؟',logoutYes:'خروج',logoutNo:'إلغاء',
+    duplicate:'نسخ الحالة',filters:'الفلاتر',hideFilters:'إخفاء',showFilters:'فلترة',
+    thisMonth:'هذا الشهر',lastMonthLbl:'الشهر الماضي',vsLastMonth:'مقارنة بالشهر الماضي'
+  },
+  en: {
+    loginSub:'Dental Cases Management System',loginBtn:'Sign in with Google',loginNote:'Your data is private and protected',
+    hTl:'Teeth',hCl:'Cases',hDl:'Doctors',hMl:'This Month',
+    tbA:'Add',tbL:'Cases',tbS:'Stats',tbAc:'Account',
+    addSlbl:'New Case',lDoc:'Doctor',lPat:'Patient',lTth:'Teeth',lMon:'Month',lYr:'Year',lType:'Case Type',lShade:'Shade',
+    btnSaveTxt:'Save Case',shadeTitle:'Select Shade',clearShadeBtn:'Clear Shade',
+    docTitle:'Select Doctor',pdfTitle:'Export PDF',pdfMonLbl:'Month',pdfYrLbl:'Year',pdfGenBtn:'Generate Report',pdfCan:'Cancel',
+    editTitle:'Edit Case',editCan:'Cancel',editSav:'Save',eLDoc:'Doctor',eLPat:'Patient',eLTth:'Teeth',eLType:'Case Type',eLShade:'Shade',
+    delTitle:'Delete Case',delSub:'Are you sure?',delYes:'Confirm Delete',delCan:'Cancel',
+    langLbl:'Language / اللغة',i1t:'Auto Backup',i1d:'Data saves instantly to Google Cloud',
+    i2t:'Restore from Any Device',i2d:'Sign in with same Google account',i3t:'100% Private Data',i3d:'Protected by your account',
+    btnLogout:'Sign Out',
+    stDocLbl:'Doctors',stMonLbl:'Monthly Production',stShadeLbl:'Shade Distribution',per:'All Data',
+    totalTeeth:'Total Teeth',totalCases:'Cases',avgCase:'Avg',doctors:'Doctors',
+    noData:'No data',noCases:'No cases',noDocYet:'No doctors registered',
+    savedOk:'Saved ✓',editOk:'Updated ✓',delOk:'Deleted',csvOk:'Exported',pdfOk:'Opening report...',
+    errDoc:'Select doctor',errTth:'Enter tooth count',errNoCases:'No cases found',errLogin:'Login error',
+    cases:'cases',teeth:'teeth',allYrs:'All Years',allMon:'All Months',allDoc:'All Doctors',allTyp:'All Types',
+    logoutConfirm:'Confirm sign out?',logoutYes:'Sign Out',logoutNo:'Cancel',
+    duplicate:'Duplicate',filters:'Filters',hideFilters:'Hide',showFilters:'Filter',
+    thisMonth:'This Month',lastMonthLbl:'Last Month',vsLastMonth:'vs Last Month'
+  }
+};
+
+let lang = localStorage.getItem('lang') || 'ar';
+const t  = k => TR[lang]?.[k] || TR.ar[k] || k;
+
+// ── Language ──────────────────────────
+function applyLang() {
+  Object.keys(TR.ar).forEach(k => {
+    const el = document.getElementById(k);
+    if (el && TR[lang][k] !== undefined) el.textContent = TR[lang][k];
+  });
+  const isAr = lang === 'ar';
+  document.documentElement.dir  = isAr ? 'rtl' : 'ltr';
+  document.documentElement.lang = lang;
+  document.getElementById('btnAr').classList.toggle('on', isAr);
+  document.getElementById('btnEn').classList.toggle('on', !isAr);
+  [
+    {id:'flYr', k:'allYrs'}, {id:'flMon', k:'allMon'},
+    {id:'flDoc', k:'allDoc'}, {id:'flType', k:'allTyp'},
+    {id:'stYr', k:'allYrs'}, {id:'stMon', k:'allMon'}
+  ].forEach(({id, k}) => {
+    const s = document.getElementById(id);
+    if (s?.options[0]) s.options[0].text = t(k);
+  });
+  document.getElementById('fDoc').placeholder      = isAr ? 'اختر أو أضف' : 'Select or add';
+  document.getElementById('docSearch').placeholder = isAr ? 'ابحث أو اكتب اسم جديد' : 'Search or type name';
+  renderList();
+  renderStats();
+}
+window.setLang = l => { lang = l; localStorage.setItem('lang', l); applyLang(); };
+
+// ── Shades ────────────────────────────
+const SHADES = [
+  { l:"Group 1", c:"#f5f0e8", list:["0M1","0M2","0M3"] },
+  { l:"Group 2", c:"#ede4cc", list:["1M1","1M2"] },
+  { l:"Group 3", c:"#e0ceaa", list:["2M1","2M2","2M3","2L1.5","2L2.5","2R1.5","2R2.5"] },
+  { l:"Group 4", c:"#d4b87e", list:["3M1","3M2","3M3","3L1.5","3L2.5","3R1.5","3R2.5"] },
+  { l:"Group 5", c:"#c8a25c", list:["4M1","4M2","4M3","4L1.5","4L2.5","4R1.5","4R2.5"] },
+  { l:"Group 6", c:"#b8903a", list:["5M1","5M2","5M3"] },
+];
+function getClr(s) {
+  for (const g of SHADES) if (g.list.includes(s)) return g.c;
+  return '#e2e8f0';
+}
+document.getElementById('shadeGrps').innerHTML = SHADES.map(g =>
+  `<div class="sg-grp"><div class="sg-hdr"><span class="sg-dot" style="background:${g.c}"></span>${g.l}</div>` +
+  `<div class="sg-chips">${g.list.map(s => `<button class="sg-chip" data-s="${s}" onclick="pick('${s}')">${s}</button>`).join('')}</div></div>`
+).join('');
+
+let sel = "", esel = "", shMode = "add", dMode = "add", caseType = "CB", editType = "CB";
+
+function setShUI(tId, txId, dId, s) {
+  const btn = document.getElementById(tId);
+  const tx  = document.getElementById(txId);
+  const d   = document.getElementById(dId);
+  if (s) {
+    tx.textContent = s;
+    d.style.background  = getClr(s);
+    d.style.borderColor = 'rgba(0,0,0,0.1)';
+    btn.classList.add('picked');
+  } else {
+    tx.textContent = t('lShade');
+    d.style.background  = '';
+    d.style.borderColor = '';
+    btn.classList.remove('picked');
+  }
+}
+
+window.openShade = m => {
+  shMode = m;
+  const c = m === 'add' ? sel : esel;
+  document.querySelectorAll('#shadeGrps .sg-chip').forEach(x => x.classList.toggle('on', x.dataset.s === c));
+  document.getElementById('sOv').classList.add('on');
+};
+window.closeShade = () => document.getElementById('sOv').classList.remove('on');
+window.clearShade = () => {
+  if (shMode === 'add') { sel = ''; setShUI('sTrig','sTxt','sDot',''); }
+  else { esel = ''; setShUI('eSTrig','eSTxt','eSDot',''); }
+  closeShade();
+};
+window.pick = s => {
+  if (shMode === 'add') { sel = s; setShUI('sTrig','sTxt','sDot',s); }
+  else { esel = s; setShUI('eSTrig','eSTxt','eSDot',s); }
+  closeShade();
+  toast(s, 'ok');
+};
+document.getElementById('sOv').addEventListener('click', e => { if (e.target === document.getElementById('sOv')) closeShade(); });
+
+// ── Type Toggle ───────────────────────
+window.setType = tp => {
+  caseType = tp;
+  document.getElementById('btnCB').className = `t-btn${tp === 'CB' ? ' cb' : ''}`;
+  document.getElementById('btnFA').className = `t-btn${tp === 'FA' ? ' fa' : ''}`;
+};
+window.setEditType = tp => {
+  editType = tp;
+  document.getElementById('eBtnCB').className = `t-btn${tp === 'CB' ? ' cb' : ''}`;
+  document.getElementById('eBtnFA').className = `t-btn${tp === 'FA' ? ' fa' : ''}`;
+};
+
+// ── Doctor Picker ─────────────────────
+window.openDoc = function(mode) {
+  dMode = mode;
+  document.getElementById('docSearch').value = '';
+  renderDocList('');
+  document.getElementById('dOv').classList.add('on');
+  setTimeout(() => document.getElementById('docSearch').focus(), 350);
+};
+window.closeDoc = () => document.getElementById('dOv').classList.remove('on');
+document.getElementById('dOv').addEventListener('click', e => { if (e.target === document.getElementById('dOv')) closeDoc(); });
+
+function renderDocList(q) {
+  const dm = {};
+  Object.values(all).forEach(c => { if (!c.doc) return; dm[c.doc] = (dm[c.doc] || 0) + 1; });
+  let docs = Object.entries(dm).sort((a, b) => b[1] - a[1]);
+  if (q) docs = docs.filter(([d]) => d.includes(q) || d.toLowerCase().includes(q.toLowerCase()));
+  const el = document.getElementById('docList');
+  if (!docs.length && !q) {
+    el.innerHTML = `<div class="d-empty">${t('noDocYet')}</div>`;
+    document.getElementById('docAddBtn').style.display = 'none';
+    return;
+  }
+  el.innerHTML = docs.map(([d, c]) =>
+    `<div class="d-opt" onclick="selectDoc('${d.replace(/'/g,"\\'")}')">` +
+    `<div class="d-ico">${d.charAt(0)}</div>` +
+    `<div><div class="d-nm">${d}</div><div class="d-ct">${c} ${t('cases')}</div></div></div>`
+  ).join('');
+  const nb = document.getElementById('docAddBtn');
+  if (q && !docs.some(([d]) => d === q)) { nb.style.display = 'flex'; nb.lastChild.textContent = ` ${q}`; }
+  else nb.style.display = 'none';
+}
+window.filterDocs = () => renderDocList(document.getElementById('docSearch').value.trim());
+window.selectDoc  = function(name) {
+  document.getElementById(dMode === 'add' ? 'fDoc' : 'eDoc').value = name;
+  // ✅ [1] احفظ آخر طبيب
+  if (dMode === 'add') {
+    lastDoc = name;
+    localStorage.setItem('lastDoc', name);
+  }
+  closeDoc();
+};
+window.addNewDoc = function() { const q = document.getElementById('docSearch').value.trim(); if (q) selectDoc(q); };
+
+// ── Year Selects ──────────────────────
+function fillYr(id, val) {
+  const y = new Date().getFullYear();
+  let o = '';
+  for (let i = y + 1; i >= y - 3; i--) o += `<option value="${i}">${i}</option>`;
+  const s = document.getElementById(id);
+  s.innerHTML = o;
+  if (val) s.value = val;
+}
+fillYr('fYr');
+fillYr('eYr');
+fillYr('pdfYr');
+
+// ✅ [1,3] ملء الفورم بآخر قيم مستخدمة بدل الحالية دائماً
+document.getElementById('fMon').value   = lastMonth;
+document.getElementById('fYr').value    = lastYear;
+document.getElementById('fDoc').value   = lastDoc;
+document.getElementById('pdfMon').value = now.getMonth() + 1;
+document.getElementById('pdfYr').value  = now.getFullYear();
+
+// ✅ [2] اقتراح الطبيب الأخير: لون خاص إذا محفوظ
+if (lastDoc) {
+  const docInp = document.getElementById('fDoc');
+  docInp.style.color = '#2563eb';
+  docInp.style.fontWeight = '700';
+}
+
+// ── Auth ──────────────────────────────
+window.doLogin = async () => {
+  try { await signInWithPopup(auth, new GoogleAuthProvider()); }
+  catch (e) { toast(t('errLogin'), 'err'); }
+};
+
+// ✅ [4] تأكيد قبل تسجيل الخروج
+window.doOut = function() {
+  showConfirmLogout();
+};
+
+function showConfirmLogout() {
+  const existing = document.getElementById('logoutConfirmOv');
+  if (existing) { existing.classList.add('on'); return; }
+  const div = document.createElement('div');
+  div.id = 'logoutConfirmOv';
+  div.className = 'ov on';
+  div.innerHTML = `
+    <div class="sheet" style="text-align:center;padding:24px 16px">
+      <div style="width:48px;height:48px;border-radius:50%;background:#fef2f2;margin:0 auto 12px;display:flex;align-items:center;justify-content:center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </div>
+      <div style="font-size:0.9rem;font-weight:800;color:#0f172a;margin-bottom:6px">${t('logoutConfirm')}</div>
+      <div style="display:flex;gap:8px;margin-top:16px">
+        <button onclick="document.getElementById('logoutConfirmOv').classList.remove('on')"
+          style="flex:1;padding:11px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:8px;font-family:Cairo,sans-serif;font-size:0.82rem;font-weight:700;color:#64748b;cursor:pointer">
+          ${t('logoutNo')}
+        </button>
+        <button onclick="signOut(auth);document.getElementById('logoutConfirmOv').classList.remove('on')"
+          style="flex:1;padding:11px;background:#ef4444;border:none;border-radius:8px;font-family:Cairo,sans-serif;font-size:0.82rem;font-weight:800;color:#fff;cursor:pointer">
+          ${t('logoutYes')}
+        </button>
+      </div>
+    </div>`;
+  div.addEventListener('click', e => { if (e.target === div) div.classList.remove('on'); });
+  document.body.appendChild(div);
+}
+
+onAuthStateChanged(auth, u => {
+  if (u) {
+    uid = u.uid;
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('app').classList.add('on');
+
+    const setAv = (id, sm) => {
+      const el = document.getElementById(id);
+      if (u.photoURL) el.innerHTML = `<img src="${u.photoURL}">`;
+      else el.innerHTML = sm
+        ? `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`
+        : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+    };
+    setAv('hdrAv', true);
+    setAv('tabAv', true);
+    setAv('accAv', false);
+    document.getElementById('accNm').textContent = u.displayName || 'User';
+    document.getElementById('accEm').textContent = u.email || '';
+
+    cRef = ref(db, `users/${uid}/cases`);
+    onValue(cRef, snap => { all = snap.val() || {}; refresh(); });
+
+    const y  = now.getFullYear();
+    let o = `<option value="">${t('allYrs')}</option>`;
+    for (let i = y + 1; i >= y - 2; i--) o += `<option value="${i}">${i}</option>`;
+    ['flYr','stYr'].forEach(id => document.getElementById(id).innerHTML = o);
+
+    applyLang();
+  } else {
+    uid = null;
+    document.getElementById('login').style.display = 'flex';
+    document.getElementById('app').classList.remove('on');
+  }
+});
+
+// ── Refresh Header Stats ──────────────
+function refresh() {
+  const list = Object.values(all), mn = now.getMonth() + 1, yr = now.getFullYear();
+  document.getElementById('hT').textContent = list.reduce((s, c) => s + (+c.teeth || 0), 0);
+  document.getElementById('hC').textContent = list.length;
+  document.getElementById('hD').textContent = new Set(list.map(c => c.doc).filter(Boolean)).size;
+  document.getElementById('hM').textContent = list.filter(c => +c.month === mn && +c.year === yr).reduce((s, c) => s + (+c.teeth || 0), 0);
+
+  const docs = [...new Set(list.map(c => c.doc).filter(Boolean))].sort();
+  const fd   = document.getElementById('flDoc'), cv = fd.value;
+  fd.innerHTML = `<option value="">${t('allDoc')}</option>` + docs.map(d => `<option value="${d}">${d}</option>`).join('');
+  if (cv) fd.value = cv;
+  renderList();
+  renderStats();
+}
+
+// ── Search Mode ───────────────────────
+let srchMode = 'all';
+window.setSrchMode = function(mode, btn) {
+  srchMode = mode;
+  document.querySelectorAll('.srch-chip').forEach(c => c.classList.remove('on'));
+  btn.classList.add('on');
+  renderList();
+};
+window.clearSearch = function() {
+  document.getElementById('srchQ').value = '';
+  document.getElementById('srchClr').style.display = 'none';
+  renderList();
+};
+
+// ✅ [6] تبديل ظهور الفلاتر
+window.toggleFilters = function() {
+  filtersOpen = !filtersOpen;
+  const panel = document.getElementById('filtersPanel');
+  const btn   = document.getElementById('filterToggleBtn');
+  if (filtersOpen) {
+    panel.style.display = 'block';
+    panel.style.animation = 'slideDown 0.2s ease';
+    btn.textContent = t('hideFilters');
+    btn.classList.add('active');
+  } else {
+    panel.style.display = 'none';
+    btn.textContent = t('showFilters');
+    btn.classList.remove('active');
+  }
+};
+
+function highlight(text, q) {
+  if (!q || !text) return text || '—';
+  const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return String(text).replace(new RegExp(`(${escaped})`, 'gi'), '<mark class="hl">$1</mark>');
+}
+
+// ── List Page ─────────────────────────
+window.renderList = function() {
+  const fy = document.getElementById('flYr').value;
+  const fm = document.getElementById('flMon').value;
+  const fd = document.getElementById('flDoc').value;
+  const ft = document.getElementById('flType').value;
+  const q  = (document.getElementById('srchQ')?.value || '').trim().toLowerCase();
+
+  const clr = document.getElementById('srchClr');
+  if (clr) clr.style.display = q ? 'flex' : 'none';
+
+  let list = Object.entries(all).map(([id, c]) => ({ id, ...c }));
+  if (fy) list = list.filter(c => String(c.year)  === fy);
+  if (fm) list = list.filter(c => String(c.month) === fm);
+  if (fd) list = list.filter(c => c.doc  === fd);
+  if (ft) list = list.filter(c => (c.type || 'CB') === ft);
+
+  if (q) {
+    list = list.filter(c => {
+      if (srchMode === 'patient') return (c.pat  || '').toLowerCase().includes(q);
+      if (srchMode === 'doctor')  return (c.doc  || '').toLowerCase().includes(q);
+      if (srchMode === 'shade')   return (c.shade|| '').toLowerCase().includes(q);
+      return (c.pat  || '').toLowerCase().includes(q)
+          || (c.doc  || '').toLowerCase().includes(q)
+          || (c.shade|| '').toLowerCase().includes(q);
+    });
+  }
+
+  // ✅ [6] الترتيب: الأحدث أولاً
+  list.sort((a, b) => (b.ts || 0) - (a.ts || 0));
+
+  const sum = list.reduce((s, c) => s + (+c.teeth || 0), 0);
+  const faT = list.filter(c => (c.type || 'CB') === 'FA').reduce((s, c) => s + (+c.teeth || 0), 0);
+  const cbT = list.filter(c => (c.type || 'CB') === 'CB').reduce((s, c) => s + (+c.teeth || 0), 0);
+
+  document.getElementById('lCnt').textContent = `${list.length} ${t('cases')}`;
+  document.getElementById('lSum').textContent  = list.length ? `${sum} ${t('teeth')}` : '';
+  document.getElementById('typePills').innerHTML = list.length
+    ? `<span class="pill-fa">FA · ${faT}</span><span class="pill-cb">CB · ${cbT}</span>` : '';
+
+  const el = document.getElementById('listEl');
+  if (!list.length) {
+    el.innerHTML = `<div class="empty"><span class="ei">${q ? '🔍' : '📋'}</span><div class="et">${q ? (lang==='ar'?'لا نتائج':'No results') : t('noCases')}</div></div>`;
+    return;
+  }
+
+  // ✅ [4] بطاقات مع Swipe + shade دوت ملون + زر نسخ
+  el.innerHTML = list.map(c => {
+    const tp   = c.type || 'CB';
+    const hDoc = q && (srchMode === 'all' || srchMode === 'doctor')  ? highlight(c.doc, q) : (c.doc  || '—');
+    const hPat = q && (srchMode === 'all' || srchMode === 'patient') ? highlight(c.pat, q) : (c.pat  || '—');
+    const hShd = q && (srchMode === 'all' || srchMode === 'shade')   ? highlight(c.shade, q) : (c.shade || '');
+    const shadeClr = c.shade ? getClr(c.shade) : '';
+    return `
+    <div class="cc" id="cc-${c.id}" data-id="${c.id}">
+      <div class="cc-top">
+        <div class="cc-left">
+          <div class="cc-doc">${hDoc}</div>
+          <div class="cc-pat">${hPat}</div>
+        </div>
+        <div class="cc-badge">${c.teeth || 0}</div>
+      </div>
+      <div class="cc-tags">
+        <span class="tag tag-d">${c.month || '—'} / ${c.year || '—'}</span>
+        <span class="tag ${tp === 'FA' ? 'tag-fa' : 'tag-cb'}">${tp}</span>
+        ${c.shade
+          ? `<span class="tag tag-s">
+               <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${shadeClr};border:1px solid rgba(0,0,0,0.15);margin-left:4px;vertical-align:middle"></span>
+               ${hShd}
+             </span>`
+          : ''}
+      </div>
+      <div class="cc-acts">
+        <button class="cc-act cc-dup" onclick="duplicateCase('${c.id}')" title="${t('duplicate')}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          ${lang === 'ar' ? 'نسخ' : 'Copy'}
+        </button>
+        <button class="cc-act cc-edit" onclick="openEdit('${c.id}')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          ${lang === 'ar' ? 'تعديل' : 'Edit'}
+        </button>
+        <button class="cc-act cc-del" onclick="openDel('${c.id}')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+          ${lang === 'ar' ? 'حذف' : 'Delete'}
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+
+  // ✅ [7] Swipe للحذف/التعديل على موبايل
+  initSwipe();
+};
+
+// ── Swipe على البطاقات ────────────────
+function initSwipe() {
+  document.querySelectorAll('.cc').forEach(card => {
+    if (card._swipeInit) return;
+    card._swipeInit = true;
+    let startX = 0, curX = 0, swiping = false;
+    const id = card.dataset.id;
+
+    card.addEventListener('touchstart', e => {
+      startX = e.touches[0].clientX;
+      curX   = startX;
+      swiping = false;
+    }, { passive: true });
+
+    card.addEventListener('touchmove', e => {
+      curX = e.touches[0].clientX;
+      const dx = curX - startX;
+      if (Math.abs(dx) > 8) {
+        swiping = true;
+        // RTL: swipe right = حذف، swipe left = تعديل
+        const isRTL = lang === 'ar';
+        const clamp = Math.max(-80, Math.min(80, dx));
+        card.style.transform = `translateX(${clamp}px)`;
+        card.style.transition = 'none';
+
+        // لون خلفي حسب الاتجاه
+        if ((isRTL && dx > 30) || (!isRTL && dx < -30)) {
+          card.style.background = '#fef2f2'; // حذف
+        } else if ((isRTL && dx < -30) || (!isRTL && dx > 30)) {
+          card.style.background = '#eff6ff'; // تعديل
+        } else {
+          card.style.background = '';
+        }
+      }
+    }, { passive: true });
+
+    card.addEventListener('touchend', () => {
+      const dx = curX - startX;
+      card.style.transition = 'transform 0.25s ease, background 0.2s';
+      card.style.transform  = '';
+      card.style.background = '';
+      if (!swiping) return;
+      const isRTL = lang === 'ar';
+      if (Math.abs(dx) > 55) {
+        if ((isRTL && dx > 0) || (!isRTL && dx < 0)) {
+          setTimeout(() => openDel(id), 250);
+        } else {
+          setTimeout(() => openEdit(id), 250);
+        }
+      }
+    });
+  });
+}
+
+// ── SVG Chart Helpers ─────────────────
+function drawPieChart(svgId, legendId, slices) {
+  const svg = document.getElementById(svgId);
+  const leg = document.getElementById(legendId);
+  if (!svg || !leg) return;
+  const total = slices.reduce((s, x) => s + x.value, 0);
+  if (!total) {
+    svg.innerHTML = `<text x="80" y="85" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="Cairo,sans-serif">لا بيانات</text>`;
+    leg.innerHTML = '';
+    return;
+  }
+  const cx = 80, cy = 80, r = 62, ir = 36;
+  let startAngle = -Math.PI / 2, paths = '';
+  slices.forEach(sl => {
+    if (!sl.value) return;
+    const angle = (sl.value / total) * 2 * Math.PI;
+    const x1 = cx + r * Math.cos(startAngle), y1 = cy + r * Math.sin(startAngle);
+    const x2 = cx + r * Math.cos(startAngle + angle), y2 = cy + r * Math.sin(startAngle + angle);
+    const xi1 = cx + ir * Math.cos(startAngle), yi1 = cy + ir * Math.sin(startAngle);
+    const xi2 = cx + ir * Math.cos(startAngle + angle), yi2 = cy + ir * Math.sin(startAngle + angle);
+    const large = angle > Math.PI ? 1 : 0;
+    const pct = Math.round(sl.value / total * 100);
+    const mid = startAngle + angle / 2;
+    const lx = cx + (r * 0.65) * Math.cos(mid), ly = cy + (r * 0.65) * Math.sin(mid);
+    paths += `<path d="M${xi1},${yi1} L${x1},${y1} A${r},${r} 0 ${large},1 ${x2},${y2} L${xi2},${yi2} A${ir},${ir} 0 ${large},0 ${xi1},${yi1} Z" fill="${sl.color}" stroke="#fff" stroke-width="2"/>`;
+    if (pct >= 8) paths += `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" fill="#fff" font-size="11" font-weight="700" font-family="Cairo,sans-serif">${pct}%</text>`;
+    startAngle += angle;
+  });
+  paths += `<text x="${cx}" y="${cy-6}" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="700" font-family="Cairo,sans-serif">${total}</text>`;
+  paths += `<text x="${cx}" y="${cy+10}" text-anchor="middle" fill="#64748b" font-size="8" font-family="Cairo,sans-serif">إجمالي</text>`;
+  svg.innerHTML = paths;
+  leg.innerHTML = slices.filter(s => s.value).map(s =>
+    `<div class="pie-leg-item"><span class="pie-dot" style="background:${s.color}"></span><span class="pie-lbl">${s.label}</span><span class="pie-val">${s.value}</span></div>`
+  ).join('');
+}
+
+function drawBarChart(svgId, bars, opts = {}) {
+  const svg = document.getElementById(svgId);
+  if (!svg) return;
+  const { height = 130, barColor = '#2563eb', labelColor = '#64748b' } = opts;
+  const W = svg.parentElement?.clientWidth || 320;
+  svg.setAttribute('viewBox', `0 0 ${W} ${height}`);
+  svg.setAttribute('width', W);
+  svg.setAttribute('height', height);
+  const mx = Math.max(...bars.map(b => b.value), 1);
+  const pad = 10, bpad = 6;
+  const n = bars.length;
+  const bw = Math.max(8, (W - pad * 2 - bpad * (n - 1)) / n);
+  const chartH = height - 34;
+  let out = '';
+  [0.25, 0.5, 0.75, 1].forEach(f => {
+    const y = pad + chartH * (1 - f);
+    out += `<line x1="${pad}" y1="${y}" x2="${W - pad}" y2="${y}" stroke="#e2e8f0" stroke-width="1"/>`;
+    out += `<text x="${pad - 3}" y="${y + 3}" text-anchor="end" fill="#94a3b8" font-size="7" font-family="Cairo,sans-serif">${Math.round(mx * f)}</text>`;
+  });
+  bars.forEach((b, i) => {
+    const x  = pad + i * (bw + bpad);
+    const bh = Math.max(2, (b.value / mx) * chartH);
+    const by = pad + chartH - bh;
+    const col = b.color || barColor;
+    const rx = Math.min(4, bw / 2);
+    out += `<rect x="${x}" y="${by}" width="${bw}" height="${bh}" rx="${rx}" fill="${col}" opacity="0.9"/>`;
+    if (b.value > 0) out += `<text x="${x + bw/2}" y="${by - 3}" text-anchor="middle" fill="${col}" font-size="8" font-weight="700" font-family="Cairo,sans-serif">${b.value}</text>`;
+    const lbl = String(b.label).length > 5 ? String(b.label).slice(0, 5) : b.label;
+    out += `<text x="${x + bw/2}" y="${height - 4}" text-anchor="middle" fill="${labelColor}" font-size="8" font-family="Cairo,sans-serif">${lbl}</text>`;
+  });
+  svg.innerHTML = out;
+}
+
+// ── Stats Page ────────────────────────
+window.renderStats = function() {
+  const fy = document.getElementById('stYr').value;
+  const fm = document.getElementById('stMon').value;
+  let list = Object.values(all);
+  if (fy) list = list.filter(c => String(c.year)  === fy);
+  if (fm) list = list.filter(c => String(c.month) === fm);
+
+  document.getElementById('per').lastChild.textContent = ` ${
+    fy && fm ? `${lang === 'ar' ? 'شهر' : 'Month'} ${fm} · ${fy}` :
+    fy ? fy :
+    fm ? `${lang === 'ar' ? 'شهر' : 'Month'} ${fm}` :
+    t('per')
+  }`;
+  document.getElementById('mCard').style.display = fm ? 'none' : 'block';
+
+  const tt  = list.reduce((s, c) => s + (+c.teeth || 0), 0);
+  const avg = list.length ? Math.round(tt / list.length) : 0;
+  document.getElementById('stGrid').innerHTML =
+    `<div class="sbox"><div class="sbox-n" style="color:var(--blue)">${tt}</div><div class="sbox-l">${t('totalTeeth')}</div></div>` +
+    `<div class="sbox"><div class="sbox-n" style="color:var(--green)">${list.length}</div><div class="sbox-l">${t('totalCases')}</div></div>` +
+    `<div class="sbox"><div class="sbox-n" style="color:var(--gold)">${avg}</div><div class="sbox-l">${t('avgCase')}</div></div>` +
+    `<div class="sbox"><div class="sbox-n" style="color:var(--violet)">${new Set(list.map(c => c.doc).filter(Boolean)).size}</div><div class="sbox-l">${t('doctors')}</div></div>`;
+
+  const faT = list.filter(c => (c.type || 'CB') === 'FA').reduce((s, c) => s + (+c.teeth || 0), 0);
+  const cbT = list.filter(c => (c.type || 'CB') === 'CB').reduce((s, c) => s + (+c.teeth || 0), 0);
+  const faC = list.filter(c => (c.type || 'CB') === 'FA').length;
+  const cbC = list.filter(c => (c.type || 'CB') === 'CB').length;
+  document.getElementById('typeStats').innerHTML =
+    `<div class="tsb" style="background:var(--sky);border-color:var(--sky2)"><div class="tsb-n" style="color:var(--blue)">${faT}</div><div class="tsb-l" style="color:var(--blue)">Full Anatomy</div><div class="tsb-c" style="color:var(--blue2)">${faC} ${t('cases')}</div></div>` +
+    `<div class="tsb" style="background:#f5f3ff;border-color:#ddd6fe"><div class="tsb-n" style="color:var(--violet)">${cbT}</div><div class="tsb-l" style="color:var(--violet)">Cut Back</div><div class="tsb-c" style="color:#6d28d9">${cbC} ${t('cases')}</div></div>`;
+
+  drawPieChart('pieChart', 'pieLegend', [
+    { label: 'Full Anatomy', value: faT, color: '#2563eb' },
+    { label: 'Cut Back',     value: cbT, color: '#7c3aed' }
+  ]);
+
+  // ✅ [11] أكثر طبيب وأكثر shade بشكل بارز
+  const dm = {};
+  list.forEach(c => { if (!c.doc) return; dm[c.doc] = (dm[c.doc] || 0) + (+c.teeth || 0); });
+  const ds = Object.entries(dm).sort((a, b) => b[1] - a[1]);
+  const mx = ds[0]?.[1] || 1;
+  const rk = i => i === 0 ? 'g1' : i <= 2 ? 'g2' : 'g3';
+
+  // بطاقة أفضل طبيب
+  const topDocEl = document.getElementById('topDocCard');
+  if (topDocEl && ds.length) {
+    const [topName, topVal] = ds[0];
+    const topPct = total => total ? Math.round(topVal / total * 100) : 0;
+    const allT   = list.reduce((s,c) => s+(+c.teeth||0), 0);
+    topDocEl.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0">${topName.charAt(0)}</div>
+        <div style="flex:1">
+          <div style="font-size:0.82rem;font-weight:800;color:#0f172a">${topName}</div>
+          <div style="font-size:0.65rem;color:#64748b;margin-top:1px">${lang==='ar'?'الأعلى إنتاجاً':'Top Producer'}</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:1.1rem;font-weight:900;color:#2563eb">${topVal}</div>
+          <div style="font-size:0.55rem;color:#94a3b8">${topPct(allT)}%</div>
+        </div>
+      </div>`;
+    topDocEl.style.display = 'block';
+  }
+
+  // أكثر shade
+  const sm = {};
+  list.forEach(c => { if (c.shade) sm[c.shade] = (sm[c.shade] || 0) + 1; });
+  const sl = Object.entries(sm).sort((a, b) => b[1] - a[1]);
+
+  const topShadeEl = document.getElementById('topShadeCard');
+  if (topShadeEl && sl.length) {
+    const [topShade, topShadeN] = sl[0];
+    topShadeEl.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:36px;height:36px;border-radius:50%;background:${getClr(topShade)};border:2px solid rgba(0,0,0,0.08);flex-shrink:0"></div>
+        <div style="flex:1">
+          <div style="font-size:0.9rem;font-weight:900;color:#0f172a">${topShade}</div>
+          <div style="font-size:0.65rem;color:#64748b">${lang==='ar'?'الأكثر استخداماً':'Most Used Shade'}</div>
+        </div>
+        <div style="font-size:1.1rem;font-weight:900;color:#f59e0b">${topShadeN}</div>
+      </div>`;
+    topShadeEl.style.display = 'block';
+  }
+
+  document.getElementById('stDoc').innerHTML = ds.length
+    ? ds.map(([d, v], i) =>
+        `<div class="di"><div class="drk ${rk(i)}">${i + 1}</div>` +
+        `<div class="dinfo"><div class="dnm">${d}</div><div class="dbw"><div class="db" style="width:${(v / mx * 100).toFixed(1)}%"></div></div></div>` +
+        `<div class="dtth">${v}</div></div>`
+      ).join('')
+    : `<div style="color:var(--text3);text-align:center;padding:12px;font-size:0.74rem">${t('noData')}</div>`;
+
+  const docBarWrap = document.getElementById('docBarWrap');
+  if (ds.length) {
+    docBarWrap.style.display = 'block';
+    setTimeout(() => {
+      drawBarChart('docBarChart', ds.slice(0, 8).map(([d, v]) => ({ label: d.split(' ')[0], value: v, color: '#2563eb' })), { height: 140 });
+    }, 0);
+  } else {
+    docBarWrap.style.display = 'none';
+  }
+
+  if (!fm) {
+    const mm = {};
+    list.forEach(c => { const m = c.month; if (m) { if (!mm[m]) mm[m] = 0; mm[m] += +c.teeth || 0; } });
+    setTimeout(() => {
+      drawBarChart('monBarChart', Array.from({ length: 12 }, (_, i) => i + 1).map(m => ({
+        label: m, value: mm[m] || 0, color: mm[m] ? '#10b981' : '#e2e8f0'
+      })), { height: 150, labelColor: '#64748b' });
+    }, 0);
+  }
+
+  // ✅ [10] مقارنة هذا الشهر بالشهر الماضي
+  const compEl = document.getElementById('monthCompare');
+  if (compEl && !fy && !fm) {
+    const mn  = now.getMonth() + 1, yr = now.getFullYear();
+    const lm  = mn === 1 ? 12 : mn - 1;
+    const ly  = mn === 1 ? yr - 1 : yr;
+    const thisM = Object.values(all).filter(c => +c.month === mn  && +c.year === yr).reduce((s,c)=>s+(+c.teeth||0),0);
+    const lastM = Object.values(all).filter(c => +c.month === lm  && +c.year === ly).reduce((s,c)=>s+(+c.teeth||0),0);
+    const diff  = thisM - lastM;
+    const pct   = lastM ? Math.abs(Math.round(diff / lastM * 100)) : (thisM ? 100 : 0);
+    const up    = diff >= 0;
+    compEl.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-size:0.7rem;font-weight:700;color:#64748b;margin-bottom:4px">${t('thisMonth')}</div>
+          <div style="font-size:1.4rem;font-weight:900;color:#0f172a">${thisM} <span style="font-size:0.7rem;color:#94a3b8">${t('teeth')}</span></div>
+        </div>
+        <div style="text-align:center;padding:8px 14px;border-radius:10px;background:${up?'#f0fdf4':'#fef2f2'}">
+          <div style="font-size:1rem;font-weight:900;color:${up?'#10b981':'#ef4444'}">${up?'▲':'▼'} ${pct}%</div>
+          <div style="font-size:0.6rem;color:#94a3b8;margin-top:2px">${t('vsLastMonth')}</div>
+        </div>
+        <div style="text-align:left">
+          <div style="font-size:0.7rem;font-weight:700;color:#64748b;margin-bottom:4px">${t('lastMonthLbl')}</div>
+          <div style="font-size:1.4rem;font-weight:900;color:#94a3b8">${lastM} <span style="font-size:0.7rem">${t('teeth')}</span></div>
+        </div>
+      </div>`;
+    compEl.style.display = 'block';
+  } else if (compEl) {
+    compEl.style.display = 'none';
+  }
+
+  const smx = sl[0]?.[1] || 1;
+  document.getElementById('stShade').innerHTML = sl.length
+    ? sl.map(([s, n]) =>
+        `<div class="shr">
+          <div style="display:flex;align-items:center;gap:5px;min-width:52px">
+            <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${getClr(s)};border:1px solid rgba(0,0,0,0.1);flex-shrink:0"></span>
+            <div class="shn">${s}</div>
+          </div>
+          <div class="shbw"><div class="shb" style="width:${(n / smx * 100).toFixed(1)}%"></div></div>
+          <div class="shc">${n}</div>
+        </div>`
+      ).join('')
+    : `<div style="color:var(--text3);text-align:center;padding:12px;font-size:0.74rem">${t('noData')}</div>`;
+};
+
+// ── CRUD ──────────────────────────────
+window.addCase = async function() {
+  const doc = document.getElementById('fDoc').value.trim();
+  const tth = +document.getElementById('fTth').value;
+  if (!doc) { toast(t('errDoc'), 'err'); document.getElementById('fDoc').focus(); return; }
+  if (!tth || tth < 1) { toast(t('errTth'), 'err'); document.getElementById('fTth').focus(); return; }
+  const btn = document.getElementById('btnSave');
+  btn.style.opacity = '0.6';
+  btn.style.pointerEvents = 'none';
+  const mon = +document.getElementById('fMon').value;
+  const yr  = +document.getElementById('fYr').value;
+  try {
+    await push(cRef, {
+      doc, pat: document.getElementById('fPat').value.trim(),
+      teeth: tth, month: mon, year: yr,
+      shade: sel, type: caseType, ts: Date.now()
+    });
+    // ✅ [1,3] احفظ آخر قيم للإدخال القادم
+    lastDoc   = doc;
+    lastMonth = mon;
+    lastYear  = yr;
+    localStorage.setItem('lastDoc',   doc);
+    localStorage.setItem('lastMonth', mon);
+    localStorage.setItem('lastYear',  yr);
+
+    // ✅ [7] امسح الفورم لكن اتركه الطبيب والشهر والسنة
+    document.getElementById('fPat').value = '';
+    document.getElementById('fTth').value = '';
+    sel = '';
+    setShUI('sTrig','sTxt','sDot','');
+    setType('CB');
+
+    // ✅ [2] الطبيب يبقى محفوظاً — لون مميز
+    const docInp = document.getElementById('fDoc');
+    docInp.style.color      = '#2563eb';
+    docInp.style.fontWeight = '700';
+
+    toast(t('savedOk'), 'ok');
+    // انتقل للـ patient field تلقائياً للإدخال السريع
+    setTimeout(() => document.getElementById('fPat').focus(), 300);
+  } finally {
+    btn.style.opacity = '';
+    btn.style.pointerEvents = '';
+  }
+};
+
+// ✅ [5] validation في saveEdit أيضاً
+window.openEdit = function(id) {
+  const c = all[id];
+  if (!c) return;
+  document.getElementById('eId').value  = id;
+  document.getElementById('eDoc').value = c.doc || '';
+  document.getElementById('ePat').value = c.pat || '';
+  document.getElementById('eTth').value = c.teeth || '';
+  document.getElementById('eMon').value = c.month || 1;
+  fillYr('eYr', c.year || now.getFullYear());
+  esel = c.shade || '';
+  setShUI('eSTrig','eSTxt','eSDot', c.shade || '');
+  editType = c.type || 'CB';
+  setEditType(editType);
+  document.getElementById('editOv').classList.add('on');
+};
+
+window.saveEdit = async function() {
+  const doc = document.getElementById('eDoc').value.trim();
+  const tth = +document.getElementById('eTth').value;
+  // ✅ [5] validation
+  if (!doc) { toast(t('errDoc'), 'err'); return; }
+  if (!tth || tth < 1) { toast(t('errTth'), 'err'); return; }
+  const id = document.getElementById('eId').value;
+  await update(ref(db, `users/${uid}/cases/${id}`), {
+    doc, pat: document.getElementById('ePat').value.trim(),
+    teeth: tth,
+    month: +document.getElementById('eMon').value,
+    year:  +document.getElementById('eYr').value,
+    shade: esel, type: editType
+  });
+  closeOv('editOv');
+  toast(t('editOk'), 'ok');
+};
+
+window.openDel    = id => { document.getElementById('delId').value = id; document.getElementById('delOv').classList.add('on'); };
+window.confirmDel = async function() {
+  await remove(ref(db, `users/${uid}/cases/${document.getElementById('delId').value}`));
+  closeOv('delOv');
+  toast(t('delOk'), 'ok');
+};
+
+// ✅ [9] نسخ حالة موجودة (Duplicate)
+window.duplicateCase = async function(id) {
+  const c = all[id];
+  if (!c) return;
+  const { doc, pat, teeth, month, year, shade, type } = c;
+  await push(cRef, { doc, pat, teeth, month, year, shade, type, ts: Date.now() });
+  toast(lang === 'ar' ? `تم نسخ حالة ${doc}` : `Duplicated ${doc}'s case`, 'ok');
+};
+
+// ── CSV Export ────────────────────────
+window.doCSV = function() {
+  let list = Object.values(all);
+  ['flYr','flMon','flDoc','flType'].forEach((id, i) => {
+    const v = document.getElementById(id).value;
+    if (v) {
+      if (i === 0) list = list.filter(c => String(c.year)  === v);
+      else if (i === 1) list = list.filter(c => String(c.month) === v);
+      else if (i === 2) list = list.filter(c => c.doc === v);
+      else list = list.filter(c => (c.type || 'CB') === v);
+    }
+  });
+  const csv = '\uFEFF' + 'Year,Month,Doctor,Patient,Teeth,Type,Shade\n' +
+    list.map(c => `${c.year||''},${c.month||''},${c.doc||''},${c.pat||''},${c.teeth||0},${c.type||'CB'},${c.shade||''}`).join('\n');
+  Object.assign(document.createElement('a'), {
+    href: URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' })),
+    download: `mas-dental-${Date.now()}.csv`
+  }).click();
+  toast(t('csvOk'), 'ok');
+};
+
+// ── PDF Export ────────────────────────
+window.openPDF = function() {
+  document.getElementById('pdfMon').value = document.getElementById('flMon').value || now.getMonth() + 1;
+  document.getElementById('pOv').classList.add('on');
+};
+window.closePDF = () => document.getElementById('pOv').classList.remove('on');
+document.getElementById('pOv').addEventListener('click', e => { if (e.target === document.getElementById('pOv')) closePDF(); });
+
+const MONTHS_AR = ['','يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+const MONTHS_EN = ['','January','February','March','April','May','June','July','August','September','October','November','December'];
+const monthName = m => lang === 'ar' ? MONTHS_AR[m] : MONTHS_EN[m];
+
+window.genPDF = function() {
+  const month = +document.getElementById('pdfMon').value;
+  const year  = +document.getElementById('pdfYr').value;
+  let list = Object.values(all).filter(c => +c.month === month && +c.year === year);
+  if (!list.length) { toast(t('errNoCases'), 'err'); return; }
+
+  const byDoc  = {};
+  list.forEach(c => { if (!byDoc[c.doc]) byDoc[c.doc] = []; byDoc[c.doc].push(c); });
+  const total  = list.reduce((s, c) => s + (+c.teeth || 0), 0);
+  const faT    = list.filter(c => (c.type || 'CB') === 'FA').reduce((s, c) => s + (+c.teeth || 0), 0);
+  const cbT    = list.filter(c => (c.type || 'CB') === 'CB').reduce((s, c) => s + (+c.teeth || 0), 0);
+  const docCnt = Object.keys(byDoc).length;
+  const avgTth = list.length ? (total / list.length).toFixed(1) : 0;
+
+  const summaryRows = Object.entries(byDoc)
+    .sort((a, b) => b[1].reduce((s,c)=>s+(+c.teeth||0),0) - a[1].reduce((s,c)=>s+(+c.teeth||0),0))
+    .map(([doc, cases]) => {
+      const tot = cases.reduce((s,c)=>s+(+c.teeth||0),0);
+      const fa  = cases.filter(c=>(c.type||'CB')==='FA').reduce((s,c)=>s+(+c.teeth||0),0);
+      const cb  = cases.filter(c=>(c.type||'CB')==='CB').reduce((s,c)=>s+(+c.teeth||0),0);
+      const pct = total ? Math.round(tot/total*100) : 0;
+      return `<tr>
+        <td style="padding:9px 14px;border-bottom:1px solid #f1f5f9;font-size:13px;font-weight:800;color:#0f172a">${doc}</td>
+        <td style="padding:9px 14px;border-bottom:1px solid #f1f5f9;text-align:center;font-size:13px;font-weight:700;color:#2563eb">${tot}</td>
+        <td style="padding:9px 14px;border-bottom:1px solid #f1f5f9;text-align:center;font-size:12px;font-weight:700;color:#1d4ed8">${fa||'—'}</td>
+        <td style="padding:9px 14px;border-bottom:1px solid #f1f5f9;text-align:center;font-size:12px;font-weight:700;color:#7c3aed">${cb||'—'}</td>
+        <td style="padding:9px 14px;border-bottom:1px solid #f1f5f9;text-align:center;font-size:12px;color:#64748b">${cases.length}</td>
+        <td style="padding:9px 14px;border-bottom:1px solid #f1f5f9;text-align:center">
+          <div style="display:inline-flex;align-items:center;gap:6px">
+            <div style="width:60px;height:5px;background:#e2e8f0;border-radius:3px;overflow:hidden">
+              <div style="width:${pct}%;height:100%;background:#2563eb;border-radius:3px"></div>
+            </div>
+            <span style="font-size:10px;color:#94a3b8;font-weight:700">${pct}%</span>
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+
+  const detailSecs = Object.entries(byDoc).map(([doc, cases]) => {
+    const tot  = cases.reduce((s,c)=>s+(+c.teeth||0),0);
+    const faTs = cases.filter(c=>(c.type||'CB')==='FA').reduce((s,c)=>s+(+c.teeth||0),0);
+    const cbTs = cases.filter(c=>(c.type||'CB')==='CB').reduce((s,c)=>s+(+c.teeth||0),0);
+    const rows = cases.map((c, i) => `
+      <tr style="background:${i%2===0?'#fff':'#f8fafc'}">
+        <td style="padding:7px 14px;border-bottom:1px solid #f1f5f9;font-size:12px;color:#94a3b8;font-weight:600">${i+1}</td>
+        <td style="padding:7px 14px;border-bottom:1px solid #f1f5f9;font-size:14px;font-weight:800;color:#0f172a">${c.teeth||0}</td>
+        <td style="padding:7px 14px;border-bottom:1px solid #f1f5f9;font-size:13px;color:#334155">${c.pat||'—'}</td>
+        <td style="padding:7px 14px;border-bottom:1px solid #f1f5f9;text-align:center">
+          <span style="display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:800;background:${(c.type||'CB')==='FA'?'#eff6ff':'#f5f3ff'};color:${(c.type||'CB')==='FA'?'#1d4ed8':'#7c3aed'}">${c.type||'CB'}</span>
+        </td>
+        <td style="padding:7px 14px;border-bottom:1px solid #f1f5f9;text-align:center">
+          ${c.shade?`<span style="display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;background:#fef3c7;color:#92400e">${c.shade}</span>`:`<span style="color:#cbd5e1;font-size:12px">—</span>`}
+        </td>
+      </tr>`).join('');
+    return `<div style="margin-bottom:24px;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden;page-break-inside:avoid">
+      <div style="background:linear-gradient(135deg,#1e3a8a,#2563eb);padding:13px 18px;display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.18);border:2px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff">${doc.charAt(0)}</div>
+          <div style="font-size:16px;font-weight:900;color:#fff">${doc}</div>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center">
+          ${faTs?`<span style="background:rgba(255,255,255,0.15);color:#bfdbfe;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800">FA · ${faTs}</span>`:''}
+          ${cbTs?`<span style="background:rgba(255,255,255,0.15);color:#ddd6fe;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800">CB · ${cbTs}</span>`:''}
+          <span style="background:rgba(255,255,255,0.25);color:#fff;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:900">${tot} سن</span>
+        </div>
+      </div>
+      <table style="width:100%;border-collapse:collapse;direction:rtl">
+        <thead><tr style="background:#f8fafc;border-bottom:1.5px solid #e2e8f0">
+          <th style="padding:8px 14px;text-align:right;font-size:10px;color:#94a3b8;font-weight:700">#</th>
+          <th style="padding:8px 14px;text-align:right;font-size:10px;color:#94a3b8;font-weight:700">أسنان</th>
+          <th style="padding:8px 14px;text-align:right;font-size:10px;color:#94a3b8;font-weight:700">المريض</th>
+          <th style="padding:8px 14px;text-align:center;font-size:10px;color:#94a3b8;font-weight:700">النوع</th>
+          <th style="padding:8px 14px;text-align:center;font-size:10px;color:#94a3b8;font-weight:700">اللون</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+        <tfoot><tr style="background:#f0f9ff;border-top:1.5px solid #bfdbfe">
+          <td colspan="2" style="padding:10px 14px;font-size:12px;font-weight:900;color:#1d4ed8">المجموع: ${tot} سن</td>
+          <td colspan="3" style="padding:10px 14px;text-align:left;font-size:11px;color:#64748b;font-weight:600">${cases.length} حالة · FA: ${faTs} · CB: ${cbTs}</td>
+        </tr></tfoot>
+      </table>
+    </div>`;
+  }).join('');
+
+  const signatureBlock = `
+    <div style="margin-top:32px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;direction:rtl">
+      ${['مدير المختبر','المراجع','التاريخ'].map((lbl, i) => `
+        <div style="text-align:center">
+          <div style="height:42px;border-bottom:1.5px solid #cbd5e1;margin-bottom:7px;${i===2?'display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;font-size:12px;color:#475569;font-weight:700':''}">
+            ${i===2?new Date().toLocaleDateString('ar-SA'):''}
+          </div>
+          <div style="font-size:10px;color:#94a3b8;font-weight:700;letter-spacing:0.5px">${lbl}</div>
+        </div>`).join('')}
+    </div>`;
+
+  const html = `<!DOCTYPE html>
+<html dir="rtl" lang="ar"><head><meta charset="UTF-8">
+<title>MAS Dental Lab — تقرير ${monthName(month)} ${year}</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Helvetica Neue',Arial,sans-serif;background:#fff;color:#0f172a}
+@media print{body{padding:0}@page{margin:18mm 14mm;size:A4}.no-print{display:none!important}}
+@media screen{body{padding:32px;max-width:860px;margin:0 auto}}</style>
+</head><body>
+<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;padding-bottom:16px;border-bottom:3px solid #2563eb">
+  <div style="display:flex;align-items:center;gap:14px">
+    <div style="background:linear-gradient(135deg,#1e3a8a,#2563eb);border-radius:12px;padding:10px 16px;text-align:center">
+      <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:6px;line-height:1">MAS</div>
+      <div style="font-size:6px;color:rgba(255,255,255,0.6);letter-spacing:3px;text-transform:uppercase;margin-top:3px">DENTAL LAB</div>
+    </div>
+    <div>
+      <div style="font-size:11px;font-weight:800;color:#0f172a">مختبر MAS لطب الأسنان</div>
+      <div style="font-size:10px;color:#64748b;margin-top:2px">تقرير الإنتاج الشهري</div>
+    </div>
+  </div>
+  <div style="text-align:left;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 16px">
+    <div style="font-size:15px;font-weight:900;color:#0f172a">${monthName(month)} ${year}</div>
+    <div style="font-size:10px;color:#94a3b8;margin-top:2px">تاريخ الإصدار: ${new Date().toLocaleDateString('ar-SA')}</div>
+    <div style="margin-top:6px">
+      <div style="font-size:11px;color:#475569"><span style="font-weight:700;color:#2563eb">${total}</span> سن إجمالي</div>
+      <div style="font-size:11px;color:#475569;margin-top:2px"><span style="font-weight:700">${list.length}</span> حالة · <span style="font-weight:700">${docCnt}</span> طبيب</div>
+    </div>
+  </div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px">
+  ${[{n:total,l:'إجمالي الأسنان',c:'#2563eb',bg:'#eff6ff'},{n:list.length,l:'الحالات',c:'#0f172a',bg:'#f8fafc'},{n:faT,l:'Full Anatomy',c:'#1d4ed8',bg:'#eff6ff'},{n:cbT,l:'Cut Back',c:'#7c3aed',bg:'#f5f3ff'}]
+    .map(s=>`<div style="background:${s.bg};border:1.5px solid ${s.c}22;border-radius:10px;padding:12px;text-align:center"><div style="font-size:22px;font-weight:900;color:${s.c};line-height:1">${s.n}</div><div style="font-size:9px;color:#64748b;margin-top:4px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px">${s.l}</div></div>`).join('')}
+</div>
+<div style="margin-bottom:28px;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden">
+  <div style="background:#0f172a;padding:11px 16px"><span style="font-size:12px;font-weight:800;color:#e2e8f0">ملخص إنتاج الأطباء</span></div>
+  <table style="width:100%;border-collapse:collapse;direction:rtl">
+    <thead><tr style="background:#f8fafc;border-bottom:1.5px solid #e2e8f0">
+      <th style="padding:9px 14px;text-align:right;font-size:10px;color:#94a3b8;font-weight:700">الطبيب</th>
+      <th style="padding:9px 14px;text-align:center;font-size:10px;color:#94a3b8;font-weight:700">الأسنان</th>
+      <th style="padding:9px 14px;text-align:center;font-size:10px;color:#1d4ed8;font-weight:700">FA</th>
+      <th style="padding:9px 14px;text-align:center;font-size:10px;color:#7c3aed;font-weight:700">CB</th>
+      <th style="padding:9px 14px;text-align:center;font-size:10px;color:#94a3b8;font-weight:700">الحالات</th>
+      <th style="padding:9px 14px;text-align:center;font-size:10px;color:#94a3b8;font-weight:700">النسبة</th>
+    </tr></thead>
+    <tbody>${summaryRows}</tbody>
+    <tfoot><tr style="background:#f0f9ff;border-top:1.5px solid #bfdbfe">
+      <td style="padding:10px 14px;font-size:12px;font-weight:900;color:#1d4ed8">الإجمالي</td>
+      <td style="padding:10px 14px;text-align:center;font-size:13px;font-weight:900;color:#2563eb">${total}</td>
+      <td style="padding:10px 14px;text-align:center;font-size:12px;font-weight:800;color:#1d4ed8">${faT}</td>
+      <td style="padding:10px 14px;text-align:center;font-size:12px;font-weight:800;color:#7c3aed">${cbT}</td>
+      <td style="padding:10px 14px;text-align:center;font-size:12px;font-weight:700;color:#475569">${list.length}</td>
+      <td style="padding:10px 14px;text-align:center;font-size:11px;color:#94a3b8;font-weight:700">متوسط ${avgTth}/حالة</td>
+    </tr></tfoot>
+  </table>
+</div>
+<div style="font-size:10px;font-weight:800;color:#94a3b8;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+  <div style="flex:1;height:1px;background:#e2e8f0"></div>تفاصيل الحالات<div style="flex:1;height:1px;background:#e2e8f0"></div>
+</div>
+${detailSecs}
+${signatureBlock}
+<div style="margin-top:28px;padding-top:12px;border-top:1.5px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center">
+  <div style="display:flex;align-items:center;gap:8px">
+    <div style="background:linear-gradient(135deg,#1e3a8a,#2563eb);border-radius:6px;padding:4px 8px"><span style="font-size:9px;font-weight:900;color:#fff;letter-spacing:3px">MAS</span></div>
+    <span style="font-size:9px;color:#94a3b8">Dental Lab — نظام إدارة المختبر</span>
+  </div>
+  <div style="font-size:9px;color:#cbd5e1">سري وخاص بالمختبر</div>
+</div>
+<div class="no-print" style="margin-top:24px;text-align:center">
+  <button onclick="window.print()" style="padding:12px 32px;background:#2563eb;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(37,99,235,0.35)">🖨️ طباعة / حفظ PDF</button>
+</div>
+
+<!-- Rename Doctor Overlay -->
+<div class="ov" id="renameOv">
+  <div class="sheet">
+    <div style="font-size:0.9rem;font-weight:800;color:var(--text);margin-bottom:4px">تعديل اسم الطبيب</div>
+    <div style="font-size:0.7rem;color:var(--text3);margin-bottom:2px">سيتم تحديث جميع الحالات المرتبطة باسمه تلقائياً</div>
+    <input class="rename-inp" id="renameInp" type="text" placeholder="الاسم الجديد">
+    <input type="hidden" id="renameOld">
+    <div style="display:flex;gap:8px;margin-top:4px">
+      <button onclick="closeOv('renameOv')"
+        style="flex:1;padding:11px;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r2);font-family:Cairo,sans-serif;font-size:0.82rem;font-weight:700;color:var(--text2);cursor:pointer">
+        إلغاء
+      </button>
+      <button onclick="confirmRename()"
+        style="flex:1;padding:11px;background:var(--blue);border:none;border-radius:var(--r2);font-family:Cairo,sans-serif;font-size:0.82rem;font-weight:800;color:#fff;cursor:pointer">
+        حفظ التغيير
+      </button>
+    </div>
+  </div>
+</div>
+</body></html>`;
+
+  const w = window.open('', '_blank', 'width=900,height=980');
+  if (!w) { toast(lang==='ar'?'فعّل النوافذ المنبثقة في المتصفح':'Allow popups for this site', 'err'); return; }
+  w.document.write(html);
+  w.document.close();
+  closePDF();
+  toast(t('pdfOk'), 'ok');
+};
+
+// ── Navigation & Overlays ─────────────
+window.showPg = function(n, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b  => b.classList.remove('on'));
+  document.getElementById('pg-' + n).classList.add('on');
+  if (btn) btn.classList.add('on');
+  if (n === 'stats') renderStats();
+};
+window.closeOv = function(id) {
+  const el = document.getElementById(id);
+  if (el) { el.classList.remove('on'); el.style.display = ''; }
+};
+document.querySelectorAll('.ov').forEach(el => el.addEventListener('click', e => {
+  if (e.target === el) el.classList.remove('on');
+}));
+
+// ✅ [8] زر عائم (FAB) للإضافة السريعة من أي صفحة
+(function createFAB() {
+  const fab = document.createElement('button');
+  fab.id = 'fabBtn';
+  fab.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`;
+  fab.style.cssText = `
+    position:fixed; bottom:80px; left:16px; z-index:400;
+    width:52px; height:52px; border-radius:50%;
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:#fff; border:none; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 4px 16px rgba(37,99,235,0.45);
+    transition:transform 0.15s, opacity 0.2s;
+  `;
+  fab.addEventListener('click', () => {
+    showPg('add', document.querySelector('.tab'));
+    document.querySelector('.tab').classList.add('on');
+    setTimeout(() => document.getElementById('fPat').focus(), 400);
+  });
+  fab.addEventListener('touchstart', () => { fab.style.transform = 'scale(0.93)'; }, { passive:true });
+  fab.addEventListener('touchend',   () => { fab.style.transform = ''; });
+  document.getElementById('app').appendChild(fab);
+
+  // أخفِ الـ FAB في صفحة الإضافة نفسها
+  const observer = new MutationObserver(() => {
+    const addActive    = document.getElementById('pg-add')?.classList.contains('on');
+    const accountActive = document.getElementById('pg-account')?.classList.contains('on');
+    const hide = addActive || accountActive;
+    fab.style.opacity = hide ? '0' : '1';
+    fab.style.pointerEvents = hide ? 'none' : 'auto';
+  });
+  observer.observe(document.getElementById('app'), { subtree: true, attributes: true, attributeFilter: ['class'] });
+})();
+
+// ── Toast ──────────────────────────────
+function toast(msg, type = 'ok') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className   = `toast ${type} show`;
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2300);
+}
+window.toast = toast;
+
+// ── Init ───────────────────────────────
+applyLang();
+
+// ── Doctor Manager ────────────────────
+window.toggleDocManager = function() {
+  const panel  = document.getElementById('docMgrPanel');
+  const toggle = document.getElementById('docMgrToggle');
+  const open   = panel.style.display === 'none';
+  panel.style.display = open ? 'block' : 'none';
+  toggle.textContent  = open ? 'إخفاء' : 'عرض';
+  if (open) renderDocManager();
+};
+
+window.renderDocManager = function() {
+  const dm = {};
+  Object.values(all).forEach(c => { if (!c.doc) return; dm[c.doc] = (dm[c.doc] || 0) + 1; });
+  const sorted = Object.entries(dm).sort((a,b) => b[1] - a[1]);
+  const el = document.getElementById('docMgrList');
+  if (!sorted.length) {
+    el.innerHTML = '<div style="text-align:center;color:var(--text3);font-size:0.75rem;padding:16px">لا يوجد أطباء</div>';
+    return;
+  }
+  // احفظ الأسماء في مصفوفة عالمية للوصول إليها من event listeners
+  window._docSorted = sorted;
+  el.innerHTML = sorted.map(([name, cnt], idx) =>
+    '<div class="doc-mgr-row">' +
+    '<div class="doc-mgr-av">' + name.charAt(0) + '</div>' +
+    '<div style="flex:1">' +
+    '<div class="doc-mgr-name">' + name + '</div>' +
+    '<div class="doc-mgr-cnt">' + cnt + ' حالة</div>' +
+    '</div>' +
+    '<button class="doc-mgr-btn doc-mgr-btn-edit" data-idx="' + idx + '">تعديل الاسم</button>' +
+    '</div>'
+  ).join('');
+
+  el.querySelectorAll('.doc-mgr-btn-edit').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const idx  = parseInt(this.getAttribute('data-idx'));
+      const name = window._docSorted[idx][0];
+      openRename(name);
+    });
+  });
+};
+
+window.openRename = function(oldName) {
+  const ov  = document.getElementById('renameOv');
+  const inp = document.getElementById('renameInp');
+  const old = document.getElementById('renameOld');
+  if (!ov || !inp || !old) { alert('خطأ: عنصر مفقود'); return; }
+  old.value = oldName;
+  inp.value = oldName;
+  ov.style.display = 'flex';
+  ov.classList.add('on');
+  setTimeout(() => { inp.focus(); inp.select(); }, 300);
+};
+
+window.confirmRename = async function() {
+  const oldName = document.getElementById('renameOld').value.trim();
+  const newName = document.getElementById('renameInp').value.trim();
+  if (!newName) { toast(lang==='ar'?'أدخل الاسم الجديد':'Enter new name','err'); return; }
+  if (newName === oldName) { closeOv('renameOv'); return; }
+
+  // ابحث عن كل الحالات المرتبطة بالاسم القديم وحدّثها
+  const updates = {};
+  Object.entries(all).forEach(([id, c]) => {
+    if (c.doc === oldName) updates[`users/${uid}/cases/${id}/doc`] = newName;
+  });
+
+  if (!Object.keys(updates).length) { closeOv('renameOv'); return; }
+
+  try {
+    const { ref: dbRef, update: dbUpdate } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js");
+    await dbUpdate(dbRef(db), updates);
+  } catch(e) {
+    // fallback: update one by one
+    for (const [id, c] of Object.entries(all)) {
+      if (c.doc === oldName) {
+        await update(ref(db, `users/${uid}/cases/${id}`), { doc: newName });
+      }
+    }
+  }
+
+  // حدّث lastDoc لو كان نفس الاسم
+  if (lastDoc === oldName) {
+    lastDoc = newName;
+    localStorage.setItem('lastDoc', newName);
+    document.getElementById('fDoc').value = newName;
+  }
+
+  closeOv('renameOv');
+  toast('تم تغيير الاسم بنجاح ✓', 'ok');
+  setTimeout(() => renderDocManager(), 500);
+};
+
+</script>
+</body>
+</html>
