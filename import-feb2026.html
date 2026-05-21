@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>استيراد فبراير 2026</title>
+<style>
+  body{font-family:Cairo,sans-serif;background:#f8fafc;padding:20px;color:#0f172a}
+  .card{background:#fff;border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+  h2{color:#2563eb;margin-bottom:4px}
+  .stat{display:inline-block;background:#eff6ff;color:#2563eb;padding:6px 14px;border-radius:20px;font-weight:800;margin:4px;font-size:0.85rem}
+  .fa{background:#f5f3ff;color:#7c3aed}
+  .btn{width:100%;padding:14px;background:#2563eb;color:#fff;border:none;border-radius:10px;font-family:Cairo,sans-serif;font-size:1rem;font-weight:800;cursor:pointer;margin-top:10px}
+  .btn:disabled{background:#94a3b8}
+  #log{background:#f1f5f9;border-radius:8px;padding:12px;font-size:0.75rem;max-height:220px;overflow-y:auto;margin-top:12px;white-space:pre-wrap;color:#475569}
+  .progress{height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden;margin:8px 0}
+  .progress-bar{height:100%;background:#2563eb;border-radius:4px;transition:width 0.3s;width:0%}
+</style>
+</head><body>
+<div class="card">
+  <h2>📥 استيراد سجل فبراير 2026</h2>
+  <p style="color:#64748b;font-size:0.85rem;margin:8px 0">سيتم إضافة الحالات لحسابك في Firebase</p>
+  <div>
+    <span class="stat">108 حالة</span>
+    <span class="stat">CB: 373 سن</span>
+    <span class="stat fa">FA: 142 سن</span>
+    <span class="stat">27 طبيب</span>
+    <span class="stat">شهر 2 / 2026</span>
+  </div>
+</div>
+<div class="card">
+  <div id="statusMsg" style="font-size:0.85rem;color:#64748b;margin-bottom:8px">اضغط استيراد للبدء</div>
+  <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+  <button class="btn" id="importBtn" onclick="startImport()" disabled>⬆️ استيراد إلى Firebase</button>
+  <div id="log"></div>
+</div>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,onAuthStateChanged,GoogleAuthProvider,signInWithPopup}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import{getDatabase,ref,push}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+const app=initializeApp({apiKey:"AIzaSyBjEd3UPOTkK143j1rZ6WQtnxhN5AS5nEU",authDomain:"dental-app-c95ce.firebaseapp.com",databaseURL:"https://dental-app-c95ce-default-rtdb.firebaseio.com",projectId:"dental-app-c95ce",storageBucket:"dental-app-c95ce.firebasestorage.app",messagingSenderId:"13518342618",appId:"dental-mas-v10"});
+const auth=getAuth(app),db=getDatabase(app);
+const cases=[
+{"doc":"محمد عجيل","pat":"مهند راضي","teeth":3,"month":2,"year":2026,"shade":"3M2","type":"CB","ts":1738368000000},
+{"doc":"محمد عجيل","pat":"هديه سالم","teeth":11,"month":2,"year":2026,"shade":"1M2","type":"CB","ts":1738368001000},
+{"doc":"محمد عجيل","pat":"زينب عبد غفار","teeth":10,"month":2,"year":2026,"shade":"1M1","type":"CB","ts":1738368002000},
+{"doc":"محمد عجيل","pat":"مهند","teeth":4,"month":2,"year":2026,"shade":"3M2","type":"CB","ts":1738368003000},
+{"doc":"محمد عجيل","pat":"ميعاد","teeth":2,"month":2,"year":2026,"shade":"3R2.5","type":"CB","ts":1738368004000},
+{"doc":"محمد عجيل","pat":"نور شاكر","teeth":1,"month":2,"year":2026,"shade":"2M2","type":"CB","ts":1738368005000},
+{"doc":"محمد عجيل","pat":"حكيمه","teeth":7,"month":2,"year":2026,"shade":"2R2.5","type":"CB","ts":1738368006000},
+{"doc":"محمد عجيل","pat":"عدي سالم","teeth":2,"month":2,"year":2026,"shade":"2R2.5","type":"CB","ts":1738368007000},
+{"doc":"محمد عجيل","pat":"سند","teeth":4,"month":2,"year":2026,"shade":"2R1.5","type":"CB","ts":1738368008000},
+{"doc":"محمد عجيل","pat":"اشواق","teeth":3,"month":2,"year":2026,"shade":"2R1.5","type":"CB","ts":1738368009000},
+{"doc":"محمد عجيل","pat":"ابتسام","teeth":3,"month":2,"year":2026,"shade":"4R2.5","type":"CB","ts":1738368010000},
+{"doc":"محمد عجيل","pat":"جنه","teeth":1,"month":2,"year":2026,"shade":"2M2","type":"CB","ts":1738368011000},
+{"doc":"محمد عجيل","pat":"وسن","teeth":7,"month":2,"year":2026,"shade":"2R2.5","type":"CB","ts":1738368012000},
+{"doc":"يوسف خضير","pat":"خلود فاضل","teeth":2,"month":2,"year":2026,"shade":"2M2","type":"CB","ts":1738368013000},
+{"doc":"علي الخفاجي","pat":"ايلاف خضير","teeth":10,"month":2,"year":2026,"shade":"3M3","type":"CB","ts":1738368014000},
+{"doc":"علي الخفاجي","pat":"زينب","teeth":1,"month":2,"year":2026,"shade":"2M2","type":"CB","ts":1738368015000},
+{"doc":"علي الخفاجي","pat":"وجدان","teeth":1,"month":2,"year":2026,"shade":"2R2.5","type":"CB","ts":1738368016000},
+{"doc":"علي الخفاجي","pat":"امير كفاح","teeth":8,"month":2,"year":2026,"shade":"0M3","type":"CB","ts":1738368017000},
+{"doc":"علي الخفاجي","pat":"مهدي محمد","teeth":4,"month":2,"year":2026,"shade":"3M2","type":"CB","ts":1738368018000},
+{"doc":"علي الخفاجي","pat":"شهاب احمد","teeth":13,"month":2,"year":2026,"shade":"1M1","type":"CB","ts":1738368019000},
+{"doc":"علي الخفاجي","pat":"ذكرى فليح","teeth":10,"month":2,"year":2026,"shade":"1M1","type":"CB","ts":1738368020000},
+{"doc":"علي الخفاجي","pat":"رقيه رحمن","teeth":2,"month":2,"year":2026,"shade":"2M2","type":"CB","ts":1738368021000},
+{"doc":"زهراء وسام","pat":"احمد نايف","teeth":9,"month":2,"year":2026,"shade":"2M2","type":"CB","ts":1738368022000},
+{"doc":"زهراء وسام","pat":"فاطمه احمد","teeth":2,"month":2,"year":2026,"shade":"2M2","type":"CB","ts":1738368023000},
+{"doc":"جلال عروس","pat":"احمد مسعد","teeth":1,"month":2,"year":2026,"shade":"4L2.5","type":"CB","ts":1738368024000},
+{"doc":"جلال عروس","pat":"حيدر","teeth":1,"month":2,"year":2026,"shade":"3L2.5","type":"CB","ts":1738368025000},
+{"doc":"جلال عروس","pat":"عبد الله مهدي","teeth":5,"month":2,"year":2026,"shade":"3R1.5","type":"CB","ts":1738368026000},
+{"doc":"جلال عروس","pat":"محمد","teeth":8,"month":2,"year":2026,"shade":"2M2","type":"CB","ts":1738368027000},
+{"doc":"جلال عروس","pat":"رقيه جاسم","teeth":1,"month":2,"year":2026,"shade":"2M2","type":"CB","ts":1738368028000},
+{"doc":"جلال عروس","pat":"قيصر محمد","teeth":14,"month":2,"year":2026,"shade":"0M3","type":"CB","ts":1738368029000},
+{"doc":"بشار","pat":"سفانه","teeth":1,"month":2,"year":2026,"shade":"2M2","type":"CB","ts":1738368030000},
+{"doc":"بشار","pat":"عزيزه","teeth":1,"month":2,"year":2026,"shade":"2M2","type":"CB","ts":1738368031000},
+{"doc":"بشار","pat":"سامي ثجيل","teeth":9,"month":2,"year":2026,"shade":"2L1.5","type":"CB","ts":1738368032000},
+{"doc":"بشار","pat":"امجد جبار","teeth":6,"month":2,"year":2026,"shade":"1M1","type":"CB","ts":1738368033000},
+{"doc":"بشار","pat":"سناء حاتم","teeth":11,"month":2,"year":2026,"shade":"2L1.5","type":"CB","ts":1738368034000},
+{"doc":"بشار","pat":"غنيه عطوان","teeth":3,"month":2,"year":2026,"shade":"2M1","type":"CB","ts":1738368035000},
+{"doc":"مصطفى محمد","pat":"امنه محمد","teeth":4,"month":2,"year":2026,"shade":"2M2","type":"CB","ts":1738368036000},
+{"doc":"مشرق","pat":"زهراء ضياء","teeth":1,"month":2,"year":2026,"shade":"2M2","type":"CB","ts":1738368037000},
+{"doc":"مشرق","pat":"مروه موسى","teeth":4,"month":2,"year":2026,"shade":"","type":"CB","ts":1738368038000},
+{"doc":"مشرق","pat":"ضمياء عبد الامير","teeth":1,"month":2,"year":2026,"shade":"A2","type":"CB","ts":1738368039000},
+{"doc":"مشرق","pat":"حوراء محمد","teeth":2,"month":2,"year":2026,"shade":"A2","type":"CB","ts":1738368040000},
+{"doc":"مشرق","pat":"مصطفى علي","teeth":1,"month":2,"year":2026,"shade":"","type":"CB","ts":1738368041000},
+{"doc":"تمام","pat":"مجهول","teeth":1,"month":2,"year":2026,"shade":"","type":"CB","ts":1738368042000},
+{"doc":"عيادة الاخلاص","pat":"محمد خير الله","teeth":4,"month":2,"year":2026,"shade":"2M3","type":"CB","ts":1738368043000},
+{"doc":"عيادة الاخلاص","pat":"ساميه","teeth":1,"month":2,"year":2026,"shade":"2M2","type":"CB","ts":1738368044000},
+{"doc":"عيادة الاخلاص","pat":"طه","teeth":4,"month":2,"year":2026,"shade":"2M2","type":"CB","ts":1738368045000},
+{"doc":"محمد علي فالح","pat":"حوراء","teeth":6,"month":2,"year":2026,"shade":"0M2","type":"CB","ts":1738368046000},
+{"doc":"حميد الموسوي","pat":"ساجده","teeth":3,"month":2,"year":2026,"shade":"1M2","type":"CB","ts":1738368047000},
+{"doc":"اسلام","pat":"مهند","teeth":2,"month":2,"year":2026,"shade":"A2","type":"CB","ts":1738368048000},
+{"doc":"اسلام","pat":"اسيل علي","teeth":2,"month":2,"year":2026,"shade":"A2","type":"CB","ts":1738368049000},
+{"doc":"اسلام","pat":"قادسيه","teeth":2,"month":2,"year":2026,"shade":"A2","type":"CB","ts":1738368050000},
+{"doc":"محمد اكرم","pat":"اسراء","teeth":3,"month":2,"year":2026,"shade":"1M2","type":"CB","ts":1738368051000},
+{"doc":"محمد اكرم","pat":"ازهر محمد","teeth":3,"month":2,"year":2026,"shade":"1M2","type":"CB","ts":1738368052000},
+{"doc":"محمد اكرم","pat":"زينب تركي","teeth":12,"month":2,"year":2026,"shade":"1M1","type":"CB","ts":1738368053000},
+{"doc":"محمد اكرم","pat":"مالك","teeth":23,"month":2,"year":2026,"shade":"1M2","type":"CB","ts":1738368054000},
+{"doc":"محمد اكرم","pat":"خضر","teeth":9,"month":2,"year":2026,"shade":"1M2","type":"CB","ts":1738368055000},
+{"doc":"محمد صلاح","pat":"حسنه","teeth":3,"month":2,"year":2026,"shade":"A2","type":"CB","ts":1738368056000},
+{"doc":"محمد صلاح","pat":"ابتسال","teeth":8,"month":2,"year":2026,"shade":"2M2","type":"CB","ts":1738368057000},
+{"doc":"احمد شاكر","pat":"وفاء عوده","teeth":3,"month":2,"year":2026,"shade":"","type":"CB","ts":1738368058000},
+{"doc":"نارام","pat":"رعد شيال","teeth":24,"month":2,"year":2026,"shade":"1M2","type":"CB","ts":1738368059000},
+{"doc":"كوثم محمد علاء","pat":"علي تركي","teeth":6,"month":2,"year":2026,"shade":"2M2","type":"CB","ts":1738368060000},
+{"doc":"رضوان","pat":"عباس","teeth":8,"month":2,"year":2026,"shade":"3L1.5","type":"CB","ts":1738368061000},
+{"doc":"احمد مكي","pat":"هدى جاسم","teeth":1,"month":2,"year":2026,"shade":"2M2","type":"CB","ts":1738368062000},
+{"doc":"عيادة لكش","pat":"محمد صبار","teeth":3,"month":2,"year":2026,"shade":"A2","type":"CB","ts":1738368063000},
+{"doc":"محمد كريم","pat":"م","teeth":14,"month":2,"year":2026,"shade":"","type":"CB","ts":1738368064000},
+{"doc":"محمد كريم","pat":"نورس","teeth":20,"month":2,"year":2026,"shade":"","type":"CB","ts":1738368065000},
+{"doc":"محمد كريم","pat":"رشا","teeth":14,"month":2,"year":2026,"shade":"","type":"CB","ts":1738368066000},
+{"doc":"محمد عجيل","pat":"","teeth":4,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368067000},
+{"doc":"محمد عجيل","pat":"","teeth":6,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368068000},
+{"doc":"محمد عجيل","pat":"","teeth":11,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368069000},
+{"doc":"محمد عجيل","pat":"","teeth":8,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368070000},
+{"doc":"محمد عجيل","pat":"","teeth":9,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368071000},
+{"doc":"محمد عجيل","pat":"","teeth":8,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368072000},
+{"doc":"محمد عجيل","pat":"","teeth":2,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368073000},
+{"doc":"منذر","pat":"","teeth":2,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368074000},
+{"doc":"منذر","pat":"","teeth":3,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368075000},
+{"doc":"منذر","pat":"","teeth":1,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368076000},
+{"doc":"علي الخفاجي","pat":"","teeth":7,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368077000},
+{"doc":"علي الخفاجي","pat":"","teeth":1,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368078000},
+{"doc":"مصطفى محمد","pat":"بانو","teeth":2,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368079000},
+{"doc":"محمد جيكوب","pat":"رشى مكي","teeth":10,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368080000},
+{"doc":"بشار","pat":"","teeth":14,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368081000},
+{"doc":"محمد اكرم","pat":"","teeth":1,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368082000},
+{"doc":"محمد اكرم","pat":"","teeth":1,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368083000},
+{"doc":"محمد اكرم","pat":"","teeth":2,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368084000},
+{"doc":"محمد اكرم","pat":"","teeth":2,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368085000},
+{"doc":"محمد اكرم","pat":"","teeth":12,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368086000},
+{"doc":"احمد مكي","pat":"","teeth":1,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368087000},
+{"doc":"احمد مكي","pat":"","teeth":5,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368088000},
+{"doc":"ايثر","pat":"","teeth":1,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368089000},
+{"doc":"ايثر","pat":"","teeth":1,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368090000},
+{"doc":"ايثر","pat":"","teeth":1,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368091000},
+{"doc":"كوثم محمد علاء","pat":"","teeth":1,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368092000},
+{"doc":"محمد صلاح","pat":"","teeth":1,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368093000},
+{"doc":"يوسف خضير","pat":"","teeth":4,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368094000},
+{"doc":"يوسف خضير","pat":"","teeth":3,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368095000},
+{"doc":"يوسف خضير","pat":"","teeth":1,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368096000},
+{"doc":"يوسف خضير","pat":"","teeth":6,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368097000},
+{"doc":"مشرق","pat":"","teeth":1,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368098000},
+{"doc":"محمد كريم","pat":"","teeth":2,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368099000},
+{"doc":"جلال عروس","pat":"","teeth":1,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368100000},
+{"doc":"عيادة الاخلاص","pat":"","teeth":1,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368101000},
+{"doc":"عيادة الاخلاص","pat":"","teeth":1,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368102000},
+{"doc":"عيادة الاخلاص","pat":"","teeth":1,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368103000},
+{"doc":"عيادة الاخلاص","pat":"","teeth":1,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368104000},
+{"doc":"لوكا","pat":"","teeth":1,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368105000},
+{"doc":"نارام","pat":"","teeth":1,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368106000},
+{"doc":"احمد محمد","pat":"","teeth":1,"month":2,"year":2026,"shade":"","type":"FA","ts":1738368107000}
+];
+let uid=null;
+onAuthStateChanged(auth,u=>{
+  if(u){uid=u.uid;document.getElementById('statusMsg').textContent='مرحباً '+u.displayName+' — جاهز';document.getElementById('importBtn').disabled=false;}
+  else{document.getElementById('statusMsg').textContent='يجب تسجيل الدخول';document.getElementById('importBtn').textContent='🔑 تسجيل الدخول';document.getElementById('importBtn').onclick=async()=>{await signInWithPopup(auth,new GoogleAuthProvider());};}
+});
+window.startImport=async function(){
+  if(!uid)return;
+  const btn=document.getElementById('importBtn'),log=document.getElementById('log'),bar=document.getElementById('progressBar'),msg=document.getElementById('statusMsg');
+  btn.disabled=true;btn.textContent='جارٍ الاستيراد...';log.textContent='';
+  let done=0;
+  const cRef=ref(db,'users/'+uid+'/cases');
+  for(const c of cases){
+    try{
+      await push(cRef,c);done++;
+      bar.style.width=Math.round(done/cases.length*100)+'%';
+      msg.textContent='تم '+done+' من '+cases.length;
+      log.textContent+=(c.type==='FA'?'★ ':'✓ ')+c.doc+' — '+(c.pat||'—')+' ('+c.teeth+' سن '+c.type+')\n';
+      log.scrollTop=log.scrollHeight;
+    }catch(e){log.textContent+='✗ خطأ\n';}
+  }
+  msg.textContent='✅ اكتمل! '+done+' حالة';
+  btn.textContent='✅ تم';
+  bar.style.background='#10b981';
+};
+</script>
+</body></html>
