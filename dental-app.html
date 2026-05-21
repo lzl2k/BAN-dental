@@ -1357,7 +1357,7 @@ function showConfirmLogout() {
           style="flex:1;padding:11px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:8px;font-family:Cairo,sans-serif;font-size:0.82rem;font-weight:700;color:#64748b;cursor:pointer">
           ${t('logoutNo')}
         </button>
-        <button onclick="signOut(auth);document.getElementById('logoutConfirmOv').classList.remove('on')"
+        <button onclick="window._doSignOut()"
           style="flex:1;padding:11px;background:#ef4444;border:none;border-radius:8px;font-family:Cairo,sans-serif;font-size:0.82rem;font-weight:800;color:#fff;cursor:pointer">
           ${t('logoutYes')}
         </button>
@@ -1366,6 +1366,12 @@ function showConfirmLogout() {
   div.addEventListener('click', e => { if (e.target === div) div.classList.remove('on'); });
   document.body.appendChild(div);
 }
+
+window._doSignOut = function() {
+  const ov = document.getElementById('logoutConfirmOv');
+  if (ov) ov.remove();
+  signOut(auth);
+};
 
 onAuthStateChanged(auth, u => {
   if (u) {
