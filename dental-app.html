@@ -1304,9 +1304,8 @@ window.addNewDoc = function() { const q = document.getElementById('docSearch').v
 
 // ── Year Selects ──────────────────────
 function fillYr(id, val) {
-  const y = new Date().getFullYear();
   let o = '';
-  for (let i = y + 1; i >= y - 3; i--) o += `<option value="${i}">${i}</option>`;
+  for (let i = 2025; i <= 2035; i++) o += `<option value="${i}">${i}</option>`;
   const s = document.getElementById(id);
   s.innerHTML = o;
   if (val) s.value = val;
@@ -1395,9 +1394,8 @@ onAuthStateChanged(auth, u => {
     cRef = ref(db, `users/${uid}/cases`);
     onValue(cRef, snap => { all = snap.val() || {}; refresh(); });
 
-    const y  = now.getFullYear();
     let o = `<option value="">${t('allYrs')}</option>`;
-    for (let i = y + 1; i >= y - 2; i--) o += `<option value="${i}">${i}</option>`;
+    for (let i = 2025; i <= 2035; i++) o += `<option value="${i}">${i}</option>`;
     ['flYr','stYr'].forEach(id => document.getElementById(id).innerHTML = o);
 
     applyLang();
