@@ -1333,14 +1333,11 @@ function fillYr(id, val) {
 }
 fillYr('fYr');
 fillYr('eYr');
-fillYr('pdfYr');
 
 // ✅ [1,3] ملء الفورم بآخر قيم مستخدمة بدل الحالية دائماً
-document.getElementById('fMon').value   = lastMonth;
-document.getElementById('fYr').value    = lastYear;
-document.getElementById('fDoc').value   = lastDoc;
-document.getElementById('pdfMon').value = now.getMonth() + 1;
-document.getElementById('pdfYr').value  = now.getFullYear();
+document.getElementById('fMon').value = lastMonth;
+document.getElementById('fYr').value  = lastYear;
+document.getElementById('fDoc').value = lastDoc;
 
 // ✅ [2] اقتراح الطبيب الأخير: لون خاص إذا محفوظ
 if (lastDoc) {
