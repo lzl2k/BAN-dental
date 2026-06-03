@@ -301,8 +301,8 @@ mark.hl {
 .res-cnt { font-size:0.7rem; font-weight:700; color:var(--text2); }
 .res-sum { font-size:0.7rem; font-weight:800; color:var(--blue); }
 .type-pills { display:flex; gap:5px; margin-bottom:8px; }
-.pill-fa  { font-size:0.62rem; padding:3px 9px; border-radius:20px; font-weight:700; background:var(--sky); color:var(--blue); border:1px solid var(--sky2); }
-.pill-cb  { font-size:0.62rem; padding:3px 9px; border-radius:20px; font-weight:700; background:#f5f3ff; color:var(--violet); border:1px solid #ddd6fe; }
+.pill-fa { font-size:0.62rem; padding:3px 9px; border-radius:20px; font-weight:700; background:var(--sky); color:var(--blue); border:1px solid var(--sky2); }
+.pill-cb { font-size:0.62rem; padding:3px 9px; border-radius:20px; font-weight:700; background:#f5f3ff; color:var(--violet); border:1px solid #ddd6fe; }
 .pill-pfm { font-size:0.62rem; padding:3px 9px; border-radius:20px; font-weight:700; background:#f0fdfa; color:#0f766e; border:1px solid #99f6e4; }
 
 /* ══ CASE CARD ══ */
@@ -325,9 +325,9 @@ mark.hl {
 .tag { font-size:0.6rem; padding:2px 8px; border-radius:20px; font-weight:700; }
 .tag-d { background:#f1f5f9; color:#475569; }
 .tag-s { background:#fef9c3; color:#854d0e; }
-.tag-fa  { background:var(--sky);  color:var(--blue);   }
-.tag-cb  { background:#f5f3ff;     color:var(--violet); }
-.tag-pfm { background:#f0fdfa;     color:#0f766e;       }
+.tag-fa { background:var(--sky); color:var(--blue); }
+.tag-cb { background:#f5f3ff; color:var(--violet); }
+.tag-pfm { background:#f0fdfa; color:#0f766e; }
 .cc-acts { display:flex; border-top:1px solid var(--border); }
 .cc-act {
   flex:1; padding:9px; border:none; background:none;
@@ -392,29 +392,14 @@ mark.hl {
 .chart-pie-wrap {
   display: flex; align-items: center; gap: 16px; padding: 8px 0;
 }
-.pie-legend { flex: 1; display: flex; flex-direction: column; gap: 9px; }
-.pie-leg-item { display: flex; align-items: center; gap: 8px; }
-.pie-dot { width: 11px; height: 11px; border-radius: 4px; flex-shrink: 0; }
-.pie-lbl { font-size: 0.72rem; color: var(--text2); flex: 1; font-weight: 600; }
-.pie-val { font-size: 0.82rem; font-weight: 900; color: var(--text); }
-.pie-pct { font-size: 0.65rem; color: var(--text3); font-weight: 600; margin-top: 1px; }
+.pie-legend { flex: 1; display: flex; flex-direction: column; gap: 7px; }
+.pie-leg-item { display: flex; align-items: center; gap: 7px; }
+.pie-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.pie-lbl { font-size: 0.7rem; color: var(--text2); flex: 1; font-weight: 600; }
+.pie-val { font-size: 0.78rem; font-weight: 800; color: var(--text); }
 
-.chart-bar-wrap { width: 100%; overflow: hidden; margin-top: 10px; }
+.chart-bar-wrap { width: 100%; overflow: hidden; margin-top: 8px; }
 .bar-svg { display: block; width: 100%; overflow: visible; }
-
-/* Line chart */
-.line-chart-wrap { width: 100%; overflow: hidden; margin-top: 6px; }
-.line-svg { display: block; width: 100%; }
-
-/* Shade donut */
-.shade-chart-wrap { display: flex; align-items: flex-start; gap: 12px; margin-top: 6px; }
-.shade-donut-svg { flex-shrink: 0; }
-.shade-bars { flex: 1; display: flex; flex-direction: column; gap: 6px; }
-.shade-bar-row { display: flex; align-items: center; gap: 7px; }
-.shade-bar-lbl { font-size: 0.65rem; font-weight: 700; color: var(--text2); min-width: 44px; }
-.shade-bar-track { flex: 1; height: 7px; background: var(--border); border-radius: 4px; overflow: hidden; }
-.shade-bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
-.shade-bar-cnt { font-size: 0.65rem; font-weight: 800; color: var(--text2); min-width: 18px; text-align: left; }
 
 /* ══ ACCOUNT ══ */
 .acc-hero {
@@ -878,49 +863,43 @@ mark.hl {
         </svg>
         جميع البيانات
       </div>
-      <!-- مقارنة الشهر -->
+      <!-- [10] مقارنة الشهر -->
       <div class="card" id="monthCompare" style="display:none"></div>
-      <!-- أبرز الأطباء والألوان -->
+      <!-- [11] أبرز الأطباء والألوان -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
         <div class="card" id="topDocCard" style="display:none;padding:12px"></div>
         <div class="card" id="topShadeCard" style="display:none;padding:12px"></div>
       </div>
       <div class="sg"  id="stGrid"></div>
+      <div class="tsr" id="typeStats"></div>
 
-      <!-- ── Pie Chart: FA vs CB ── -->
+      <!-- Pie Chart: FA vs CB -->
       <div class="card">
         <div class="sec-title" id="stTypePieLbl">توزيع أنواع الحالات</div>
         <div class="chart-pie-wrap">
-          <svg id="pieChart" viewBox="0 0 160 160" width="150" height="150"></svg>
+          <svg id="pieChart" viewBox="0 0 160 160" width="140" height="140"></svg>
           <div class="pie-legend" id="pieLegend"></div>
         </div>
       </div>
 
-      <!-- ── Bar Chart: Doctors ── -->
-      <div class="card">
-        <div class="sec-title" id="stDocLbl">الأطباء</div>
+      <!-- Bar Chart: Doctors -->
+      <div class="card"><div class="sec-title" id="stDocLbl">الأطباء</div>
         <div id="stDoc"></div>
-        <div class="chart-bar-wrap" id="docBarWrap" style="display:none">
+        <div class="chart-bar-wrap" id="docBarWrap">
           <svg id="docBarChart" class="bar-svg"></svg>
         </div>
       </div>
 
-      <!-- ── Line Chart: Monthly ── -->
+      <!-- Monthly Line/Bar Graph -->
       <div class="card" id="mCard">
         <div class="sec-title" id="stMonLbl">الإنتاج الشهري</div>
-        <div class="line-chart-wrap">
-          <svg id="monLineChart" class="line-svg" style="height:160px"></svg>
+        <div class="chart-bar-wrap">
+          <svg id="monBarChart" class="bar-svg"></svg>
         </div>
       </div>
 
-      <!-- ── Shade Distribution with Donut ── -->
-      <div class="card">
-        <div class="sec-title" id="stShadeLbl">ألوان الأسنان</div>
-        <div class="shade-chart-wrap">
-          <svg id="shadeDonut" viewBox="0 0 100 100" width="90" height="90" class="shade-donut-svg"></svg>
-          <div class="shade-bars" id="stShade"></div>
-        </div>
-      </div>
+      <!-- Shade Distribution -->
+      <div class="card"><div class="sec-title" id="stShadeLbl">ألوان الأسنان</div><div class="shdist" id="stShade"></div></div>
     </div>
 
     <!-- ══ ACCOUNT PAGE ══ -->
@@ -1018,7 +997,7 @@ mark.hl {
 <div id="pOv">
   <div class="p-card">
     <div class="p-ttl" id="pdfTitle">تصدير تقرير PDF</div>
-    <div id="pdfFilterInfo" style="font-size:0.72rem;color:#64748b;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:9px 11px;margin-bottom:12px;line-height:1.6"></div>
+    <div id="pdfFilterInfo" style="font-size:0.72rem;color:#64748b;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:9px 11px;margin-bottom:12px;line-height:1.8">كل الحالات</div>
     <button class="p-gen" id="pdfGenBtn" onclick="genPDF()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       توليد التقرير
@@ -1334,10 +1313,9 @@ function fillYr(id, val) {
 fillYr('fYr');
 fillYr('eYr');
 
-// ✅ [1,3] ملء الفورم بآخر قيم مستخدمة بدل الحالية دائماً
 document.getElementById('fMon').value = lastMonth;
 document.getElementById('fYr').value  = lastYear;
-document.getElementById('fDoc').value = lastDoc;
+if (lastDoc) document.getElementById('fDoc').value = lastDoc;
 
 // ✅ [2] اقتراح الطبيب الأخير: لون خاص إذا محفوظ
 if (lastDoc) {
@@ -1508,9 +1486,9 @@ window.renderList = function() {
   // ✅ [6] الترتيب: الأحدث أولاً
   list.sort((a, b) => (b.ts || 0) - (a.ts || 0));
 
-  const sum  = list.reduce((s, c) => s + (+c.teeth || 0), 0);
-  const faT  = list.filter(c => (c.type || 'CB') === 'FA').reduce((s, c) => s + (+c.teeth || 0), 0);
-  const cbT  = list.filter(c => (c.type || 'CB') === 'CB').reduce((s, c) => s + (+c.teeth || 0), 0);
+  const sum = list.reduce((s, c) => s + (+c.teeth || 0), 0);
+  const faT = list.filter(c => (c.type || 'CB') === 'FA').reduce((s, c) => s + (+c.teeth || 0), 0);
+  const cbT = list.filter(c => (c.type || 'CB') === 'CB').reduce((s, c) => s + (+c.teeth || 0), 0);
   const pfmT = list.filter(c => c.type === 'PFM').reduce((s, c) => s + (+c.teeth || 0), 0);
 
   document.getElementById('lCnt').textContent = `${list.length} ${t('cases')}`;
@@ -1590,15 +1568,17 @@ function initSwipe() {
       const dx = curX - startX;
       if (Math.abs(dx) > 8) {
         swiping = true;
+        // RTL: swipe right = حذف، swipe left = تعديل
         const isRTL = lang === 'ar';
         const clamp = Math.max(-120, Math.min(120, dx));
         card.style.transform = `translateX(${clamp}px)`;
         card.style.transition = 'none';
 
+        // لون خلفي حسب الاتجاه
         if ((isRTL && dx > 50) || (!isRTL && dx < -50)) {
-          card.style.background = '#fef2f2';
+          card.style.background = '#fef2f2'; // حذف
         } else if ((isRTL && dx < -50) || (!isRTL && dx > 50)) {
-          card.style.background = '#eff6ff';
+          card.style.background = '#eff6ff'; // تعديل
         } else {
           card.style.background = '';
         }
@@ -1624,209 +1604,72 @@ function initSwipe() {
 }
 
 // ── SVG Chart Helpers ─────────────────
-
-// ① Donut / Pie Chart
 function drawPieChart(svgId, legendId, slices) {
   const svg = document.getElementById(svgId);
   const leg = document.getElementById(legendId);
   if (!svg || !leg) return;
   const total = slices.reduce((s, x) => s + x.value, 0);
   if (!total) {
-    svg.innerHTML = `<text x="80" y="88" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="Cairo,sans-serif">لا بيانات</text>`;
-    leg.innerHTML = ''; return;
+    svg.innerHTML = `<text x="80" y="85" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="Cairo,sans-serif">لا بيانات</text>`;
+    leg.innerHTML = '';
+    return;
   }
-  const cx = 80, cy = 80, R = 68, ir = 46;
-  let angle = -Math.PI / 2, paths = '';
-  // defs for gradients
-  let defs = '<defs>';
-  slices.forEach((sl, i) => {
+  const cx = 80, cy = 80, r = 62, ir = 36;
+  let startAngle = -Math.PI / 2, paths = '';
+  slices.forEach(sl => {
     if (!sl.value) return;
-    defs += `<linearGradient id="pg${i}" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="${sl.color}" stop-opacity="1"/>
-      <stop offset="100%" stop-color="${sl.color2 || sl.color}" stop-opacity="0.75"/>
-    </linearGradient>`;
-  });
-  defs += '</defs>';
-  slices.forEach((sl, i) => {
-    if (!sl.value) return;
-    const a = (sl.value / total) * 2 * Math.PI;
-    const x1 = cx + R * Math.cos(angle),    y1 = cy + R * Math.sin(angle);
-    const x2 = cx + R * Math.cos(angle + a), y2 = cy + R * Math.sin(angle + a);
-    const xi1 = cx + ir * Math.cos(angle),    yi1 = cy + ir * Math.sin(angle);
-    const xi2 = cx + ir * Math.cos(angle + a), yi2 = cy + ir * Math.sin(angle + a);
-    const lg = a > Math.PI ? 1 : 0;
+    const angle = (sl.value / total) * 2 * Math.PI;
+    const x1 = cx + r * Math.cos(startAngle), y1 = cy + r * Math.sin(startAngle);
+    const x2 = cx + r * Math.cos(startAngle + angle), y2 = cy + r * Math.sin(startAngle + angle);
+    const xi1 = cx + ir * Math.cos(startAngle), yi1 = cy + ir * Math.sin(startAngle);
+    const xi2 = cx + ir * Math.cos(startAngle + angle), yi2 = cy + ir * Math.sin(startAngle + angle);
+    const large = angle > Math.PI ? 1 : 0;
     const pct = Math.round(sl.value / total * 100);
-    const mid = angle + a / 2;
-    const lx = cx + (R * 0.72) * Math.cos(mid), ly = cy + (R * 0.72) * Math.sin(mid);
-    paths += `<path d="M${xi1},${yi1} L${x1},${y1} A${R},${R} 0 ${lg},1 ${x2},${y2} L${xi2},${yi2} A${ir},${ir} 0 ${lg},0 ${xi1},${yi1} Z"
-      fill="url(#pg${i})" stroke="#fff" stroke-width="2.5" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.12))"/>`;
-    if (pct >= 10) paths += `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" fill="#fff" font-size="12" font-weight="800" font-family="Cairo,sans-serif">${pct}%</text>`;
-    angle += a;
+    const mid = startAngle + angle / 2;
+    const lx = cx + (r * 0.65) * Math.cos(mid), ly = cy + (r * 0.65) * Math.sin(mid);
+    paths += `<path d="M${xi1},${yi1} L${x1},${y1} A${r},${r} 0 ${large},1 ${x2},${y2} L${xi2},${yi2} A${ir},${ir} 0 ${large},0 ${xi1},${yi1} Z" fill="${sl.color}" stroke="#fff" stroke-width="2"/>`;
+    if (pct >= 8) paths += `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" fill="#fff" font-size="11" font-weight="700" font-family="Cairo,sans-serif">${pct}%</text>`;
+    startAngle += angle;
   });
-  // center label
-  paths += `<text x="${cx}" y="${cy - 7}" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="900" font-family="Cairo,sans-serif">${total}</text>`;
-  paths += `<text x="${cx}" y="${cy + 10}" text-anchor="middle" fill="#64748b" font-size="9" font-family="Cairo,sans-serif">إجمالي</text>`;
-  svg.innerHTML = defs + paths;
-
-  leg.innerHTML = slices.filter(s => s.value).map(s => {
-    const pct = Math.round(s.value / total * 100);
-    return `<div class="pie-leg-item">
-      <span class="pie-dot" style="background:${s.color}"></span>
-      <div style="flex:1">
-        <div class="pie-lbl">${s.label}</div>
-        <div class="pie-pct">${pct}%</div>
-      </div>
-      <span class="pie-val">${s.value}</span>
-    </div>`;
-  }).join('');
+  paths += `<text x="${cx}" y="${cy-6}" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="700" font-family="Cairo,sans-serif">${total}</text>`;
+  paths += `<text x="${cx}" y="${cy+10}" text-anchor="middle" fill="#64748b" font-size="8" font-family="Cairo,sans-serif">إجمالي</text>`;
+  svg.innerHTML = paths;
+  leg.innerHTML = slices.filter(s => s.value).map(s =>
+    `<div class="pie-leg-item"><span class="pie-dot" style="background:${s.color}"></span><span class="pie-lbl">${s.label}</span><span class="pie-val">${s.value}</span></div>`
+  ).join('');
 }
 
-// ② Gradient Bar Chart
 function drawBarChart(svgId, bars, opts = {}) {
   const svg = document.getElementById(svgId);
   if (!svg) return;
-  const { height = 140, labelColor = '#64748b' } = opts;
-  const W = svg.parentElement?.clientWidth || 300;
+  const { height = 130, barColor = '#2563eb', labelColor = '#64748b' } = opts;
+  const W = svg.parentElement?.clientWidth || 320;
   svg.setAttribute('viewBox', `0 0 ${W} ${height}`);
   svg.setAttribute('width', W);
   svg.setAttribute('height', height);
-  if (!bars.length) { svg.innerHTML = ''; return; }
   const mx = Math.max(...bars.map(b => b.value), 1);
-  const pad = 14, bpad = 5;
+  const pad = 10, bpad = 6;
   const n = bars.length;
-  const bw = Math.max(10, (W - pad * 2 - bpad * (n - 1)) / n);
-  const chartH = height - 36;
-  // defs
-  let defs = '<defs>';
-  bars.forEach((b, i) => {
-    const c1 = b.color || '#2563eb';
-    const c2 = b.color2 || (b.color ? b.color + 'aa' : '#1d4ed8');
-    defs += `<linearGradient id="bg${svgId}${i}" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="${c1}"/>
-      <stop offset="100%" stop-color="${c2}" stop-opacity="0.6"/>
-    </linearGradient>`;
-  });
-  defs += '</defs>';
-  let out = defs;
-  // grid lines
+  const bw = Math.max(8, (W - pad * 2 - bpad * (n - 1)) / n);
+  const chartH = height - 34;
+  let out = '';
   [0.25, 0.5, 0.75, 1].forEach(f => {
     const y = pad + chartH * (1 - f);
-    const val = Math.round(mx * f);
-    out += `<line x1="${pad}" y1="${y}" x2="${W - pad}" y2="${y}" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="3,3"/>`;
-    out += `<text x="${pad - 4}" y="${y + 4}" text-anchor="end" fill="#94a3b8" font-size="8" font-family="Cairo,sans-serif">${val}</text>`;
+    out += `<line x1="${pad}" y1="${y}" x2="${W - pad}" y2="${y}" stroke="#e2e8f0" stroke-width="1"/>`;
+    out += `<text x="${pad - 3}" y="${y + 3}" text-anchor="end" fill="#94a3b8" font-size="7" font-family="Cairo,sans-serif">${Math.round(mx * f)}</text>`;
   });
-  // bars
   bars.forEach((b, i) => {
     const x  = pad + i * (bw + bpad);
-    const bh = b.value ? Math.max(4, (b.value / mx) * chartH) : 0;
+    const bh = Math.max(2, (b.value / mx) * chartH);
     const by = pad + chartH - bh;
-    const rx = Math.min(5, bw / 2);
-    if (b.value) {
-      out += `<rect x="${x}" y="${by}" width="${bw}" height="${bh}" rx="${rx}" fill="url(#bg${svgId}${i})"/>`;
-      out += `<text x="${x + bw/2}" y="${by - 4}" text-anchor="middle" fill="${b.color || '#2563eb'}" font-size="8.5" font-weight="800" font-family="Cairo,sans-serif">${b.value}</text>`;
-    } else {
-      out += `<rect x="${x}" y="${pad + chartH - 3}" width="${bw}" height="3" rx="1.5" fill="#e2e8f0"/>`;
-    }
+    const col = b.color || barColor;
+    const rx = Math.min(4, bw / 2);
+    out += `<rect x="${x}" y="${by}" width="${bw}" height="${bh}" rx="${rx}" fill="${col}" opacity="0.9"/>`;
+    if (b.value > 0) out += `<text x="${x + bw/2}" y="${by - 3}" text-anchor="middle" fill="${col}" font-size="8" font-weight="700" font-family="Cairo,sans-serif">${b.value}</text>`;
     const lbl = String(b.label).length > 5 ? String(b.label).slice(0, 5) : b.label;
-    out += `<text x="${x + bw/2}" y="${height - 5}" text-anchor="middle" fill="${labelColor}" font-size="8.5" font-family="Cairo,sans-serif">${lbl}</text>`;
+    out += `<text x="${x + bw/2}" y="${height - 4}" text-anchor="middle" fill="${labelColor}" font-size="8" font-family="Cairo,sans-serif">${lbl}</text>`;
   });
   svg.innerHTML = out;
-}
-
-// ③ Line Chart (Monthly)
-function drawLineChart(svgId, points, opts = {}) {
-  const svg = document.getElementById(svgId);
-  if (!svg) return;
-  const { height = 160, lineColor = '#10b981', areaColor = '#10b981', labelColor = '#64748b', labels = [] } = opts;
-  const W = svg.parentElement?.clientWidth || 300;
-  svg.setAttribute('viewBox', `0 0 ${W} ${height}`);
-  svg.setAttribute('width', W);
-  svg.setAttribute('height', height);
-  if (!points.length) { svg.innerHTML = ''; return; }
-  const mx = Math.max(...points, 1);
-  const pad = { t: 16, r: 10, b: 30, l: 24 };
-  const cW = W - pad.l - pad.r;
-  const cH = height - pad.t - pad.b;
-  const n  = points.length;
-  const xs = i => pad.l + (i / (n - 1)) * cW;
-  const ys = v => pad.t + cH - (v / mx) * cH;
-
-  let out = `<defs>
-    <linearGradient id="lineArea${svgId}" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="${areaColor}" stop-opacity="0.25"/>
-      <stop offset="100%" stop-color="${areaColor}" stop-opacity="0.02"/>
-    </linearGradient>
-  </defs>`;
-
-  // grid
-  [0, 0.25, 0.5, 0.75, 1].forEach(f => {
-    const y = pad.t + cH * (1 - f);
-    out += `<line x1="${pad.l}" y1="${y}" x2="${W - pad.r}" y2="${y}" stroke="#e2e8f0" stroke-width="1" ${f === 0 ? '' : 'stroke-dasharray="3,3"'}/>`;
-    if (f > 0) out += `<text x="${pad.l - 4}" y="${y + 4}" text-anchor="end" fill="#94a3b8" font-size="8" font-family="Cairo,sans-serif">${Math.round(mx * f)}</text>`;
-  });
-
-  // area
-  const areaPath = `M${xs(0)},${ys(points[0])} ` +
-    points.slice(1).map((v, i) => {
-      const x0 = xs(i), y0 = ys(points[i]);
-      const x1 = xs(i + 1), y1 = ys(v);
-      const cpx = (x0 + x1) / 2;
-      return `C${cpx},${y0} ${cpx},${y1} ${x1},${y1}`;
-    }).join(' ') +
-    ` L${xs(n - 1)},${pad.t + cH} L${xs(0)},${pad.t + cH} Z`;
-  out += `<path d="${areaPath}" fill="url(#lineArea${svgId})"/>`;
-
-  // line
-  const linePath = `M${xs(0)},${ys(points[0])} ` +
-    points.slice(1).map((v, i) => {
-      const x0 = xs(i), y0 = ys(points[i]);
-      const x1 = xs(i + 1), y1 = ys(v);
-      const cpx = (x0 + x1) / 2;
-      return `C${cpx},${y0} ${cpx},${y1} ${x1},${y1}`;
-    }).join(' ');
-  out += `<path d="${linePath}" fill="none" stroke="${lineColor}" stroke-width="2.5" stroke-linecap="round" style="filter:drop-shadow(0 2px 6px ${lineColor}55)"/>`;
-
-  // dots + labels + values
-  points.forEach((v, i) => {
-    const x = xs(i), y = ys(v);
-    if (v > 0) {
-      out += `<circle cx="${x}" cy="${y}" r="4" fill="${lineColor}" stroke="#fff" stroke-width="2"/>`;
-      out += `<text x="${x}" y="${y - 9}" text-anchor="middle" fill="${lineColor}" font-size="8.5" font-weight="800" font-family="Cairo,sans-serif">${v}</text>`;
-    } else {
-      out += `<circle cx="${x}" cy="${y}" r="2.5" fill="#e2e8f0"/>`;
-    }
-    if (labels[i] !== undefined) {
-      out += `<text x="${x}" y="${height - 6}" text-anchor="middle" fill="${labelColor}" font-size="8.5" font-family="Cairo,sans-serif">${labels[i]}</text>`;
-    }
-  });
-
-  svg.innerHTML = out;
-}
-
-// ④ Shade Donut
-function drawShadeDonut(svgId, slices) {
-  const svg = document.getElementById(svgId);
-  if (!svg) return;
-  const total = slices.reduce((s, x) => s + x.value, 0);
-  if (!total) { svg.innerHTML = `<text x="50" y="54" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Cairo,sans-serif">لا بيانات</text>`; return; }
-  const cx = 50, cy = 50, R = 42, ir = 28;
-  let angle = -Math.PI / 2, paths = '';
-  const colors = ['#f59e0b','#b8903a','#d4b87e','#e0ceaa','#ede4cc','#f5f0e8','#c8a25c','#94a3b8'];
-  slices.slice(0, 8).forEach((sl, i) => {
-    if (!sl.value) return;
-    const a = (sl.value / total) * 2 * Math.PI;
-    const x1 = cx + R * Math.cos(angle),    y1 = cy + R * Math.sin(angle);
-    const x2 = cx + R * Math.cos(angle + a), y2 = cy + R * Math.sin(angle + a);
-    const xi1 = cx + ir * Math.cos(angle),    yi1 = cy + ir * Math.sin(angle);
-    const xi2 = cx + ir * Math.cos(angle + a), yi2 = cy + ir * Math.sin(angle + a);
-    const lg = a > Math.PI ? 1 : 0;
-    const col = sl.color || colors[i % colors.length];
-    paths += `<path d="M${xi1},${yi1} L${x1},${y1} A${R},${R} 0 ${lg},1 ${x2},${y2} L${xi2},${yi2} A${ir},${ir} 0 ${lg},0 ${xi1},${yi1} Z" fill="${col}" stroke="#fff" stroke-width="1.5"/>`;
-    angle += a;
-  });
-  paths += `<text x="${cx}" y="${cy - 4}" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="900" font-family="Cairo,sans-serif">${total}</text>`;
-  paths += `<text x="${cx}" y="${cy + 9}" text-anchor="middle" fill="#94a3b8" font-size="7" font-family="Cairo,sans-serif">حالة</text>`;
-  svg.innerHTML = paths;
 }
 
 // ── Stats Page ────────────────────────
@@ -1853,13 +1696,17 @@ window.renderStats = function() {
     `<div class="sbox"><div class="sbox-n" style="color:var(--gold)">${avg}</div><div class="sbox-l">${t('avgCase')}</div></div>` +
     `<div class="sbox"><div class="sbox-n" style="color:var(--violet)">${new Set(list.map(c => c.doc).filter(Boolean)).size}</div><div class="sbox-l">${t('doctors')}</div></div>`;
 
-  const faT  = list.filter(c => (c.type || 'CB') === 'FA').reduce((s, c) => s + (+c.teeth || 0), 0);
-  const cbT  = list.filter(c => (c.type || 'CB') === 'CB').reduce((s, c) => s + (+c.teeth || 0), 0);
-  const pfmT = list.filter(c => c.type === 'PFM').reduce((s, c) => s + (+c.teeth || 0), 0);
+  const faT = list.filter(c => (c.type || 'CB') === 'FA').reduce((s, c) => s + (+c.teeth || 0), 0);
+  const cbT = list.filter(c => (c.type || 'CB') === 'CB').reduce((s, c) => s + (+c.teeth || 0), 0);
+  const faC = list.filter(c => (c.type || 'CB') === 'FA').length;
+  const cbC = list.filter(c => (c.type || 'CB') === 'CB').length;
+  document.getElementById('typeStats').innerHTML =
+    `<div class="tsb" style="background:var(--sky);border-color:var(--sky2)"><div class="tsb-n" style="color:var(--blue)">${faT}</div><div class="tsb-l" style="color:var(--blue)">Full Anatomy</div><div class="tsb-c" style="color:var(--blue2)">${faC} ${t('cases')}</div></div>` +
+    `<div class="tsb" style="background:#f5f3ff;border-color:#ddd6fe"><div class="tsb-n" style="color:var(--violet)">${cbT}</div><div class="tsb-l" style="color:var(--violet)">Cut Back</div><div class="tsb-c" style="color:#6d28d9">${cbC} ${t('cases')}</div></div>`;
+
   drawPieChart('pieChart', 'pieLegend', [
-    { label: 'Full Anatomy', value: faT,  color: '#2563eb', color2: '#0ea5e9' },
-    { label: 'Cut Back',     value: cbT,  color: '#7c3aed', color2: '#a855f7' },
-    { label: 'PFM',          value: pfmT, color: '#0f766e', color2: '#14b8a6' }
+    { label: 'Full Anatomy', value: faT, color: '#2563eb' },
+    { label: 'Cut Back',     value: cbT, color: '#7c3aed' }
   ]);
 
   // ✅ [11] أكثر طبيب وأكثر shade بشكل بارز
@@ -1921,17 +1768,8 @@ window.renderStats = function() {
   const docBarWrap = document.getElementById('docBarWrap');
   if (ds.length) {
     docBarWrap.style.display = 'block';
-    const docColors = ['#2563eb','#7c3aed','#10b981','#f59e0b','#ef4444','#0ea5e9','#ec4899','#64748b'];
     setTimeout(() => {
-      drawBarChart('docBarChart',
-        ds.slice(0, 8).map(([d, v], i) => ({
-          label: d.split(' ')[0],
-          value: v,
-          color:  docColors[i % docColors.length],
-          color2: docColors[i % docColors.length] + '88'
-        })),
-        { height: 150 }
-      );
+      drawBarChart('docBarChart', ds.slice(0, 8).map(([d, v]) => ({ label: d.split(' ')[0], value: v, color: '#2563eb' })), { height: 140 });
     }, 0);
   } else {
     docBarWrap.style.display = 'none';
@@ -1940,13 +1778,10 @@ window.renderStats = function() {
   if (!fm) {
     const mm = {};
     list.forEach(c => { const m = c.month; if (m) { if (!mm[m]) mm[m] = 0; mm[m] += +c.teeth || 0; } });
-    const monthPoints = Array.from({ length: 12 }, (_, i) => mm[i + 1] || 0);
-    const monthLabels = Array.from({ length: 12 }, (_, i) => i + 1);
     setTimeout(() => {
-      drawLineChart('monLineChart', monthPoints, {
-        height: 160, lineColor: '#10b981', areaColor: '#10b981',
-        labelColor: '#64748b', labels: monthLabels
-      });
+      drawBarChart('monBarChart', Array.from({ length: 12 }, (_, i) => i + 1).map(m => ({
+        label: m, value: mm[m] || 0, color: mm[m] ? '#10b981' : '#e2e8f0'
+      })), { height: 150, labelColor: '#64748b' });
     }, 0);
   }
 
@@ -1981,29 +1816,18 @@ window.renderStats = function() {
     compEl.style.display = 'none';
   }
 
-  const shadeColors = ['#f59e0b','#b8903a','#d4b87e','#e0ceaa','#c8a25c','#ede4cc','#f5f0e8','#94a3b8'];
   const smx = sl[0]?.[1] || 1;
-
-  // Donut
-  drawShadeDonut('shadeDonut', sl.slice(0, 8).map(([s, n], i) => ({
-    value: n, color: getClr(s) !== '#e2e8f0' ? getClr(s) : shadeColors[i % shadeColors.length]
-  })));
-
-  // Bars
   document.getElementById('stShade').innerHTML = sl.length
-    ? sl.slice(0, 8).map(([s, n], i) => {
-        const col = getClr(s) !== '#e2e8f0' ? getClr(s) : shadeColors[i % shadeColors.length];
-        return `<div class="shade-bar-row">
-          <div style="display:flex;align-items:center;gap:4px;min-width:52px">
-            <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${col};border:1px solid rgba(0,0,0,0.1);flex-shrink:0"></span>
-            <span class="shade-bar-lbl">${s}</span>
+    ? sl.map(([s, n]) =>
+        `<div class="shr">
+          <div style="display:flex;align-items:center;gap:5px;min-width:52px">
+            <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${getClr(s)};border:1px solid rgba(0,0,0,0.1);flex-shrink:0"></span>
+            <div class="shn">${s}</div>
           </div>
-          <div class="shade-bar-track">
-            <div class="shade-bar-fill" style="width:${(n / smx * 100).toFixed(1)}%;background:linear-gradient(90deg,${col},${col}aa)"></div>
-          </div>
-          <span class="shade-bar-cnt">${n}</span>
-        </div>`;
-      }).join('')
+          <div class="shbw"><div class="shb" style="width:${(n / smx * 100).toFixed(1)}%"></div></div>
+          <div class="shc">${n}</div>
+        </div>`
+      ).join('')
     : `<div style="color:var(--text3);text-align:center;padding:12px;font-size:0.74rem">${t('noData')}</div>`;
 };
 
@@ -2131,29 +1955,21 @@ window.openPDF = function() {
   const fm = document.getElementById('flMon').value;
   const fd = document.getElementById('flDoc').value;
   const ft = document.getElementById('flType').value;
-
-  // Build info summary
   const parts = [];
   if (fy) parts.push(`السنة: ${fy}`);
   if (fm) parts.push(`الشهر: ${fm}`);
   if (fd) parts.push(`الطبيب: ${fd}`);
   if (ft) parts.push(`النوع: ${ft}`);
-
-  const info = document.getElementById('pdfFilterInfo');
-  if (parts.length) {
-    info.innerHTML = `<strong>الفلاتر المطبّقة:</strong><br>` + parts.join(' &nbsp;·&nbsp; ');
-  } else {
-    info.innerHTML = `<strong>كل الحالات</strong> (بدون فلترة)`;
-  }
-
-  // Count matching cases
   let list = Object.values(all);
   if (fy) list = list.filter(c => String(c.year)  === fy);
   if (fm) list = list.filter(c => String(c.month) === fm);
   if (fd) list = list.filter(c => c.doc === fd);
   if (ft) list = list.filter(c => (c.type || 'CB') === ft);
-  info.innerHTML += `<br><span style="color:#2563eb;font-weight:700">${list.length} حالة · ${list.reduce((s,c)=>s+(+c.teeth||0),0)} سن</span>`;
-
+  const info = document.getElementById('pdfFilterInfo');
+  if (info) {
+    info.innerHTML = (parts.length ? `<strong>الفلاتر:</strong> ${parts.join(' · ')}` : '<strong>كل الحالات</strong>') +
+      `<br><span style="color:#2563eb;font-weight:700">${list.length} حالة · ${list.reduce((s,c)=>s+(+c.teeth||0),0)} سن</span>`;
+  }
   document.getElementById('pOv').classList.add('on');
 };
 window.closePDF = () => document.getElementById('pOv').classList.remove('on');
@@ -2168,46 +1984,34 @@ window.genPDF = function() {
   const fm = document.getElementById('flMon').value;
   const fd = document.getElementById('flDoc').value;
   const ft = document.getElementById('flType').value;
-
   let list = Object.values(all);
   if (fy) list = list.filter(c => String(c.year)  === fy);
   if (fm) list = list.filter(c => String(c.month) === fm);
   if (fd) list = list.filter(c => c.doc === fd);
   if (ft) list = list.filter(c => (c.type || 'CB') === ft);
-
   if (!list.length) { toast(t('errNoCases'), 'err'); return; }
-
-  // Title for the report
-  const reportTitle = [
-    fd ? fd : null,
-    fm ? `شهر ${fm}` : null,
-    fy ? fy : null,
-    ft ? ft : null
-  ].filter(Boolean).join(' · ') || 'كل الحالات';
+  const reportTitle = [fd, fm?`شهر ${fm}`:null, fy, ft].filter(Boolean).join(' · ') || 'كل الحالات';
 
   const byDoc  = {};
   list.forEach(c => { if (!byDoc[c.doc]) byDoc[c.doc] = []; byDoc[c.doc].push(c); });
   const total  = list.reduce((s, c) => s + (+c.teeth || 0), 0);
   const faT    = list.filter(c => (c.type || 'CB') === 'FA').reduce((s, c) => s + (+c.teeth || 0), 0);
   const cbT    = list.filter(c => (c.type || 'CB') === 'CB').reduce((s, c) => s + (+c.teeth || 0), 0);
-  const pfmT   = list.filter(c => c.type === 'PFM').reduce((s, c) => s + (+c.teeth || 0), 0);
   const docCnt = Object.keys(byDoc).length;
   const avgTth = list.length ? (total / list.length).toFixed(1) : 0;
 
   const summaryRows = Object.entries(byDoc)
     .sort((a, b) => b[1].reduce((s,c)=>s+(+c.teeth||0),0) - a[1].reduce((s,c)=>s+(+c.teeth||0),0))
     .map(([doc, cases]) => {
-      const tot  = cases.reduce((s,c)=>s+(+c.teeth||0),0);
-      const fa   = cases.filter(c=>(c.type||'CB')==='FA').reduce((s,c)=>s+(+c.teeth||0),0);
-      const cb   = cases.filter(c=>(c.type||'CB')==='CB').reduce((s,c)=>s+(+c.teeth||0),0);
-      const pfm  = cases.filter(c=>c.type==='PFM').reduce((s,c)=>s+(+c.teeth||0),0);
-      const pct  = total ? Math.round(tot/total*100) : 0;
+      const tot = cases.reduce((s,c)=>s+(+c.teeth||0),0);
+      const fa  = cases.filter(c=>(c.type||'CB')==='FA').reduce((s,c)=>s+(+c.teeth||0),0);
+      const cb  = cases.filter(c=>(c.type||'CB')==='CB').reduce((s,c)=>s+(+c.teeth||0),0);
+      const pct = total ? Math.round(tot/total*100) : 0;
       return `<tr>
         <td style="padding:9px 14px;border-bottom:1px solid #f1f5f9;font-size:13px;font-weight:800;color:#0f172a">${doc}</td>
         <td style="padding:9px 14px;border-bottom:1px solid #f1f5f9;text-align:center;font-size:13px;font-weight:700;color:#2563eb">${tot}</td>
         <td style="padding:9px 14px;border-bottom:1px solid #f1f5f9;text-align:center;font-size:12px;font-weight:700;color:#1d4ed8">${fa||'—'}</td>
         <td style="padding:9px 14px;border-bottom:1px solid #f1f5f9;text-align:center;font-size:12px;font-weight:700;color:#7c3aed">${cb||'—'}</td>
-        <td style="padding:9px 14px;border-bottom:1px solid #f1f5f9;text-align:center;font-size:12px;font-weight:700;color:#0f766e">${pfm||'—'}</td>
         <td style="padding:9px 14px;border-bottom:1px solid #f1f5f9;text-align:center;font-size:12px;color:#64748b">${cases.length}</td>
         <td style="padding:9px 14px;border-bottom:1px solid #f1f5f9;text-align:center">
           <div style="display:inline-flex;align-items:center;gap:6px">
@@ -2221,26 +2025,21 @@ window.genPDF = function() {
     }).join('');
 
   const detailSecs = Object.entries(byDoc).map(([doc, cases]) => {
-    const tot   = cases.reduce((s,c)=>s+(+c.teeth||0),0);
-    const faTs  = cases.filter(c=>(c.type||'CB')==='FA').reduce((s,c)=>s+(+c.teeth||0),0);
-    const cbTs  = cases.filter(c=>(c.type||'CB')==='CB').reduce((s,c)=>s+(+c.teeth||0),0);
-    const pfmTs = cases.filter(c=>c.type==='PFM').reduce((s,c)=>s+(+c.teeth||0),0);
-    const rows = cases.map((c, i) => {
-      const tp = c.type || 'CB';
-      const tpBg  = tp==='FA' ? '#eff6ff' : tp==='PFM' ? '#f0fdfa' : '#f5f3ff';
-      const tpCol = tp==='FA' ? '#1d4ed8' : tp==='PFM' ? '#0f766e' : '#7c3aed';
-      return `<tr style="background:${i%2===0?'#fff':'#f8fafc'}">
+    const tot  = cases.reduce((s,c)=>s+(+c.teeth||0),0);
+    const faTs = cases.filter(c=>(c.type||'CB')==='FA').reduce((s,c)=>s+(+c.teeth||0),0);
+    const cbTs = cases.filter(c=>(c.type||'CB')==='CB').reduce((s,c)=>s+(+c.teeth||0),0);
+    const rows = cases.map((c, i) => `
+      <tr style="background:${i%2===0?'#fff':'#f8fafc'}">
         <td style="padding:7px 14px;border-bottom:1px solid #f1f5f9;font-size:12px;color:#94a3b8;font-weight:600">${i+1}</td>
         <td style="padding:7px 14px;border-bottom:1px solid #f1f5f9;font-size:14px;font-weight:800;color:#0f172a">${c.teeth||0}</td>
         <td style="padding:7px 14px;border-bottom:1px solid #f1f5f9;font-size:13px;color:#334155">${c.pat||'—'}</td>
         <td style="padding:7px 14px;border-bottom:1px solid #f1f5f9;text-align:center">
-          <span style="display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:800;background:${tpBg};color:${tpCol}">${tp}</span>
+          <span style="display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:800;background:${(c.type||'CB')==='FA'?'#eff6ff':'#f5f3ff'};color:${(c.type||'CB')==='FA'?'#1d4ed8':'#7c3aed'}">${c.type||'CB'}</span>
         </td>
         <td style="padding:7px 14px;border-bottom:1px solid #f1f5f9;text-align:center">
           ${c.shade?`<span style="display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;background:#fef3c7;color:#92400e">${c.shade}</span>`:`<span style="color:#cbd5e1;font-size:12px">—</span>`}
         </td>
-      </tr>`;
-    }).join('');
+      </tr>`).join('');
     return `<div style="margin-bottom:24px;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden;page-break-inside:avoid">
       <div style="background:linear-gradient(135deg,#1e3a8a,#2563eb);padding:13px 18px;display:flex;justify-content:space-between;align-items:center">
         <div style="display:flex;align-items:center;gap:10px">
@@ -2250,7 +2049,6 @@ window.genPDF = function() {
         <div style="display:flex;gap:6px;align-items:center">
           ${faTs?`<span style="background:rgba(255,255,255,0.15);color:#bfdbfe;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800">FA · ${faTs}</span>`:''}
           ${cbTs?`<span style="background:rgba(255,255,255,0.15);color:#ddd6fe;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800">CB · ${cbTs}</span>`:''}
-          ${pfmTs?`<span style="background:rgba(255,255,255,0.15);color:#99f6e4;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800">PFM · ${pfmTs}</span>`:''}
           <span style="background:rgba(255,255,255,0.25);color:#fff;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:900">${tot} سن</span>
         </div>
       </div>
@@ -2265,7 +2063,7 @@ window.genPDF = function() {
         <tbody>${rows}</tbody>
         <tfoot><tr style="background:#f0f9ff;border-top:1.5px solid #bfdbfe">
           <td colspan="2" style="padding:10px 14px;font-size:12px;font-weight:900;color:#1d4ed8">المجموع: ${tot} سن</td>
-          <td colspan="3" style="padding:10px 14px;text-align:left;font-size:11px;color:#64748b;font-weight:600">${cases.length} حالة · FA:${faTs} · CB:${cbTs}${pfmTs?` · PFM:${pfmTs}`:''}</td>
+          <td colspan="3" style="padding:10px 14px;text-align:left;font-size:11px;color:#64748b;font-weight:600">${cases.length} حالة · FA: ${faTs} · CB: ${cbTs}</td>
         </tr></tfoot>
       </table>
     </div>`;
@@ -2284,7 +2082,7 @@ window.genPDF = function() {
 
   const html = `<!DOCTYPE html>
 <html dir="rtl" lang="ar"><head><meta charset="UTF-8">
-<title>MAS Dental Lab — ${reportTitle}</title>
+<title>MAS Dental Lab — تقرير ${monthName(month)} ${year}</title>
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Helvetica Neue',Arial,sans-serif;background:#fff;color:#0f172a}
 @media print{body{padding:0}@page{margin:18mm 14mm;size:A4}.no-print{display:none!important}}
 @media screen{body{padding:32px;max-width:860px;margin:0 auto}}</style>
@@ -2297,7 +2095,7 @@ window.genPDF = function() {
     </div>
     <div>
       <div style="font-size:11px;font-weight:800;color:#0f172a">مختبر MAS لطب الأسنان</div>
-      <div style="font-size:10px;color:#64748b;margin-top:2px">تقرير الإنتاج</div>
+      <div style="font-size:10px;color:#64748b;margin-top:2px">تقرير الإنتاج الشهري</div>
     </div>
   </div>
   <div style="text-align:left;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 16px">
@@ -2309,8 +2107,9 @@ window.genPDF = function() {
     </div>
   </div>
 </div>
-<div style="display:grid;grid-template-columns:repeat(${pfmT?5:4},1fr);gap:10px;margin-bottom:22px">
-  ${[{n:total,l:'إجمالي الأسنان',c:'#2563eb',bg:'#eff6ff'},{n:list.length,l:'الحالات',c:'#0f172a',bg:'#f8fafc'},{n:faT,l:'Full Anatomy',c:'#1d4ed8',bg:'#eff6ff'},{n:cbT,l:'Cut Back',c:'#7c3aed',bg:'#f5f3ff'},...(pfmT?[{n:pfmT,l:'PFM',c:'#0f766e',bg:'#f0fdfa'}]:[])].map(s=>`<div style="background:${s.bg};border:1.5px solid ${s.c}22;border-radius:10px;padding:12px;text-align:center"><div style="font-size:22px;font-weight:900;color:${s.c};line-height:1">${s.n}</div><div style="font-size:9px;color:#64748b;margin-top:4px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px">${s.l}</div></div>`).join('')}
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px">
+  ${[{n:total,l:'إجمالي الأسنان',c:'#2563eb',bg:'#eff6ff'},{n:list.length,l:'الحالات',c:'#0f172a',bg:'#f8fafc'},{n:faT,l:'Full Anatomy',c:'#1d4ed8',bg:'#eff6ff'},{n:cbT,l:'Cut Back',c:'#7c3aed',bg:'#f5f3ff'}]
+    .map(s=>`<div style="background:${s.bg};border:1.5px solid ${s.c}22;border-radius:10px;padding:12px;text-align:center"><div style="font-size:22px;font-weight:900;color:${s.c};line-height:1">${s.n}</div><div style="font-size:9px;color:#64748b;margin-top:4px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px">${s.l}</div></div>`).join('')}
 </div>
 <div style="margin-bottom:28px;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden">
   <div style="background:#0f172a;padding:11px 16px"><span style="font-size:12px;font-weight:800;color:#e2e8f0">ملخص إنتاج الأطباء</span></div>
@@ -2320,7 +2119,6 @@ window.genPDF = function() {
       <th style="padding:9px 14px;text-align:center;font-size:10px;color:#94a3b8;font-weight:700">الأسنان</th>
       <th style="padding:9px 14px;text-align:center;font-size:10px;color:#1d4ed8;font-weight:700">FA</th>
       <th style="padding:9px 14px;text-align:center;font-size:10px;color:#7c3aed;font-weight:700">CB</th>
-      <th style="padding:9px 14px;text-align:center;font-size:10px;color:#0f766e;font-weight:700">PFM</th>
       <th style="padding:9px 14px;text-align:center;font-size:10px;color:#94a3b8;font-weight:700">الحالات</th>
       <th style="padding:9px 14px;text-align:center;font-size:10px;color:#94a3b8;font-weight:700">النسبة</th>
     </tr></thead>
@@ -2330,7 +2128,6 @@ window.genPDF = function() {
       <td style="padding:10px 14px;text-align:center;font-size:13px;font-weight:900;color:#2563eb">${total}</td>
       <td style="padding:10px 14px;text-align:center;font-size:12px;font-weight:800;color:#1d4ed8">${faT}</td>
       <td style="padding:10px 14px;text-align:center;font-size:12px;font-weight:800;color:#7c3aed">${cbT}</td>
-      <td style="padding:10px 14px;text-align:center;font-size:12px;font-weight:800;color:#0f766e">${pfmT||'—'}</td>
       <td style="padding:10px 14px;text-align:center;font-size:12px;font-weight:700;color:#475569">${list.length}</td>
       <td style="padding:10px 14px;text-align:center;font-size:11px;color:#94a3b8;font-weight:700">متوسط ${avgTth}/حالة</td>
     </tr></tfoot>
@@ -2351,6 +2148,7 @@ ${signatureBlock}
 <div class="no-print" style="margin-top:24px;text-align:center">
   <button onclick="window.print()" style="padding:12px 32px;background:#2563eb;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(37,99,235,0.35)">🖨️ طباعة / حفظ PDF</button>
 </div>
+
 </body></html>`;
 
   const w = window.open('', '_blank', 'width=900,height=980');
