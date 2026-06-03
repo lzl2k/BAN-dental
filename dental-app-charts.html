@@ -2181,13 +2181,13 @@ document.querySelectorAll('.ov').forEach(el => el.addEventListener('click', e =>
   fab.id = 'fabBtn';
   fab.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`;
   fab.style.cssText = `
-    position:fixed; bottom:80px; left:16px; z-index:400;
+    position:fixed; bottom:88px; left:16px; z-index:400;
     width:52px; height:52px; border-radius:50%;
     background:linear-gradient(135deg,#2563eb,#1d4ed8);
     color:#fff; border:none; cursor:pointer;
     display:flex; align-items:center; justify-content:center;
     box-shadow:0 4px 16px rgba(37,99,235,0.45);
-    transition:transform 0.15s, opacity 0.2s;
+    transition:transform 0.15s, opacity 0.2s, bottom 0.25s;
   `;
   fab.addEventListener('click', () => {
     showPg('add', document.querySelector('.tab'));
@@ -2198,13 +2198,51 @@ document.querySelectorAll('.ov').forEach(el => el.addEventListener('click', e =>
   fab.addEventListener('touchend',   () => { fab.style.transform = ''; });
   document.getElementById('app').appendChild(fab);
 
-  // أخفِ الـ FAB في صفحة الإضافة نفسها
+  // إضافة padding للصفحات حتى لا تختفي آخر بطاقة خلف الـ FAB
+  document.querySelectorAll('.page').forEach(p => {
+    p.style.paddingBottom = '90px';
+  });
+
+  // إخفاء عند scroll للأسفل، إظهار عند scroll للأعلى
+  let lastScroll = 0;
+  let fabHidden  = false;
+  const content  = document.querySelector('.content');
+  content.addEventListener('scroll', () => {
+    const cur = content.scrollTop;
+    const addActive     = document.getElementById('pg-add')?.classList.contains('on');
+    const accountActive = document.getElementById('pg-account')?.classList.contains('on');
+    if (addActive || accountActive) return;
+
+    if (cur > lastScroll + 10 && !fabHidden) {
+      // scroll down — اخفِ
+      fab.style.opacity       = '0';
+      fab.style.pointerEvents = 'none';
+      fab.style.transform     = 'scale(0.7)';
+      fabHidden = true;
+    } else if (cur < lastScroll - 10 && fabHidden) {
+      // scroll up — أظهر
+      fab.style.opacity       = '1';
+      fab.style.pointerEvents = 'auto';
+      fab.style.transform     = '';
+      fabHidden = false;
+    }
+    lastScroll = cur;
+  }, { passive: true });
+
+  // أخفِ الـ FAB في صفحة الإضافة والحساب
   const observer = new MutationObserver(() => {
-    const addActive    = document.getElementById('pg-add')?.classList.contains('on');
+    const addActive     = document.getElementById('pg-add')?.classList.contains('on');
     const accountActive = document.getElementById('pg-account')?.classList.contains('on');
     const hide = addActive || accountActive;
-    fab.style.opacity = hide ? '0' : '1';
-    fab.style.pointerEvents = hide ? 'none' : 'auto';
+    if (hide) {
+      fab.style.opacity       = '0';
+      fab.style.pointerEvents = 'none';
+      fab.style.transform     = '';
+      fabHidden = false;
+    } else if (!fabHidden) {
+      fab.style.opacity       = '1';
+      fab.style.pointerEvents = 'auto';
+    }
   });
   observer.observe(document.getElementById('app'), { subtree: true, attributes: true, attributeFilter: ['class'] });
 })();
