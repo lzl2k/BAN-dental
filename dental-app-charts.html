@@ -359,6 +359,7 @@ mark.hl {
 .sbox-n { font-size:1.5rem; font-weight:900; margin-bottom:1px; }
 .sbox-l { font-size:0.57rem; color:var(--text2); font-weight:700; text-transform:uppercase; letter-spacing:0.4px; }
 .tsr { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px; }
+.tsr:has(.tsb:nth-child(3)) { grid-template-columns:1fr 1fr 1fr; }
 .tsb { border-radius:var(--r); padding:12px 8px; text-align:center; border:1.5px solid; }
 .tsb-n { font-size:1.35rem; font-weight:900; margin-bottom:1px; }
 .tsb-l { font-size:0.6rem; font-weight:700; }
@@ -1696,17 +1697,21 @@ window.renderStats = function() {
     `<div class="sbox"><div class="sbox-n" style="color:var(--gold)">${avg}</div><div class="sbox-l">${t('avgCase')}</div></div>` +
     `<div class="sbox"><div class="sbox-n" style="color:var(--violet)">${new Set(list.map(c => c.doc).filter(Boolean)).size}</div><div class="sbox-l">${t('doctors')}</div></div>`;
 
-  const faT = list.filter(c => (c.type || 'CB') === 'FA').reduce((s, c) => s + (+c.teeth || 0), 0);
-  const cbT = list.filter(c => (c.type || 'CB') === 'CB').reduce((s, c) => s + (+c.teeth || 0), 0);
-  const faC = list.filter(c => (c.type || 'CB') === 'FA').length;
-  const cbC = list.filter(c => (c.type || 'CB') === 'CB').length;
+  const faT  = list.filter(c => (c.type || 'CB') === 'FA').reduce((s, c) => s + (+c.teeth || 0), 0);
+  const cbT  = list.filter(c => (c.type || 'CB') === 'CB').reduce((s, c) => s + (+c.teeth || 0), 0);
+  const pfmT = list.filter(c => c.type === 'PFM').reduce((s, c) => s + (+c.teeth || 0), 0);
+  const faC  = list.filter(c => (c.type || 'CB') === 'FA').length;
+  const cbC  = list.filter(c => (c.type || 'CB') === 'CB').length;
+  const pfmC = list.filter(c => c.type === 'PFM').length;
   document.getElementById('typeStats').innerHTML =
     `<div class="tsb" style="background:var(--sky);border-color:var(--sky2)"><div class="tsb-n" style="color:var(--blue)">${faT}</div><div class="tsb-l" style="color:var(--blue)">Full Anatomy</div><div class="tsb-c" style="color:var(--blue2)">${faC} ${t('cases')}</div></div>` +
-    `<div class="tsb" style="background:#f5f3ff;border-color:#ddd6fe"><div class="tsb-n" style="color:var(--violet)">${cbT}</div><div class="tsb-l" style="color:var(--violet)">Cut Back</div><div class="tsb-c" style="color:#6d28d9">${cbC} ${t('cases')}</div></div>`;
+    `<div class="tsb" style="background:#f5f3ff;border-color:#ddd6fe"><div class="tsb-n" style="color:var(--violet)">${cbT}</div><div class="tsb-l" style="color:var(--violet)">Cut Back</div><div class="tsb-c" style="color:#6d28d9">${cbC} ${t('cases')}</div></div>` +
+    (pfmT ? `<div class="tsb" style="background:#f0fdfa;border-color:#99f6e4"><div class="tsb-n" style="color:#0f766e">${pfmT}</div><div class="tsb-l" style="color:#0f766e">PFM</div><div class="tsb-c" style="color:#0f766e">${pfmC} ${t('cases')}</div></div>` : '');
 
   drawPieChart('pieChart', 'pieLegend', [
-    { label: 'Full Anatomy', value: faT, color: '#2563eb' },
-    { label: 'Cut Back',     value: cbT, color: '#7c3aed' }
+    { label: 'Full Anatomy', value: faT,  color: '#2563eb' },
+    { label: 'Cut Back',     value: cbT,  color: '#7c3aed' },
+    { label: 'PFM',          value: pfmT, color: '#0f766e' }
   ]);
 
   // ✅ [11] أكثر طبيب وأكثر shade بشكل بارز
@@ -1997,6 +2002,7 @@ window.genPDF = function() {
   const total  = list.reduce((s, c) => s + (+c.teeth || 0), 0);
   const faT    = list.filter(c => (c.type || 'CB') === 'FA').reduce((s, c) => s + (+c.teeth || 0), 0);
   const cbT    = list.filter(c => (c.type || 'CB') === 'CB').reduce((s, c) => s + (+c.teeth || 0), 0);
+  const pfmT   = list.filter(c => c.type === 'PFM').reduce((s, c) => s + (+c.teeth || 0), 0);
   const docCnt = Object.keys(byDoc).length;
   const avgTth = list.length ? (total / list.length).toFixed(1) : 0;
 
@@ -2107,9 +2113,8 @@ window.genPDF = function() {
     </div>
   </div>
 </div>
-<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px">
-  ${[{n:total,l:'إجمالي الأسنان',c:'#2563eb',bg:'#eff6ff'},{n:list.length,l:'الحالات',c:'#0f172a',bg:'#f8fafc'},{n:faT,l:'Full Anatomy',c:'#1d4ed8',bg:'#eff6ff'},{n:cbT,l:'Cut Back',c:'#7c3aed',bg:'#f5f3ff'}]
-    .map(s=>`<div style="background:${s.bg};border:1.5px solid ${s.c}22;border-radius:10px;padding:12px;text-align:center"><div style="font-size:22px;font-weight:900;color:${s.c};line-height:1">${s.n}</div><div style="font-size:9px;color:#64748b;margin-top:4px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px">${s.l}</div></div>`).join('')}
+<div style="display:grid;grid-template-columns:repeat(${pfmT?5:4},1fr);gap:10px;margin-bottom:22px">
+  ${[{n:total,l:'إجمالي الأسنان',c:'#2563eb',bg:'#eff6ff'},{n:list.length,l:'الحالات',c:'#0f172a',bg:'#f8fafc'},{n:faT,l:'Full Anatomy',c:'#1d4ed8',bg:'#eff6ff'},{n:cbT,l:'Cut Back',c:'#7c3aed',bg:'#f5f3ff'},...(pfmT?[{n:pfmT,l:'PFM',c:'#0f766e',bg:'#f0fdfa'}]:[])].map(s=>`<div style="background:${s.bg};border:1.5px solid ${s.c}22;border-radius:10px;padding:12px;text-align:center"><div style="font-size:22px;font-weight:900;color:${s.c};line-height:1">${s.n}</div><div style="font-size:9px;color:#64748b;margin-top:4px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px">${s.l}</div></div>`).join('')}
 </div>
 <div style="margin-bottom:28px;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden">
   <div style="background:#0f172a;padding:11px 16px"><span style="font-size:12px;font-weight:800;color:#e2e8f0">ملخص إنتاج الأطباء</span></div>
@@ -2151,10 +2156,16 @@ ${signatureBlock}
 
 </body></html>`;
 
-  const w = window.open('', '_blank', 'width=900,height=980');
-  if (!w) { toast(lang==='ar'?'فعّل النوافذ المنبثقة في المتصفح':'Allow popups for this site', 'err'); return; }
-  w.document.write(html);
-  w.document.close();
+  // فتح PDF بدون popup blocker — Blob URL
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.target   = '_blank';
+  a.rel      = 'noopener';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 1000);
   closePDF();
   toast(t('pdfOk'), 'ok');
 };
