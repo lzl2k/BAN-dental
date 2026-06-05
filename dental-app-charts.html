@@ -2009,15 +2009,17 @@ window.genPDF = function() {
   const summaryRows = Object.entries(byDoc)
     .sort((a, b) => b[1].reduce((s,c)=>s+(+c.teeth||0),0) - a[1].reduce((s,c)=>s+(+c.teeth||0),0))
     .map(([doc, cases]) => {
-      const tot = cases.reduce((s,c)=>s+(+c.teeth||0),0);
-      const fa  = cases.filter(c=>(c.type||'CB')==='FA').reduce((s,c)=>s+(+c.teeth||0),0);
-      const cb  = cases.filter(c=>(c.type||'CB')==='CB').reduce((s,c)=>s+(+c.teeth||0),0);
-      const pct = total ? Math.round(tot/total*100) : 0;
+      const tot  = cases.reduce((s,c)=>s+(+c.teeth||0),0);
+      const fa   = cases.filter(c=>(c.type||'CB')==='FA').reduce((s,c)=>s+(+c.teeth||0),0);
+      const cb   = cases.filter(c=>(c.type||'CB')==='CB').reduce((s,c)=>s+(+c.teeth||0),0);
+      const pfm  = cases.filter(c=>c.type==='PFM').reduce((s,c)=>s+(+c.teeth||0),0);
+      const pct  = total ? Math.round(tot/total*100) : 0;
       return `<tr>
         <td style="padding:9px 14px;border-bottom:1px solid #f1f5f9;font-size:13px;font-weight:800;color:#0f172a">${doc}</td>
         <td style="padding:9px 14px;border-bottom:1px solid #f1f5f9;text-align:center;font-size:13px;font-weight:700;color:#2563eb">${tot}</td>
         <td style="padding:9px 14px;border-bottom:1px solid #f1f5f9;text-align:center;font-size:12px;font-weight:700;color:#1d4ed8">${fa||'—'}</td>
         <td style="padding:9px 14px;border-bottom:1px solid #f1f5f9;text-align:center;font-size:12px;font-weight:700;color:#7c3aed">${cb||'—'}</td>
+        <td style="padding:9px 14px;border-bottom:1px solid #f1f5f9;text-align:center;font-size:12px;font-weight:700;color:#0f766e">${pfm||'—'}</td>
         <td style="padding:9px 14px;border-bottom:1px solid #f1f5f9;text-align:center;font-size:12px;color:#64748b">${cases.length}</td>
         <td style="padding:9px 14px;border-bottom:1px solid #f1f5f9;text-align:center">
           <div style="display:inline-flex;align-items:center;gap:6px">
@@ -2031,21 +2033,26 @@ window.genPDF = function() {
     }).join('');
 
   const detailSecs = Object.entries(byDoc).map(([doc, cases]) => {
-    const tot  = cases.reduce((s,c)=>s+(+c.teeth||0),0);
-    const faTs = cases.filter(c=>(c.type||'CB')==='FA').reduce((s,c)=>s+(+c.teeth||0),0);
-    const cbTs = cases.filter(c=>(c.type||'CB')==='CB').reduce((s,c)=>s+(+c.teeth||0),0);
-    const rows = cases.map((c, i) => `
-      <tr style="background:${i%2===0?'#fff':'#f8fafc'}">
+    const tot   = cases.reduce((s,c)=>s+(+c.teeth||0),0);
+    const faTs  = cases.filter(c=>(c.type||'CB')==='FA').reduce((s,c)=>s+(+c.teeth||0),0);
+    const cbTs  = cases.filter(c=>(c.type||'CB')==='CB').reduce((s,c)=>s+(+c.teeth||0),0);
+    const pfmTs = cases.filter(c=>c.type==='PFM').reduce((s,c)=>s+(+c.teeth||0),0);
+    const rows = cases.map((c, i) => {
+      const tp = c.type || 'CB';
+      const tpBg  = tp==='FA' ? '#eff6ff' : tp==='PFM' ? '#f0fdfa' : '#f5f3ff';
+      const tpCol = tp==='FA' ? '#1d4ed8' : tp==='PFM' ? '#0f766e' : '#7c3aed';
+      return `<tr style="background:${i%2===0?'#fff':'#f8fafc'}">
         <td style="padding:7px 14px;border-bottom:1px solid #f1f5f9;font-size:12px;color:#94a3b8;font-weight:600">${i+1}</td>
         <td style="padding:7px 14px;border-bottom:1px solid #f1f5f9;font-size:14px;font-weight:800;color:#0f172a">${c.teeth||0}</td>
         <td style="padding:7px 14px;border-bottom:1px solid #f1f5f9;font-size:13px;color:#334155">${c.pat||'—'}</td>
         <td style="padding:7px 14px;border-bottom:1px solid #f1f5f9;text-align:center">
-          <span style="display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:800;background:${(c.type||'CB')==='FA'?'#eff6ff':'#f5f3ff'};color:${(c.type||'CB')==='FA'?'#1d4ed8':'#7c3aed'}">${c.type||'CB'}</span>
+          <span style="display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:800;background:${tpBg};color:${tpCol}">${tp}</span>
         </td>
         <td style="padding:7px 14px;border-bottom:1px solid #f1f5f9;text-align:center">
           ${c.shade?`<span style="display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;background:#fef3c7;color:#92400e">${c.shade}</span>`:`<span style="color:#cbd5e1;font-size:12px">—</span>`}
         </td>
-      </tr>`).join('');
+      </tr>`;
+    }).join('');
     return `<div style="margin-bottom:24px;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden;page-break-inside:avoid">
       <div style="background:linear-gradient(135deg,#1e3a8a,#2563eb);padding:13px 18px;display:flex;justify-content:space-between;align-items:center">
         <div style="display:flex;align-items:center;gap:10px">
@@ -2055,6 +2062,7 @@ window.genPDF = function() {
         <div style="display:flex;gap:6px;align-items:center">
           ${faTs?`<span style="background:rgba(255,255,255,0.15);color:#bfdbfe;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800">FA · ${faTs}</span>`:''}
           ${cbTs?`<span style="background:rgba(255,255,255,0.15);color:#ddd6fe;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800">CB · ${cbTs}</span>`:''}
+          ${pfmTs?`<span style="background:rgba(255,255,255,0.15);color:#99f6e4;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800">PFM · ${pfmTs}</span>`:''}
           <span style="background:rgba(255,255,255,0.25);color:#fff;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:900">${tot} سن</span>
         </div>
       </div>
@@ -2088,7 +2096,7 @@ window.genPDF = function() {
 
   const html = `<!DOCTYPE html>
 <html dir="rtl" lang="ar"><head><meta charset="UTF-8">
-<title>MAS Dental Lab — تقرير ${monthName(month)} ${year}</title>
+<title>MAS Dental Lab — ${reportTitle}</title>
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Helvetica Neue',Arial,sans-serif;background:#fff;color:#0f172a}
 @media print{body{padding:0}@page{margin:18mm 14mm;size:A4}.no-print{display:none!important}}
 @media screen{body{padding:32px;max-width:860px;margin:0 auto}}</style>
@@ -2124,6 +2132,7 @@ window.genPDF = function() {
       <th style="padding:9px 14px;text-align:center;font-size:10px;color:#94a3b8;font-weight:700">الأسنان</th>
       <th style="padding:9px 14px;text-align:center;font-size:10px;color:#1d4ed8;font-weight:700">FA</th>
       <th style="padding:9px 14px;text-align:center;font-size:10px;color:#7c3aed;font-weight:700">CB</th>
+      <th style="padding:9px 14px;text-align:center;font-size:10px;color:#0f766e;font-weight:700">PFM</th>
       <th style="padding:9px 14px;text-align:center;font-size:10px;color:#94a3b8;font-weight:700">الحالات</th>
       <th style="padding:9px 14px;text-align:center;font-size:10px;color:#94a3b8;font-weight:700">النسبة</th>
     </tr></thead>
@@ -2133,6 +2142,7 @@ window.genPDF = function() {
       <td style="padding:10px 14px;text-align:center;font-size:13px;font-weight:900;color:#2563eb">${total}</td>
       <td style="padding:10px 14px;text-align:center;font-size:12px;font-weight:800;color:#1d4ed8">${faT}</td>
       <td style="padding:10px 14px;text-align:center;font-size:12px;font-weight:800;color:#7c3aed">${cbT}</td>
+      <td style="padding:10px 14px;text-align:center;font-size:12px;font-weight:800;color:#0f766e">${pfmT||'—'}</td>
       <td style="padding:10px 14px;text-align:center;font-size:12px;font-weight:700;color:#475569">${list.length}</td>
       <td style="padding:10px 14px;text-align:center;font-size:11px;color:#94a3b8;font-weight:700">متوسط ${avgTth}/حالة</td>
     </tr></tfoot>
