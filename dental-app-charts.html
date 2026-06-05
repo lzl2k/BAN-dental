@@ -538,7 +538,7 @@ mark.hl {
   align-items: center;
   gap: 5px;
   padding: 7px 12px;
-  background: var(--surface);
+  background: var(--white);
   border: 1.5px solid var(--border);
   border-radius: 8px;
   font-family: Cairo, sans-serif;
@@ -569,14 +569,10 @@ mark.hl {
 
 /* زر نسخ الحالة */
 .cc-dup {
-  color: var(--text3) !important;
-  border-color: var(--border) !important;
+  color: var(--text3);
+  border-left: 1px solid var(--border);
 }
-.cc-dup:hover, .cc-dup:active {
-  background: var(--surface) !important;
-  color: var(--blue) !important;
-  border-color: var(--blue) !important;
-}
+.cc-dup:active { background: var(--bg); color: var(--blue); }
 
 /* Swipe feedback */
 .cc {
@@ -886,7 +882,7 @@ mark.hl {
       <!-- Bar Chart: Doctors -->
       <div class="card"><div class="sec-title" id="stDocLbl">الأطباء</div>
         <div id="stDoc"></div>
-        <div class="chart-bar-wrap" id="docBarWrap">
+        <div class="chart-bar-wrap" id="docBarWrap" style="display:none">
           <svg id="docBarChart" class="bar-svg"></svg>
         </div>
       </div>
@@ -1120,21 +1116,23 @@ const TR = {
     tbA:'إضافة',tbL:'الحالات',tbS:'إحصائيات',tbAc:'حسابي',
     addSlbl:'حالة جديدة',lDoc:'الطبيب',lPat:'المريض',lTth:'الأسنان',lMon:'الشهر',lYr:'السنة',lType:'نوع الحالة',lShade:'لون السن',
     btnSaveTxt:'حفظ الحالة',shadeTitle:'اختر لون السن',clearShadeBtn:'إزالة اللون',
-    docTitle:'اختر الطبيب',pdfTitle:'تصدير تقرير PDF',pdfMonLbl:'الشهر',pdfYrLbl:'السنة',pdfGenBtn:'توليد التقرير',pdfCan:'إلغاء',
+    docTitle:'اختر الطبيب',pdfTitle:'تصدير تقرير PDF',pdfGenBtn:'توليد التقرير',pdfCan:'إلغاء',
     editTitle:'تعديل الحالة',editCan:'إلغاء',editSav:'حفظ',eLDoc:'الطبيب',eLPat:'المريض',eLTth:'أسنان',eLType:'نوع الحالة',eLShade:'لون السن',
     delTitle:'حذف الحالة',delSub:'هل أنت متأكد؟',delYes:'تأكيد الحذف',delCan:'إلغاء',
     langLbl:'اللغة / Language',i1t:'نسخ احتياطي تلقائي',i1d:'بياناتك تحفظ فورياً على Google Cloud',
     i2t:'استعادة من أي جهاز',i2d:'سجّل دخول بنفس حساب Google',i3t:'بياناتك خاصة 100%',i3d:'محمية بحسابك فقط',
     btnLogout:'تسجيل الخروج',
-    stDocLbl:'الأطباء',stMonLbl:'الإنتاج الشهري',stShadeLbl:'ألوان الأسنان',per:'جميع البيانات',
+    stDocLbl:'الأطباء',stMonLbl:'الإنتاج الشهري',stShadeLbl:'ألوان الأسنان',stTypePieLbl:'توزيع أنواع الحالات',per:'جميع البيانات',
     totalTeeth:'إجمالي الأسنان',totalCases:'الحالات',avgCase:'متوسط',doctors:'الأطباء',
     noData:'لا توجد بيانات',noCases:'لا توجد حالات',noDocYet:'لا يوجد أطباء مسجلون',
-    savedOk:'تم الحفظ ✓',editOk:'تم التعديل ✓',delOk:'تم الحذف',csvOk:'تم التصدير',pdfOk:'جارٍ فتح التقرير',
-    errDoc:'اختر اسم الطبيب',errTth:'أدخل عدد الأسنان',errNoCases:'لا توجد حالات',errLogin:'خطأ في تسجيل الدخول',
+    savedOk:'تم الحفظ ✓',editOk:'تم التعديل ✓',delOk:'تم الحذف',csvOk:'تم التصدير',pdfOk:'جارٍ تحميل التقرير',
+    errDoc:'اختر اسم الطبيب',errTth:'أدخل عدد الأسنان (1 أو أكثر)',errNoCases:'لا توجد حالات',errLogin:'خطأ في تسجيل الدخول',
+    errPat:'أدخل اسم المريض',errType:'اختر نوع الحالة',
     cases:'حالة',teeth:'سن',allYrs:'كل السنوات',allMon:'كل الأشهر',allDoc:'كل الأطباء',allTyp:'كل الأنواع',
     logoutConfirm:'تأكيد تسجيل الخروج؟',logoutYes:'خروج',logoutNo:'إلغاء',
     duplicate:'نسخ الحالة',filters:'الفلاتر',hideFilters:'إخفاء',showFilters:'فلترة',
-    thisMonth:'هذا الشهر',lastMonthLbl:'الشهر الماضي',vsLastMonth:'مقارنة بالشهر الماضي'
+    thisMonth:'هذا الشهر',lastMonthLbl:'الشهر الماضي',vsLastMonth:'مقارنة بالشهر الماضي',
+    scAll:'الكل',scPat:'مريض',scDoc:'طبيب',scShd:'لون'
   },
   en: {
     loginSub:'Dental Cases Management System',loginBtn:'Sign in with Google',loginNote:'Your data is private and protected',
@@ -1142,21 +1140,23 @@ const TR = {
     tbA:'Add',tbL:'Cases',tbS:'Stats',tbAc:'Account',
     addSlbl:'New Case',lDoc:'Doctor',lPat:'Patient',lTth:'Teeth',lMon:'Month',lYr:'Year',lType:'Case Type',lShade:'Shade',
     btnSaveTxt:'Save Case',shadeTitle:'Select Shade',clearShadeBtn:'Clear Shade',
-    docTitle:'Select Doctor',pdfTitle:'Export PDF',pdfMonLbl:'Month',pdfYrLbl:'Year',pdfGenBtn:'Generate Report',pdfCan:'Cancel',
+    docTitle:'Select Doctor',pdfTitle:'Export PDF',pdfGenBtn:'Generate Report',pdfCan:'Cancel',
     editTitle:'Edit Case',editCan:'Cancel',editSav:'Save',eLDoc:'Doctor',eLPat:'Patient',eLTth:'Teeth',eLType:'Case Type',eLShade:'Shade',
     delTitle:'Delete Case',delSub:'Are you sure?',delYes:'Confirm Delete',delCan:'Cancel',
     langLbl:'Language / اللغة',i1t:'Auto Backup',i1d:'Data saves instantly to Google Cloud',
     i2t:'Restore from Any Device',i2d:'Sign in with same Google account',i3t:'100% Private Data',i3d:'Protected by your account',
     btnLogout:'Sign Out',
-    stDocLbl:'Doctors',stMonLbl:'Monthly Production',stShadeLbl:'Shade Distribution',per:'All Data',
+    stDocLbl:'Doctors',stMonLbl:'Monthly Production',stShadeLbl:'Shade Distribution',stTypePieLbl:'Case Type Distribution',per:'All Data',
     totalTeeth:'Total Teeth',totalCases:'Cases',avgCase:'Avg',doctors:'Doctors',
     noData:'No data',noCases:'No cases',noDocYet:'No doctors registered',
-    savedOk:'Saved ✓',editOk:'Updated ✓',delOk:'Deleted',csvOk:'Exported',pdfOk:'Opening report...',
-    errDoc:'Select doctor',errTth:'Enter tooth count',errNoCases:'No cases found',errLogin:'Login error',
+    savedOk:'Saved ✓',editOk:'Updated ✓',delOk:'Deleted',csvOk:'Exported',pdfOk:'Downloading report...',
+    errDoc:'Select doctor',errTth:'Enter tooth count (1 or more)',errNoCases:'No cases found',errLogin:'Login error',
+    errPat:'Enter patient name',errType:'Select case type',
     cases:'cases',teeth:'teeth',allYrs:'All Years',allMon:'All Months',allDoc:'All Doctors',allTyp:'All Types',
     logoutConfirm:'Confirm sign out?',logoutYes:'Sign Out',logoutNo:'Cancel',
     duplicate:'Duplicate',filters:'Filters',hideFilters:'Hide',showFilters:'Filter',
-    thisMonth:'This Month',lastMonthLbl:'Last Month',vsLastMonth:'vs Last Month'
+    thisMonth:'This Month',lastMonthLbl:'Last Month',vsLastMonth:'vs Last Month',
+    scAll:'All',scPat:'Patient',scDoc:'Doctor',scShd:'Shade'
   }
 };
 
@@ -1184,6 +1184,19 @@ function applyLang() {
   });
   document.getElementById('fDoc').placeholder      = isAr ? 'اختر أو أضف' : 'Select or add';
   document.getElementById('docSearch').placeholder = isAr ? 'ابحث أو اكتب اسم جديد' : 'Search or type name';
+  // Fix 1: preserve icon in filterToggleBtn
+  const ftb = document.getElementById('filterToggleBtn');
+  if (ftb) {
+    const icon = ftb.querySelector('svg');
+    ftb.innerHTML = '';
+    if (icon) ftb.appendChild(icon);
+    ftb.appendChild(document.createTextNode(' ' + t(filtersOpen ? 'hideFilters' : 'showFilters')));
+  }
+  // Fix 7: search chips translation
+  ['scAll','scPat','scDoc','scShd'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = t(id);
+  });
   renderList();
   renderStats();
 }
@@ -1438,16 +1451,18 @@ window.toggleFilters = function() {
   filtersOpen = !filtersOpen;
   const panel = document.getElementById('filtersPanel');
   const btn   = document.getElementById('filterToggleBtn');
+  const icon  = btn.querySelector('svg');
   if (filtersOpen) {
     panel.style.display = 'block';
     panel.style.animation = 'slideDown 0.2s ease';
-    btn.textContent = t('hideFilters');
     btn.classList.add('active');
   } else {
     panel.style.display = 'none';
-    btn.textContent = t('showFilters');
     btn.classList.remove('active');
   }
+  btn.innerHTML = '';
+  if (icon) btn.appendChild(icon);
+  btn.appendChild(document.createTextNode(' ' + t(filtersOpen ? 'hideFilters' : 'showFilters')));
 };
 
 function highlight(text, q) {
@@ -1510,14 +1525,20 @@ window.renderList = function() {
     const hPat = q && (srchMode === 'all' || srchMode === 'patient') ? highlight(c.pat, q) : (c.pat  || '—');
     const hShd = q && (srchMode === 'all' || srchMode === 'shade')   ? highlight(c.shade, q) : (c.shade || '');
     const shadeClr = c.shade ? getClr(c.shade) : '';
+    const cardStyle = tp === 'FA'  ? 'background:#eff6ff;border-color:#bfdbfe;border-right:4px solid #2563eb'
+                    : tp === 'PFM' ? 'background:#f0fdfa;border-color:#99f6e4;border-right:4px solid #0f766e'
+                    :                'background:#f5f3ff;border-color:#ddd6fe;border-right:4px solid #7c3aed';
+    const badgeStyle = tp === 'FA'  ? 'background:#2563eb'
+                     : tp === 'PFM' ? 'background:#0f766e'
+                     :                'background:#7c3aed';
     return `
-    <div class="cc" id="cc-${c.id}" data-id="${c.id}">
+    <div class="cc" id="cc-${c.id}" data-id="${c.id}" style="${cardStyle}">
       <div class="cc-top">
         <div class="cc-left">
           <div class="cc-doc">${hDoc}</div>
           <div class="cc-pat">${hPat}</div>
         </div>
-        <div class="cc-badge">${c.teeth || 0}</div>
+        <div class="cc-badge" style="${badgeStyle}">${c.teeth || 0}</div>
       </div>
       <div class="cc-tags">
         <span class="tag tag-d">${c.month || '—'} / ${c.year || '—'}</span>
@@ -1839,9 +1860,32 @@ window.renderStats = function() {
 // ── CRUD ──────────────────────────────
 window.addCase = async function() {
   const doc = document.getElementById('fDoc').value.trim();
+  const pat = document.getElementById('fPat').value.trim();
   const tth = +document.getElementById('fTth').value;
-  if (!doc) { toast(t('errDoc'), 'err'); document.getElementById('fDoc').focus(); return; }
-  if (!tth || tth < 1) { toast(t('errTth'), 'err'); document.getElementById('fTth').focus(); return; }
+
+  // ✅ Req 2: التحقق من كل الحقول
+  if (!doc) {
+    toast(t('errDoc'), 'err');
+    document.getElementById('fDoc').focus();
+    document.getElementById('fDoc').style.borderColor = '#ef4444';
+    setTimeout(() => document.getElementById('fDoc').style.borderColor = '', 2000);
+    return;
+  }
+  if (!pat) {
+    toast(t('errPat'), 'err');
+    document.getElementById('fPat').focus();
+    document.getElementById('fPat').style.borderColor = '#ef4444';
+    setTimeout(() => document.getElementById('fPat').style.borderColor = '', 2000);
+    return;
+  }
+  if (!tth || tth < 1) {
+    toast(t('errTth'), 'err');
+    document.getElementById('fTth').focus();
+    document.getElementById('fTth').style.borderColor = '#ef4444';
+    setTimeout(() => document.getElementById('fTth').style.borderColor = '', 2000);
+    return;
+  }
+
   const btn = document.getElementById('btnSave');
   btn.style.opacity = '0.6';
   btn.style.pointerEvents = 'none';
@@ -1849,11 +1893,10 @@ window.addCase = async function() {
   const yr  = +document.getElementById('fYr').value;
   try {
     await push(cRef, {
-      doc, pat: document.getElementById('fPat').value.trim(),
-      teeth: tth, month: mon, year: yr,
+      doc, pat, teeth: tth, month: mon, year: yr,
       shade: sel, type: caseType, ts: Date.now()
     });
-    // ✅ [1,3] احفظ آخر قيم للإدخال القادم
+    // ✅ احفظ آخر قيم
     lastDoc   = doc;
     lastMonth = mon;
     lastYear  = yr;
@@ -1861,21 +1904,20 @@ window.addCase = async function() {
     localStorage.setItem('lastMonth', mon);
     localStorage.setItem('lastYear',  yr);
 
-    // ✅ [7] امسح الفورم لكن اتركه الطبيب والشهر والسنة
+    // ✅ Req 1: امسح الفورم كامل وأعد التهيئة
     document.getElementById('fPat').value = '';
     document.getElementById('fTth').value = '';
+    document.getElementById('fDoc').value = '';
+    document.getElementById('fDoc').style.color = '';
+    document.getElementById('fDoc').style.fontWeight = '';
     sel = '';
     setShUI('sTrig','sTxt','sDot','');
+    // ✅ Req 1: أعد تحديد CB تلقائياً
+    caseType = 'CB';
     setType('CB');
 
-    // ✅ [2] الطبيب يبقى محفوظاً — لون مميز
-    const docInp = document.getElementById('fDoc');
-    docInp.style.color      = '#2563eb';
-    docInp.style.fontWeight = '700';
-
     toast(t('savedOk'), 'ok');
-    // انتقل للـ patient field تلقائياً للإدخال السريع
-    setTimeout(() => document.getElementById('fPat').focus(), 300);
+    setTimeout(() => document.getElementById('fDoc').focus(), 300);
   } finally {
     btn.style.opacity = '';
     btn.style.pointerEvents = '';
@@ -1927,7 +1969,7 @@ window.confirmDel = async function() {
 // ✅ [9] نسخ حالة موجودة (Duplicate)
 window.duplicateCase = async function(id) {
   const c = all[id];
-  if (!c) return;
+  if (!c) { toast(lang === 'ar' ? 'الحالة غير موجودة' : 'Case not found', 'err'); return; }
   const { doc, pat, teeth, month, year, shade, type } = c;
   await push(cRef, { doc, pat, teeth, month, year, shade, type, ts: Date.now() });
   toast(lang === 'ar' ? `تم نسخ حالة ${doc}` : `Duplicated ${doc}'s case`, 'ok');
@@ -1935,16 +1977,22 @@ window.duplicateCase = async function(id) {
 
 // ── CSV Export ────────────────────────
 window.doCSV = function() {
-  let list = Object.values(all);
-  ['flYr','flMon','flDoc','flType'].forEach((id, i) => {
-    const v = document.getElementById(id).value;
-    if (v) {
-      if (i === 0) list = list.filter(c => String(c.year)  === v);
-      else if (i === 1) list = list.filter(c => String(c.month) === v);
-      else if (i === 2) list = list.filter(c => c.doc === v);
-      else list = list.filter(c => (c.type || 'CB') === v);
-    }
-  });
+  let list = Object.entries(all).map(([id, c]) => ({ id, ...c }));
+  const fy = document.getElementById('flYr').value;
+  const fm = document.getElementById('flMon').value;
+  const fd = document.getElementById('flDoc').value;
+  const ft = document.getElementById('flType').value;
+  const q  = (document.getElementById('srchQ')?.value || '').trim().toLowerCase();
+  if (fy) list = list.filter(c => String(c.year)  === fy);
+  if (fm) list = list.filter(c => String(c.month) === fm);
+  if (fd) list = list.filter(c => c.doc === fd);
+  if (ft) list = list.filter(c => (c.type || 'CB') === ft);
+  if (q)  list = list.filter(c =>
+    (c.pat||'').toLowerCase().includes(q) ||
+    (c.doc||'').toLowerCase().includes(q) ||
+    (c.shade||'').toLowerCase().includes(q)
+  );
+  if (!list.length) { toast(t('errNoCases'), 'err'); return; }
   const csv = '\uFEFF' + 'Year,Month,Doctor,Patient,Teeth,Type,Shade\n' +
     list.map(c => `${c.year||''},${c.month||''},${c.doc||''},${c.pat||''},${c.teeth||0},${c.type||'CB'},${c.shade||''}`).join('\n');
   Object.assign(document.createElement('a'), {
@@ -2166,18 +2214,18 @@ ${signatureBlock}
 
 </body></html>`;
 
-  // فتح PDF بدون popup blocker — Blob URL
-  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  a.href     = url;
-  a.target   = '_blank';
-  a.rel      = 'noopener';
+  // تحميل التقرير كملف HTML مباشرة
+  const blob     = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url      = URL.createObjectURL(blob);
+  const a        = document.createElement('a');
+  a.href         = url;
+  a.download     = `MAS-report-${reportTitle.replace(/[^a-zA-Z0-9\u0600-\u06FF]/g,'-')}.html`;
+  a.style.display = 'none';
   document.body.appendChild(a);
   a.click();
-  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 1000);
+  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 2000);
   closePDF();
-  toast(t('pdfOk'), 'ok');
+  toast(lang === 'ar' ? '✅ جارٍ تحميل التقرير' : '✅ Downloading report...', 'ok');
 };
 
 // ── Navigation & Overlays ─────────────
