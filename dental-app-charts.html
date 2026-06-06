@@ -1845,6 +1845,8 @@ window.addCase = async function() {
     setTimeout(() => document.querySelector('.type-toggle').style.outline = '', 2000);
     return;
   }
+
+  const btn = document.getElementById('btnSave');
   btn.style.opacity = '0.6';
   btn.style.pointerEvents = 'none';
   const mon = +document.getElementById('fMon').value;
