@@ -1220,7 +1220,7 @@ document.getElementById('shadeGrps').innerHTML = SHADES.map(g =>
   `<div class="sg-chips">${g.list.map(s => `<button class="sg-chip" data-s="${s}" onclick="pick('${s}')">${s}</button>`).join('')}</div></div>`
 ).join('');
 
-let sel = "", esel = "", shMode = "add", dMode = "add", caseType = "CB", editType = "CB";
+let sel = "", esel = "", shMode = "add", dMode = "add", caseType = "", editType = "CB";
 
 function setShUI(tId, txId, dId, s) {
   const btn = document.getElementById(tId);
@@ -1840,9 +1840,9 @@ window.addCase = async function() {
   }
 
   if (!caseType) {
-    toast(lang === 'ar' ? 'اختر نوع الحالة (CB / FA / PFM)' : 'Select case type', 'err');
-    document.querySelector('.type-toggle').style.border = '2px solid #ef4444';
-    setTimeout(() => document.querySelector('.type-toggle').style.border = '', 2000);
+    toast(lang === 'ar' ? 'اختر نوع الحالة' : 'Select case type', 'err');
+    document.querySelector('.type-toggle').style.outline = '2px solid #ef4444';
+    setTimeout(() => document.querySelector('.type-toggle').style.outline = '', 2000);
     return;
   }
   btn.style.opacity = '0.6';
@@ -1870,9 +1870,11 @@ window.addCase = async function() {
     document.getElementById('fDoc').style.fontWeight = '';
     sel = '';
     setShUI('sTrig','sTxt','sDot','');
-    // ✅ Req 1: أعد تحديد CB تلقائياً بعد الحفظ
-    caseType = 'CB';
-    setType('CB');
+    // أعد النوع لفارغ — المستخدم يختار بنفسه
+    caseType = '';
+    document.getElementById('btnCB').className  = 't-btn';
+    document.getElementById('btnFA').className  = 't-btn';
+    document.getElementById('btnPFM').className = 't-btn';
 
     toast(t('savedOk'), 'ok');
     setTimeout(() => document.getElementById('fDoc').focus(), 300);
