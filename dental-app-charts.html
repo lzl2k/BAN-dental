@@ -7,6 +7,10 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#2563eb">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-title" content="MAS Dental">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>MAS Dental Lab</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -2290,6 +2294,11 @@ window.toast = toast;
 
 // ── Init ───────────────────────────────
 applyLang();
+
+// ── PWA Service Worker ─────────────────
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
 
 // ── Doctor Manager ────────────────────
 window.toggleDocManager = function() {
