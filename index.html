@@ -548,7 +548,7 @@ ar:{
  docSearchPh:'ابحث أو اكتب اسماً جديداً',noDoc:'لا يوجد أطباء بعد',
  savedTitle:'تم الحفظ بنجاح',savedOk:'تم الحفظ ✓',delOk:'تم الحذف',csvOk:'تم التصدير',dupOk:'تم نسخ الحالة',
  errDoc:'اختر الطبيب',errPat:'أدخل اسم المريض',errType:'اختر نوع العمل',errTeeth:'أدخل عدد الأسنان',errArch:'اختر Arch I أو II',errNo:'لا توجد حالات',errLogin:'خطأ في تسجيل الدخول',errAny:'حدث خطأ، حاول مجدداً',
- renOk:'تم تغيير الاسم ✓',rExport:'تصدير التقرير',rPdfBtn:'📄 حفظ كملف PDF',rPdfHint:'ستظهر نافذة الطباعة، اختر «حفظ كملف PDF» ثم اضغط حفظ',rHtmlBtn:'⬇ تحميل التقرير كملف HTML',rFallback:'تعذّرت الطباعة، تم تحميل التقرير كملف HTML',pdfBusy:'جارٍ إنشاء ملف PDF...',impOk:'تم الاستيراد',impErr:'ملف غير صالح',
+ renOk:'تم تغيير الاسم ✓',showMore:'عرض المزيد',impDone:'تم استيراد {n} حالة وتجاهل {d} مكررة',rExport:'تصدير التقرير',rPdfBtn:'📄 حفظ كملف PDF',rPdfHint:'ستظهر نافذة الطباعة، اختر «حفظ كملف PDF» ثم اضغط حفظ',rHtmlBtn:'⬇ تحميل التقرير كملف HTML',rFallback:'تعذّرت الطباعة، تم تحميل التقرير كملف HTML',pdfBusy:'جارٍ إنشاء ملف PDF...',impOk:'تم الاستيراد',impErr:'ملف غير صالح',
  rTitle:'تقرير مالي',rLab:'مختبر MAS لطب الأسنان',rIssued:'تاريخ الإصدار',rDoc:'الطبيب',rCases:'الحالات',rQty:'الكمية',rTotal:'الإجمالي',rPaid:'المدفوع',rRem:'المتبقي',rDate:'التاريخ',rPat:'المريض',rWorks:'الأعمال',rSum:'ملخص الأطباء',rByType:'حسب نوع العمل',rGrand:'الإجمالي العام',rDetail:'تفاصيل الحالات',rPrint:'🖨️ طباعة / حفظ PDF',rAllCases:'كل الحالات',rSign1:'مدير المختبر',rSign2:'المحاسب',rSign3:'التاريخ',rMonthPeriod:'شهر',rYear:'السنة',rStatus:'الحالة'
 },
 en:{
@@ -575,7 +575,7 @@ en:{
  docSearchPh:'Search or type a new name',noDoc:'No doctors yet',
  savedTitle:'Saved successfully',savedOk:'Saved ✓',delOk:'Deleted',csvOk:'Exported',dupOk:'Case duplicated',
  errDoc:'Select doctor',errPat:'Enter patient name',errType:'Select work type',errTeeth:'Enter number of teeth',errArch:'Select Arch I or II',errNo:'No cases found',errLogin:'Login error',errAny:'Error, try again',
- renOk:'Renamed ✓',rExport:'Export report',rPdfBtn:'📄 Save as PDF',rPdfHint:'The print dialog will open: choose “Save as PDF”, then Save',rHtmlBtn:'⬇ Download report as HTML',rFallback:'Print failed, report downloaded as HTML',pdfBusy:'Creating PDF...',impOk:'Imported',impErr:'Invalid file',
+ renOk:'Renamed ✓',showMore:'Show more',impDone:'Imported {n} cases, skipped {d} duplicates',rExport:'Export report',rPdfBtn:'📄 Save as PDF',rPdfHint:'The print dialog will open: choose “Save as PDF”, then Save',rHtmlBtn:'⬇ Download report as HTML',rFallback:'Print failed, report downloaded as HTML',pdfBusy:'Creating PDF...',impOk:'Imported',impErr:'Invalid file',
  rTitle:'Financial Report',rLab:'MAS Dental Lab',rIssued:'Issued',rDoc:'Doctor',rCases:'Cases',rQty:'Qty',rTotal:'Total',rPaid:'Paid',rRem:'Remaining',rDate:'Date',rPat:'Patient',rWorks:'Works',rSum:'Doctors Summary',rByType:'By Work Type',rGrand:'Grand Total',rDetail:'Case Details',rPrint:'🖨️ Print / Save PDF',rAllCases:'All cases',rSign1:'Lab Manager',rSign2:'Accountant',rSign3:'Date',rMonthPeriod:'Month',rYear:'Year',rStatus:'Status'
 }};
 let lang = localStorage.getItem('lang') || 'ar';
@@ -918,7 +918,16 @@ window.renderList = function(){
   const ft=$('flType').value;
   $('typeCnt').innerHTML=ORDER.filter(k=>tq[k]).map(k=>`<button class="tcnt${ft===k?' on':''}" style="color:${TYPES[k].c};border-color:${TYPES[k].c}${ft===k?`;background:${TYPES[k].c}`:''}" onclick="toggleTypeF('${k}')">${TYPES[k].n} · ${tq[k]}${TYPES[k].k==='unit'?'':' '+unitLbl(k)}</button>`).join('');
   if(!list.length){ $('listEl').innerHTML=`<div class="empty"><span class="ei">${q?'🔍':'📋'}</span>${q?t('noResults'):t('noCases')}</div>`; return; }
-  $('listEl').innerHTML=list.map((c,idx)=>{
+  const sig=JSON.stringify([$('flYr').value,$('flMon').value,$('flDoc').value,$('flType').value,$('flPay').value,qStatus,q]);
+  if(sig!==listSig){ listSig=sig; listLimit=PAGE; }
+  listData=list; listQ=q;
+  $('listEl').innerHTML='';
+  appendCards(0,Math.min(listLimit,list.length));
+  updateMore();
+};
+
+const PAGE=30; let listLimit=PAGE, listSig='', listData=[], listQ='', moreObs=null;
+function cardHtml(c,idx,q){
     const ds=dueState(c), rem=Math.max(0,c.total-c.paid), S=STAT[c.status];
     const rows=c.items.map(i=>{
       const T=TYPES[i.type], k=T.k;
@@ -939,7 +948,27 @@ window.renderList = function(){
         <button class="cc-act ed" onclick="openEdit('${c.id}')">✎ ${t('edit')}</button>
         <button class="cc-act dl" onclick="openDel('${c.id}')">🗑 ${t('del')}</button>
       </div></div>`;
-  }).join('');
+}
+function appendCards(from,to){
+  const q=listQ, el=$('listEl'); el.querySelector('#moreBox')?.remove();
+  el.insertAdjacentHTML('beforeend',listData.slice(from,to).map((c,k)=>cardHtml(c,k,q)).join(''));
+}
+function updateMore(){
+  const el=$('listEl'); el.querySelector('#moreBox')?.remove();
+  if(moreObs){ moreObs.disconnect(); moreObs=null; }
+  const shown=Math.min(listLimit,listData.length), left=listData.length-shown;
+  if(left<=0) return;
+  el.insertAdjacentHTML('beforeend',`<div id="moreBox" style="text-align:center;padding:10px 0 30px"><button class="btn-act" style="margin:0 auto" onclick="loadMore()">${t('showMore')} (${left})</button></div>`);
+  if('IntersectionObserver' in window){
+    moreObs=new IntersectionObserver(es=>{ if(es.some(e=>e.isIntersecting)) loadMore(); },{root:$('contentEl'),rootMargin:'500px'});
+    moreObs.observe($('moreBox'));
+  }
+}
+window.loadMore = ()=>{
+  const from=Math.min(listLimit,listData.length);
+  listLimit+=PAGE;
+  appendCards(from,Math.min(listLimit,listData.length));
+  updateMore();
 };
 
 /* ══ STATS ══ */
@@ -1228,14 +1257,32 @@ window.confirmRename = async()=>{
   }catch(e){ toast(t('errAny'),'err'); }
 };
 window.exportJSON = ()=>dl(JSON.stringify(raw,null,1),`mas-backup-${today()}.json`,'application/json');
+const fpOf = c=>{
+  const n=norm('',c);
+  return [n.doc,n.pat,n.recv,n.items.map(i=>[i.type,i.teeth,i.arch,i.shade].join(':')).sort().join(',')].map(x=>String(x).trim().toLowerCase()).join('|');
+};
 window.importJSON = inp=>{
   const f=inp.files[0]; if(!f) return;
   const r=new FileReader();
   r.onload=async()=>{
     try{
-      const obj=JSON.parse(r.result), arr=Array.isArray(obj)?obj:Object.values(obj);
-      for(const c of arr){ if(c&&typeof c==='object') await push(cRef,JSON.parse(JSON.stringify(c))); }
-      toast(`${t('impOk')} (${arr.length})`,'ok');
+      const obj=JSON.parse(r.result);
+      const entries=Array.isArray(obj)?obj.map(c=>[null,c]):Object.entries(obj);
+      const seen=new Set(cases.map(c=>fpOf(raw[c.id]||c)));
+      const ids=new Set(cases.map(c=>c.id));
+      const add={}; let nNew=0,nDup=0,k=0;
+      for(const [id,c] of entries){
+        if(!c||typeof c!=='object') continue;
+        const fp=fpOf(c);
+        if((id&&ids.has(id))||seen.has(fp)){ nDup++; continue; }
+        seen.add(fp);
+        const key=push(cRef).key;
+        const rec=JSON.parse(JSON.stringify(c)); if(!rec.ts) rec.ts=Date.now()+(k++);
+        add[key]=rec; nNew++;
+      }
+      const keys=Object.keys(add);
+      for(let i=0;i<keys.length;i+=300){ const part={}; keys.slice(i,i+300).forEach(x=>part[x]=add[x]); await update(cRef,part); }
+      toast(t('impDone').replace('{n}',nNew).replace('{d}',nDup),'ok');
     }catch(e){ toast(t('impErr'),'err'); }
     inp.value='';
   };
