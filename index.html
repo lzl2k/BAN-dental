@@ -326,7 +326,12 @@ mark.hl{background:#fef08a;color:#713f12;border-radius:3px;padding:0 1px;font-we
       <div id="itemsEl"></div>
       <button class="btn-add-item" onclick="addItem()" data-i18n="addWork"></button>
 
-      <div class="totbox"><div class="tl" data-i18n="caseTotal"></div><div class="tn" id="grandTotal">0</div></div>
+      <div class="totbox">
+        <div class="trow" style="border:none;margin:0;padding:0"><span data-i18n="beforeDisc"></span><b id="subTotal">0</b></div>
+        <div class="trow"><span data-i18n="discount"></span><span style="display:flex;gap:6px;align-items:center"><input class="paidin" type="number" inputmode="numeric" min="0" id="discInp" placeholder="0" oninput="onDisc(this.value)"><button class="fullb" id="discBtn" onclick="toggleDiscT()" style="min-width:42px"></button></span></div>
+        <div class="trow" style="border:none;padding-top:0;margin-top:4px;color:#fecaca"><span></span><b id="discShow"></b></div>
+        <div class="trow" style="margin-top:2px"><span class="tl" data-i18n="caseTotal"></span><span class="tn" id="grandTotal">0</span></div>
+      </div>
 
       <button class="btn-save" id="btnSave" onclick="saveCase()"></button>
       <button class="btn-cancel" id="btnCancel" onclick="cancelEdit()" data-i18n="cancel"></button>
@@ -548,7 +553,7 @@ ar:{
  docSearchPh:'ابحث أو اكتب اسماً جديداً',noDoc:'لا يوجد أطباء بعد',
  savedTitle:'تم الحفظ بنجاح',savedOk:'تم الحفظ ✓',delOk:'تم الحذف',csvOk:'تم التصدير',dupOk:'تم نسخ الحالة',
  errDoc:'اختر الطبيب',errPat:'أدخل اسم المريض',errType:'اختر نوع العمل',errTeeth:'أدخل عدد الأسنان',errArch:'اختر Arch I أو II',errNo:'لا توجد حالات',errLogin:'خطأ في تسجيل الدخول',errAny:'حدث خطأ، حاول مجدداً',
- renOk:'تم تغيير الاسم ✓',showMore:'عرض المزيد',impDone:'تم استيراد {n} حالة وتجاهل {d} مكررة',rExport:'تصدير التقرير',rPdfBtn:'📄 حفظ كملف PDF',rPdfHint:'ستظهر نافذة الطباعة، اختر «حفظ كملف PDF» ثم اضغط حفظ',rHtmlBtn:'⬇ تحميل التقرير كملف HTML',rFallback:'تعذّرت الطباعة، تم تحميل التقرير كملف HTML',pdfBusy:'جارٍ إنشاء ملف PDF...',impOk:'تم الاستيراد',impErr:'ملف غير صالح',
+ renOk:'تم تغيير الاسم ✓',discount:'الخصم',beforeDisc:'المجموع قبل الخصم',showMore:'عرض المزيد',impDone:'تم استيراد {n} حالة وتجاهل {d} مكررة',rExport:'تصدير التقرير',rPdfBtn:'📄 حفظ كملف PDF',rPdfHint:'ستظهر نافذة الطباعة، اختر «حفظ كملف PDF» ثم اضغط حفظ',rHtmlBtn:'⬇ تحميل التقرير كملف HTML',rFallback:'تعذّرت الطباعة، تم تحميل التقرير كملف HTML',pdfBusy:'جارٍ إنشاء ملف PDF...',impOk:'تم الاستيراد',impErr:'ملف غير صالح',
  rTitle:'تقرير مالي',rLab:'مختبر MAS لطب الأسنان',rIssued:'تاريخ الإصدار',rDoc:'الطبيب',rCases:'الحالات',rQty:'الكمية',rTotal:'الإجمالي',rPaid:'المدفوع',rRem:'المتبقي',rDate:'التاريخ',rPat:'المريض',rWorks:'الأعمال',rSum:'ملخص الأطباء',rByType:'حسب نوع العمل',rGrand:'الإجمالي العام',rDetail:'تفاصيل الحالات',rPrint:'🖨️ طباعة / حفظ PDF',rAllCases:'كل الحالات',rSign1:'مدير المختبر',rSign2:'المحاسب',rSign3:'التاريخ',rMonthPeriod:'شهر',rYear:'السنة',rStatus:'الحالة'
 },
 en:{
@@ -575,7 +580,7 @@ en:{
  docSearchPh:'Search or type a new name',noDoc:'No doctors yet',
  savedTitle:'Saved successfully',savedOk:'Saved ✓',delOk:'Deleted',csvOk:'Exported',dupOk:'Case duplicated',
  errDoc:'Select doctor',errPat:'Enter patient name',errType:'Select work type',errTeeth:'Enter number of teeth',errArch:'Select Arch I or II',errNo:'No cases found',errLogin:'Login error',errAny:'Error, try again',
- renOk:'Renamed ✓',showMore:'Show more',impDone:'Imported {n} cases, skipped {d} duplicates',rExport:'Export report',rPdfBtn:'📄 Save as PDF',rPdfHint:'The print dialog will open: choose “Save as PDF”, then Save',rHtmlBtn:'⬇ Download report as HTML',rFallback:'Print failed, report downloaded as HTML',pdfBusy:'Creating PDF...',impOk:'Imported',impErr:'Invalid file',
+ renOk:'Renamed ✓',discount:'Discount',beforeDisc:'Subtotal',showMore:'Show more',impDone:'Imported {n} cases, skipped {d} duplicates',rExport:'Export report',rPdfBtn:'📄 Save as PDF',rPdfHint:'The print dialog will open: choose “Save as PDF”, then Save',rHtmlBtn:'⬇ Download report as HTML',rFallback:'Print failed, report downloaded as HTML',pdfBusy:'Creating PDF...',impOk:'Imported',impErr:'Invalid file',
  rTitle:'Financial Report',rLab:'MAS Dental Lab',rIssued:'Issued',rDoc:'Doctor',rCases:'Cases',rQty:'Qty',rTotal:'Total',rPaid:'Paid',rRem:'Remaining',rDate:'Date',rPat:'Patient',rWorks:'Works',rSum:'Doctors Summary',rByType:'By Work Type',rGrand:'Grand Total',rDetail:'Case Details',rPrint:'🖨️ Print / Save PDF',rAllCases:'All cases',rSign1:'Lab Manager',rSign2:'Accountant',rSign3:'Date',rMonthPeriod:'Month',rYear:'Year',rStatus:'Status'
 }};
 let lang = localStorage.getItem('lang') || 'ar';
@@ -609,6 +614,8 @@ function itemQty(i){
   return k==='unit' ? (+i.teeth||0) : k==='arch' ? (+i.arch||0) : k==='piece' ? 1 : 0;
 }
 
+function discOf(sub,type,val){ const v=+val||0; let d=type==='p'?Math.round(sub*Math.min(v,100)/100):v; return Math.max(0,Math.min(Math.round(d),sub)); }
+function itemNet(c,i){ return c.sub>0?itemTotal(i)*c.total/c.sub:0; }
 function norm(id,c){
   let items;
   if (c.items) {
@@ -619,8 +626,10 @@ function norm(id,c){
   }
   const recv = c.recv || c.date || ((c.year&&c.month)?c.year+'-'+pad(c.month)+'-01':'');
   const [y,m] = recv ? recv.split('-').map(Number) : [+c.year||0,+c.month||0];
-  const total = items.reduce((s,i)=>s+itemTotal(i),0);
-  return { id, doc:c.doc||'', pat:c.pat||'', recv, due:c.due||'', status:STAT[c.status]?c.status:(c.items?'received':'delivered'),
+  const sub = items.reduce((s,i)=>s+itemTotal(i),0);
+  const discType = c.discType==='p'?'p':'a', discVal = +c.discVal||0;
+  const disc = discOf(sub,discType,discVal), total = sub-disc;
+  return { id, sub, disc, discType, discVal, doc:c.doc||'', pat:c.pat||'', recv, due:c.due||'', status:STAT[c.status]?c.status:(c.items?'received':'delivered'),
            items, total, paid:+c.paid||0, year:y, month:m, ts:c.ts||0 };
 }
 function dueState(c){
@@ -642,6 +651,7 @@ let docNames=[];
 let priceMem = {}; try { priceMem = JSON.parse(localStorage.getItem('priceMem')||'{}'); } catch(e){}
 let lastDoc = localStorage.getItem('lastDoc')||'';
 
+let discType='a', discVal='';
 const newItem = () => ({type:'',teeth:'',price:'',shade:'',arch:0});
 
 /* ══ LANGUAGE ══ */
@@ -705,7 +715,7 @@ onAuthStateChanged(auth,u=>{
 /* ══ FORM ══ */
 function initForm(){
   $('fRecv').value=today(); $('fDue').value=''; $('fPat').value=''; $('fDoc').value=lastDoc;
-  items=[newItem()]; status='received'; editingId=null;
+  items=[newItem()]; status='received'; editingId=null; discType='a'; discVal=''; $('discInp').value='';
   renderStatusChips(); renderItems(); setFormMode();
 }
 function setFormMode(){
@@ -757,7 +767,14 @@ window.setItemType = (i,k)=>{
 };
 window.setF = (i,f,v)=>{ items[i][f]=v; const s=$('sub'+i); if(s) s.textContent=subText(items[i]); updTotals(); };
 const grand = ()=>items.reduce((s,i)=>s+itemTotal(i),0);
-function updTotals(){ $('grandTotal').textContent=money(grand()); }
+function updTotals(){
+  const sub=grand(), d=discOf(sub,discType,discVal);
+  $('subTotal').textContent=money(sub); $('discBtn').textContent=discType==='p'?'%':t('cur');
+  $('discShow').innerHTML=d?`<bdi>− ${money(d)}</bdi>${discType==='p'?` · <bdi>${+discVal||0}%</bdi>`:''}`:'';
+  $('grandTotal').textContent=money(sub-d);
+}
+window.onDisc = v=>{ discVal=v; updTotals(); };
+window.toggleDiscT = ()=>{ discType=discType==='p'?'a':'p'; updTotals(); };
 
 /* shade / arch / doctor pickers */
 $('shadeGrps').innerHTML=SHADES.map(g=>`<div class="sg-grp"><div class="sg-hdr"><span class="sg-dot" style="background:${g.c}"></span>${g.l}</div><div class="sg-chips">${g.list.map(s=>`<button class="sg-chip" data-s="${s}" onclick="pickShade('${s}')">${s}</button>`).join('')}</div></div>`).join('');
@@ -803,8 +820,9 @@ window.saveCase = async()=>{
   const recv=$('fRecv').value||today(), due=$('fDue').value||'';
   const [y,m]=recv.split('-').map(Number);
   const clean=items.map(it=>({type:it.type,teeth:TYPES[it.type].k==='unit'?+it.teeth:0,price:+it.price||0,shade:it.shade||'',arch:TYPES[it.type].k==='arch'?+it.arch:0}));
-  const total=clean.reduce((s,i)=>s+itemTotal(i),0);
-  const data={doc,pat,recv,due,status,items:clean,total,year:y,month:m};
+  const sub=clean.reduce((s,i)=>s+itemTotal(i),0);
+  const disc=discOf(sub,discType,discVal), total=sub-disc;
+  const data={doc,pat,recv,due,status,items:clean,sub,discType,discVal:+discVal||0,disc,total,year:y,month:m};
   const btn=$('btnSave'); btn.style.opacity='.6'; btn.style.pointerEvents='none';
   try{
     let newId=editingId;
@@ -827,6 +845,7 @@ function loadForEdit(id){
   editingId=id;
   $('fDoc').value=c.doc; $('fPat').value=c.pat; $('fRecv').value=c.recv||today(); $('fDue').value=c.due||'';
   status=c.status; items=c.items.map(i=>({type:i.type,teeth:i.teeth||'',price:i.price||'',shade:i.shade,arch:i.arch}));
+  discType=c.discType; discVal=c.discVal?String(c.discVal):''; $('discInp').value=discVal;
   renderStatusChips(); renderItems(); setFormMode();
   showPg('add',document.querySelectorAll('.tab')[0]);
   $('contentEl').scrollTop=0;
@@ -836,7 +855,7 @@ window.openEdit = loadForEdit;
 window.duplicateCase = async id=>{
   const c=cases.find(x=>x.id===id); if(!c) return;
   const r=today(), [y,m]=r.split('-').map(Number);
-  await push(cRef,{doc:c.doc,pat:c.pat,recv:r,due:'',status:'received',items:c.items,total:c.total,year:y,month:m,ts:Date.now()});
+  await push(cRef,{doc:c.doc,pat:c.pat,recv:r,due:'',status:'received',items:c.items,sub:c.sub,discType:c.discType,discVal:c.discVal,disc:c.disc,total:c.total,year:y,month:m,ts:Date.now()});
   toast(t('dupOk'),'ok');
 };
 window.openDel = id=>{ delId=id; $('delOv').classList.add('on'); };
@@ -940,6 +959,7 @@ function cardHtml(c,idx,q){
       <div class="cc-tags">
         <button class="tag btnlike" style="background:${S.bg};color:${S.c}" onclick="cycleStatus('${c.id}')">● ${t('s_'+c.status)}</button>
         <span class="tag">📥 ${dispDate(c.recv)}</span>
+        ${c.disc>0?`<span class="tag" style="background:#fef2f2;color:#b91c1c">🏷 ${t('discount')} −${fmt(c.disc)}</span>`:''}
         ${c.due?`<span class="tag ${ds?ds.cls:''}">📤 ${dispDate(c.due)}${ds?' · '+ds.txt:''}</span>`:''}
       </div>
       <div class="cc-items">${rows}</div>
@@ -979,7 +999,7 @@ function aggregate(list){
     A.revenue+=c.total; A.paid+=Math.min(c.paid,c.total>0?c.total:c.paid);
     const d=A.doc[c.doc]||(A.doc[c.doc]={name:c.doc,rev:0,paid:0,cases:0,teeth:0,qty:0,types:{}}); d.cases++; d.paid+=c.paid; 
     c.items.forEach(i=>{
-      const q=itemQty(i), r=itemTotal(i), T=TYPES[i.type];
+      const q=itemQty(i), r=itemNet(c,i), T=TYPES[i.type];
       A.type[i.type].rev+=r; A.type[i.type].qty+=q;
       d.rev+=r; d.qty+=q; d.types[i.type]=(d.types[i.type]||0)+r;
       if(T.k==='unit'){ A.teeth+=q; d.teeth+=q; if(i.shade) A.shade[i.shade]=(A.shade[i.shade]||0)+q; } else A.appl+=q;
@@ -1019,7 +1039,7 @@ window.renderStats = function(){
 function drawMonths(fy){
   let base=cases.slice(); if(fy) base=base.filter(c=>String(c.year)===fy);
   const data=Array.from({length:12},(_,i)=>({m:i+1,rev:0,qty:0}));
-  base.forEach(c=>{ if(c.month>=1&&c.month<=12) c.items.forEach(i=>{ data[c.month-1].rev+=itemTotal(i); data[c.month-1].qty+=itemQty(i); }); });
+  base.forEach(c=>{ if(c.month>=1&&c.month<=12) c.items.forEach(i=>{ data[c.month-1].rev+=itemNet(c,i); data[c.month-1].qty+=itemQty(i); }); });
   const key=statMetric, mx=Math.max(...data.map(d=>d[key]),1);
   if(!monSel||!data[monSel-1]||(!data[monSel-1][key]&&!window._monTouched)){ const nw=new Date().getMonth()+1; monSel=(!fy||fy===String(new Date().getFullYear()))?nw:(data.filter(d=>d[key]).pop()?.m||1); }
   const W=340,H=180,pl=34,pb=20,pt=10,ch=H-pb-pt, step=(W-pl-6)/12, bw=Math.min(20,step-6);
@@ -1097,8 +1117,8 @@ function worksText(c){
 window.doCSV = ()=>{
   const list=listFiltered(); if(!list.length){ toast(t('errNo'),'err'); return; }
   const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
-  const rows=['Received,Due,Status,Doctor,Patient,Type,Qty,Price,Arch,Shade,Item Total,Case Total'];
-  list.forEach(c=>c.items.forEach(i=>rows.push([c.recv,c.due,c.status,q(c.doc),q(c.pat),TYPES[i.type].n,itemQty(i),i.price,i.arch?(i.arch===1?'I':'II'):'',i.shade,itemTotal(i),c.total].join(','))));
+  const rows=['Received,Due,Status,Doctor,Patient,Type,Qty,Price,Arch,Shade,Item Total,Case Subtotal,Discount,Case Total'];
+  list.forEach(c=>c.items.forEach(i=>rows.push([c.recv,c.due,c.status,q(c.doc),q(c.pat),TYPES[i.type].n,itemQty(i),i.price,i.arch?(i.arch===1?'I':'II'):'',i.shade,itemTotal(i),c.sub,c.disc,c.total].join(','))));
   dl('\uFEFF'+rows.join('\n'),`mas-dental-${Date.now()}.csv`,'text/csv;charset=utf-8'); toast(t('csvOk'),'ok');
 };
 function dl(content,name,type){
@@ -1129,12 +1149,12 @@ function buildReport(list,title){
     cs.sort((a,b)=>(a.recv||'').localeCompare(b.recv||'')||(a.ts||0)-(b.ts||0));
     const q={}; ORDER.forEach(k=>q[k]=0); let teeth=0;
     cs.forEach(c=>c.items.forEach(i=>{ const n=itemQty(i); q[i.type]+=n; if(TYPES[i.type].k==='unit') teeth+=n; }));
-    return {d,cs,q,teeth,tot:cs.reduce((s,c)=>s+c.total,0)};
+    return {d,cs,q,teeth,gross:cs.reduce((s,c)=>s+c.sub,0),tot:cs.reduce((s,c)=>s+c.total,0)};
   }).sort((a,b)=>(b.teeth-a.teeth)||(b.tot-a.tot));
   const present=ORDER.filter(k=>A.type[k].qty>0);
   const showPct=present.length<=6;
-  const L=ar?{teeth:'سن',issued:'تاريخ الإصدار',doc:'الطبيب',cases:'الحالات',price:'السعر',pct:'النسبة',kind:'النوع',cnt:'العدد',pat:'المريض',shade:'اللون',sum:'المجموع',details:'تفاصيل الحالات',lab:'مختبر MAS لطب الأسنان',rep:'تقرير الإنتاج',all:'الإجمالي',avg:'متوسط',per:'/حالة',tot:'إجمالي الأسنان',rev:'الإيراد الكلي',summary:'ملخص إنتاج الأطباء',docN:'طبيب',s1:'مدير المختبر',s2:'المراجع',s3:'التاريخ',conf:'سري وخاص بالمختبر',sys:'نظام إدارة المختبر',print:t('rPrint'),cur:'د.ع',recv:'استلام'}
-              :{teeth:'teeth',issued:'Issued',doc:'Doctor',cases:'Cases',price:'Price',pct:'Share',kind:'Type',cnt:'Qty',pat:'Patient',shade:'Shade',sum:'Total',details:'Case details',lab:'MAS Dental Lab',rep:'Production Report',all:'Total',avg:'Avg',per:'/case',tot:'Total teeth',rev:'Total revenue',summary:'Doctors production summary',docN:'doctors',s1:'Lab Manager',s2:'Reviewer',s3:'Date',conf:'Confidential',sys:'Lab management system',print:t('rPrint'),cur:'IQD',recv:'Recv'};
+  const L=ar?{teeth:'سن',issued:'تاريخ الإصدار',doc:'الطبيب',cases:'الحالات',price:'السعر',pct:'النسبة',kind:'النوع',cnt:'العدد',pat:'المريض',shade:'اللون',sum:'المجموع',details:'تفاصيل الحالات',lab:'مختبر MAS لطب الأسنان',rep:'تقرير الإنتاج',all:'الإجمالي',avg:'متوسط',per:'/حالة',tot:'إجمالي الأسنان',rev:'الإيراد الكلي',summary:'ملخص إنتاج الأطباء',docN:'طبيب',s1:'مدير المختبر',s2:'توقيع الدكتور',s3:'التاريخ',conf:'سري وخاص بالمختبر',sys:'نظام إدارة المختبر',print:t('rPrint'),cur:'د.ع',recv:'استلام',unit:'سعر الوحدة',amt:'المبلغ',final:'الإجمالي',disc:'خصم'}
+              :{teeth:'teeth',issued:'Issued',doc:'Doctor',cases:'Cases',price:'Price',pct:'Share',kind:'Type',cnt:'Qty',pat:'Patient',shade:'Shade',sum:'Total',details:'Case details',lab:'MAS Dental Lab',rep:'Production Report',all:'Total',avg:'Avg',per:'/case',tot:'Total teeth',rev:'Total revenue',summary:'Doctors production summary',docN:'doctors',s1:'Lab Manager',s2:'Doctor signature',s3:'Date',conf:'Confidential',sys:'Lab management system',print:t('rPrint'),cur:'IQD',recv:'Recv',unit:'Unit price',amt:'Amount',final:'Total',disc:'Discount'};
   const unitName=k=>TYPES[k].k==='unit'?'':TYPES[k].k==='arch'?(ar?'فك':'arch'):(ar?'قطعة':'pcs');
   const tint=c=>c+'18';
 
@@ -1160,12 +1180,12 @@ function buildReport(list,title){
       return `<tbody style="background:${bg}">`+c.items.map((i,j)=>{
         const T=TYPES[i.type];
         const first=j===0?`<td rowspan="${n}" class="g ix">${ci+1}</td><td rowspan="${n}" class="l pt">${esc(c.pat||'—')}<div class="dt">${sub}</div></td>`:'';
-        const last=j===0?`<td rowspan="${n}" class="b nw" style="color:#047857">${fmt(c.total)}</td>`:'';
-        return `<tr>${first}<td><span class="tp" style="background:${tint(T.c)};color:${T.c};border-color:${T.c}">${T.n}</span></td><td class="qn" style="color:${T.c}">${repCount(i)}</td><td>${(T.k==='unit'&&i.shade)?`<span class="sh">${esc(i.shade)}</span>`:'<span style="color:#cbd5e1">—</span>'}</td>${last}</tr>`;
+        const last=j===0?`<td rowspan="${n}" class="b nw" style="color:#047857">${c.disc>0?`<div class="old">${fmt(c.sub)}</div><div class="dsc">${L.disc} ${c.discType==='p'?'<bdi>'+c.discVal+'%</bdi> · ':''}<bdi>−${fmt(c.disc)}</bdi></div>`:''}${fmt(c.total)}</td>`:'';
+        return `<tr>${first}<td><span class="tp" style="background:${tint(T.c)};color:${T.c};border-color:${T.c}">${T.n}</span></td><td class="qn" style="color:${T.c}">${repCount(i)}</td><td>${(T.k==='unit'&&i.shade)?`<span class="sh">${esc(i.shade)}</span>`:'<span style="color:#cbd5e1">—</span>'}</td><td class="up">${i.price?fmt(i.price):'—'}</td><td class="am">${i.price?fmt(itemTotal(i)):'—'}</td>${last}</tr>`;
       }).join('')+`</tbody>`;
     }).join('');
-    return `<div class="doc"><table class="dt2"><thead><tr><th colspan="6" class="dhw"><div class="dh"><div class="dhn"><span class="av">${esc(x.d.charAt(0))}</span>${esc(x.d)}</div><div class="dhc">${chips}<span class="chip tt">${x.teeth} ${L.teeth}</span><span class="chip pr">${fmt(x.tot)} ${L.cur}</span></div></div></th></tr><tr><th>#</th><th class="l">${L.pat}</th><th>${L.kind}</th><th>${L.cnt}</th><th>${L.shade}</th><th>${L.price}</th></tr></thead>${bodies}
-      <tbody class="dtf"><tr><td colspan="4" class="l fl">${L.sum}: ${x.teeth} ${L.teeth} · ${x.cs.length} ${t('cases')}</td><td></td><td class="b nw" style="color:#047857">${fmt(x.tot)}</td></tr></tbody></table></div>`;
+    return `<div class="doc"><table class="dt2"><thead><tr><th colspan="8" class="dhw"><div class="dh"><div class="dhn"><span class="av">${esc(x.d.charAt(0))}</span>${esc(x.d)}</div><div class="dhc">${chips}<span class="chip tt">${x.teeth} ${L.teeth}</span><span class="chip pr">${fmt(x.tot)} ${L.cur}</span></div></div></th></tr><tr><th>#</th><th class="l">${L.pat}</th><th>${L.kind}</th><th>${L.cnt}</th><th>${L.shade}</th><th>${L.unit}</th><th>${L.amt}</th><th>${L.final}</th></tr></thead>${bodies}
+      <tbody class="dtf"><tr><td colspan="4" class="l fl">${L.sum}: ${x.teeth} ${L.teeth} · ${x.cs.length} ${t('cases')}</td><td colspan="2"></td><td class="b nw" style="color:#64748b">${fmt(x.gross)}</td><td class="b nw" style="color:#047857">${fmt(x.tot)}</td></tr></tbody></table></div>`;
   }).join('');
 
   const css=`*{margin:0;padding:0;box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -1193,6 +1213,7 @@ thead{display:table-header-group}tfoot{display:table-row-group}tr,tbody{break-in
 .dhc{display:flex;gap:5px;flex-wrap:wrap}.chip{background:#fff;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:900}.chip.tt{background:#bfdbfe;color:#1e3a8a}.chip.pr{background:#bbf7d0;color:#14532d}
 .dt2 th.l{text-align:${st}}.ix{width:28px}.pt{font-size:13px;font-weight:800}.dt{font-size:9px;color:#94a3b8;font-weight:600;margin-top:1px}
 .tp{display:inline-block;padding:2px 10px;border-radius:8px;border:1.5px solid;font-size:11px;font-weight:900}.qn{font-size:18px;font-weight:900;line-height:1.1}
+.old{text-decoration:line-through;color:#94a3b8;font-size:10px;font-weight:600}.dsc{color:#dc2626;font-size:10px;font-weight:800}.up,.am{font-size:12px;font-weight:700;white-space:nowrap}.am{font-weight:900;color:#0f172a}
 .sh{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700;background:#fef3c7;color:#92400e}
 .dt2 .dtf td{background:#eff6ff;border-top:1.5px solid #bfdbfe;font-weight:900;color:#1d4ed8;font-size:12px}.fl{font-size:12px}
 .sg{margin-top:26px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;break-inside:avoid}.sg div div{height:40px;border-bottom:1.5px solid #cbd5e1;margin-bottom:6px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px;font-size:12px;font-weight:700}.sg span{display:block;text-align:center;font-size:10px;color:#94a3b8;font-weight:700}
