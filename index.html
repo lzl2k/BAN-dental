@@ -123,6 +123,15 @@ button{font-family:inherit}
 .flt-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
 .flt-sel{padding:8px 10px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r2);color:var(--text);font-family:inherit;font-size:.72rem;font-weight:600;outline:none;-webkit-appearance:none;width:100%}
 .btn-month{width:100%;margin-bottom:10px;padding:11px;background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;border:none;border-radius:var(--r);cursor:pointer;font-size:.82rem;font-weight:800;box-shadow:0 4px 14px rgba(37,99,235,.3)}
+.lgsum{display:flex;gap:6px;margin-bottom:10px}.lgsum div{flex:1;background:#fff;border:1px solid var(--border);border-radius:10px;padding:8px 4px;text-align:center;font-size:.58rem;font-weight:700;color:var(--text2)}.lgsum b{display:block;font-size:.82rem;margin-bottom:1px}
+.lgr{background:#e5e7eb;border:1px solid #d1d5db;border-radius:12px;padding:11px 12px;margin-bottom:9px;animation:fup .3s ease both}
+.lgr-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.lgr-name{font-size:1.05rem;font-weight:900;color:#1e3a8a;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lgr-pdf{padding:5px 12px;border-radius:8px;border:1.5px solid #fecaca;background:#fef2f2;color:var(--red);font-size:.68rem;font-weight:800;cursor:pointer}
+.lgr-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.lgr-cols>div{background:rgba(255,255,255,.65);border-radius:9px;padding:7px 4px;text-align:center;font-size:.58rem;font-weight:700;color:#4b5563}
+.lgr-cols b{display:block;font-size:.88rem;font-weight:900;margin-top:2px;white-space:nowrap}
+.lgr-cols .ed{cursor:pointer;outline:1.5px dashed #c2410c55}
 .tcnts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
 .tcnt{padding:5px 11px;border-radius:20px;border:1.5px solid;font-size:.72rem;font-weight:800;cursor:pointer;background:#fff}
 .tcnt.on{color:#fff!important}
@@ -295,6 +304,7 @@ mark.hl{background:#fef08a;color:#713f12;border-radius:3px;padding:0 1px;font-we
     <button class="tab on" onclick="showPg('add',this)"><div class="t-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><span data-i18n="tAdd"></span></button>
     <button class="tab" onclick="showPg('list',this)"><div class="t-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><span data-i18n="tCases"></span></button>
     <button class="tab" onclick="showPg('stats',this)"><div class="t-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><span data-i18n="tStats"></span></button>
+    <button class="tab" onclick="showPg('ledger',this)"><div class="t-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/><circle cx="17" cy="15" r="1.5"/></svg></div><span data-i18n="tLedger"></span></button>
     <button class="tab" onclick="showPg('account',this)"><div class="t-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span data-i18n="tAcc"></span></button>
   </div>
 
@@ -400,6 +410,16 @@ mark.hl{background:#fef08a;color:#713f12;border-radius:3px;padding:0 1px;font-we
     </div>
 
     <!-- ACCOUNT -->
+    <div class="page" id="pg-ledger">
+      <div class="flt-row"><select class="flt-sel" id="lgYr" onchange="renderLedger()"></select><select class="flt-sel" id="lgMon" onchange="renderLedger()"></select></div>
+      <div class="srch-box">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input class="srch-inp" id="lgQ" data-i18n-ph="lgSearch" oninput="renderLedger()">
+      </div>
+      <div class="lgsum" id="lgSum"></div>
+      <div id="lgList"></div>
+    </div>
+
     <div class="page" id="pg-account">
       <div class="acc-hero">
         <div class="acc-av" id="accAv"></div>
@@ -424,6 +444,11 @@ mark.hl{background:#fef08a;color:#713f12;border-radius:3px;padding:0 1px;font-we
           <button class="btn-act" style="flex:1;justify-content:center" onclick="$('impFile').click()" data-i18n="importJson"></button>
         </div>
         <input type="file" id="impFile" accept=".json,application/json" style="display:none" onchange="importJSON(this)">
+      </div>
+      <div class="info-item">
+        <div class="info-ti" data-i18n="appUpdate"></div>
+        <div style="font-size:.7rem;color:var(--text2);margin-bottom:8px">Version <b>2026.11.02-discount</b></div>
+        <button class="btn-act" style="width:100%;justify-content:center;padding:11px" onclick="forceUpdate()" data-i18n="appUpdateBtn"></button>
       </div>
       <button class="btn-logout" onclick="doOut()" data-i18n="logout"></button>
     </div>
@@ -475,6 +500,15 @@ mark.hl{background:#fef08a;color:#713f12;border-radius:3px;padding:0 1px;font-we
   <button class="btn-save" onclick="runReport('print')" data-i18n="rPdfBtn"></button>
   <div style="font-size:.66rem;color:var(--text3);text-align:center;margin:6px 0 12px" data-i18n="rPdfHint"></div>
   <button class="btn-act" style="width:100%;justify-content:center;padding:11px" onclick="runReport('html')" data-i18n="rHtmlBtn"></button>
+</div></div>
+
+<div class="ov" id="pvOv"><div class="sheet">
+  <div class="sh-hdr"><span class="sh-ttl" data-i18n="lgEditTitle"></span><button class="sh-x" onclick="closeOv('pvOv')">✕</button></div>
+  <div id="pvName" style="font-size:1.05rem;font-weight:900;color:#1e3a8a;margin-bottom:4px"></div>
+  <div id="pvInfo" style="font-size:.72rem;color:var(--text2);margin-bottom:10px;font-weight:700"></div>
+  <input class="inp" type="number" inputmode="numeric" min="0" id="pvInp" placeholder="0">
+  <button class="btn-act" style="width:100%;justify-content:center;padding:10px;margin-top:8px" onclick="carryTotal()" data-i18n="lgCarry"></button>
+  <div class="m-acts"><button class="m-can" onclick="closeOv('pvOv')" data-i18n="cancel"></button><button class="m-sav" onclick="savePrev()" data-i18n="save"></button></div>
 </div></div>
 
 <div class="toast" id="toast"></div>
@@ -553,7 +587,7 @@ ar:{
  docSearchPh:'ابحث أو اكتب اسماً جديداً',noDoc:'لا يوجد أطباء بعد',
  savedTitle:'تم الحفظ بنجاح',savedOk:'تم الحفظ ✓',delOk:'تم الحذف',csvOk:'تم التصدير',dupOk:'تم نسخ الحالة',
  errDoc:'اختر الطبيب',errPat:'أدخل اسم المريض',errType:'اختر نوع العمل',errTeeth:'أدخل عدد الأسنان',errArch:'اختر Arch I أو II',errNo:'لا توجد حالات',errLogin:'خطأ في تسجيل الدخول',errAny:'حدث خطأ، حاول مجدداً',
- renOk:'تم تغيير الاسم ✓',discount:'الخصم',beforeDisc:'المجموع قبل الخصم',showMore:'عرض المزيد',impDone:'تم استيراد {n} حالة وتجاهل {d} مكررة',rExport:'تصدير التقرير',rPdfBtn:'📄 حفظ كملف PDF',rPdfHint:'ستظهر نافذة الطباعة، اختر «حفظ كملف PDF» ثم اضغط حفظ',rHtmlBtn:'⬇ تحميل التقرير كملف HTML',rFallback:'تعذّرت الطباعة، تم تحميل التقرير كملف HTML',pdfBusy:'جارٍ إنشاء ملف PDF...',impOk:'تم الاستيراد',impErr:'ملف غير صالح',
+ renOk:'تم تغيير الاسم ✓',tLedger:'الحسابات',lgSearch:'ابحث عن طبيب...',lgRev:'إيراد الشهر',lgPrev:'المتبقي السابق',lgTotal:'المجموع الكلي',lgEditTitle:'تعديل المتبقي من الإيرادات السابقة',lgCarry:'ترحيل المجموع الكلي',lgInfo:'إيراد الشهر',lgNone:'لا يوجد أطباء',repMonthCases:'إجمالي حالات هذا الشهر',repPrev:'المتبقي من الإيرادات السابقة',repGrand:'المجموع الكلي',repPeriod:'إجمالي الحالات',appUpdate:'تحديث التطبيق',appUpdateBtn:'🔄 مسح الكاش وتحميل آخر نسخة',discount:'الخصم',beforeDisc:'المجموع قبل الخصم',showMore:'عرض المزيد',impDone:'تم استيراد {n} حالة وتجاهل {d} مكررة',rExport:'تصدير التقرير',rPdfBtn:'📄 حفظ كملف PDF',rPdfHint:'ستظهر نافذة الطباعة، اختر «حفظ كملف PDF» ثم اضغط حفظ',rHtmlBtn:'⬇ تحميل التقرير كملف HTML',rFallback:'تعذّرت الطباعة، تم تحميل التقرير كملف HTML',pdfBusy:'جارٍ إنشاء ملف PDF...',impOk:'تم الاستيراد',impErr:'ملف غير صالح',
  rTitle:'تقرير مالي',rLab:'مختبر MAS لطب الأسنان',rIssued:'تاريخ الإصدار',rDoc:'الطبيب',rCases:'الحالات',rQty:'الكمية',rTotal:'الإجمالي',rPaid:'المدفوع',rRem:'المتبقي',rDate:'التاريخ',rPat:'المريض',rWorks:'الأعمال',rSum:'ملخص الأطباء',rByType:'حسب نوع العمل',rGrand:'الإجمالي العام',rDetail:'تفاصيل الحالات',rPrint:'🖨️ طباعة / حفظ PDF',rAllCases:'كل الحالات',rSign1:'مدير المختبر',rSign2:'المحاسب',rSign3:'التاريخ',rMonthPeriod:'شهر',rYear:'السنة',rStatus:'الحالة'
 },
 en:{
@@ -580,7 +614,7 @@ en:{
  docSearchPh:'Search or type a new name',noDoc:'No doctors yet',
  savedTitle:'Saved successfully',savedOk:'Saved ✓',delOk:'Deleted',csvOk:'Exported',dupOk:'Case duplicated',
  errDoc:'Select doctor',errPat:'Enter patient name',errType:'Select work type',errTeeth:'Enter number of teeth',errArch:'Select Arch I or II',errNo:'No cases found',errLogin:'Login error',errAny:'Error, try again',
- renOk:'Renamed ✓',discount:'Discount',beforeDisc:'Subtotal',showMore:'Show more',impDone:'Imported {n} cases, skipped {d} duplicates',rExport:'Export report',rPdfBtn:'📄 Save as PDF',rPdfHint:'The print dialog will open: choose “Save as PDF”, then Save',rHtmlBtn:'⬇ Download report as HTML',rFallback:'Print failed, report downloaded as HTML',pdfBusy:'Creating PDF...',impOk:'Imported',impErr:'Invalid file',
+ renOk:'Renamed ✓',tLedger:'Accounts',lgSearch:'Search doctor...',lgRev:'Month revenue',lgPrev:'Previous balance',lgTotal:'Grand total',lgEditTitle:'Edit previous balance',lgCarry:'Carry forward grand total',lgInfo:'Month revenue',lgNone:'No doctors',repMonthCases:'This month cases total',repPrev:'Previous balance',repGrand:'Grand total',repPeriod:'Cases total',appUpdate:'App update',appUpdateBtn:'🔄 Clear cache and load latest',discount:'Discount',beforeDisc:'Subtotal',showMore:'Show more',impDone:'Imported {n} cases, skipped {d} duplicates',rExport:'Export report',rPdfBtn:'📄 Save as PDF',rPdfHint:'The print dialog will open: choose “Save as PDF”, then Save',rHtmlBtn:'⬇ Download report as HTML',rFallback:'Print failed, report downloaded as HTML',pdfBusy:'Creating PDF...',impOk:'Imported',impErr:'Invalid file',
  rTitle:'Financial Report',rLab:'MAS Dental Lab',rIssued:'Issued',rDoc:'Doctor',rCases:'Cases',rQty:'Qty',rTotal:'Total',rPaid:'Paid',rRem:'Remaining',rDate:'Date',rPat:'Patient',rWorks:'Works',rSum:'Doctors Summary',rByType:'By Work Type',rGrand:'Grand Total',rDetail:'Case Details',rPrint:'🖨️ Print / Save PDF',rAllCases:'All cases',rSign1:'Lab Manager',rSign2:'Accountant',rSign3:'Date',rMonthPeriod:'Month',rYear:'Year',rStatus:'Status'
 }};
 let lang = localStorage.getItem('lang') || 'ar';
@@ -643,7 +677,7 @@ function dueState(c){
 }
 
 /* ══ STATE ══ */
-let uid=null, cRef=null, raw={}, cases=[];
+let uid=null, cRef=null, accRef=null, raw={}, cases=[], accRaw={}, accounts={}, lgRows=[], pvIdx=-1;
 let items=[], editingId=null, payAll=false, paidVal='', status='received';
 let shTarget=-1, archTarget=-1, delId=null, renOld='';
 let qStatus='', srchOn=false, fltOpen=false, statMetric='rev', monSel=0, donutSel='';
@@ -665,7 +699,7 @@ function applyLang(){
   $('exMonth').textContent='📅 '+t('exMonth');
   $('docMgrToggle').textContent = $('docMgrList').style.display==='none'?t('show'):t('hideL');
   $('fltBtn').textContent='⚙ '+t(fltOpen?'hide':'filter');
-  fillFilters(); renderQuick(); renderStatusChips(); renderItems(); setFormMode();
+  fillFilters(); initLedgerSel(); renderQuick(); renderStatusChips(); renderItems(); setFormMode();
   refresh();
 }
 window.setLang = l => { lang=l; localStorage.setItem('lang',l); applyLang(); };
@@ -706,6 +740,8 @@ onAuthStateChanged(auth,u=>{
     $('accNm').textContent=u.displayName||'User'; $('accEm').textContent=u.email||'';
     cRef=ref(db,`users/${uid}/cases`);
     onValue(cRef,snap=>{ raw=snap.val()||{}; cases=Object.entries(raw).map(([id,c])=>norm(id,c)); refresh(); });
+    accRef=ref(db,`users/${uid}/accounts`);
+    onValue(accRef,snap=>{ accRaw=snap.val()||{}; accounts={}; Object.values(accRaw).forEach(a=>{ if(a&&a.name) accounts[a.name]=+a.prev||0; }); if($('pg-ledger').classList.contains('on')) renderLedger(); });
     initForm(); applyLang();
   } else {
     uid=null; $('login').style.display='flex'; $('app').classList.remove('on');
@@ -880,6 +916,7 @@ function refresh(){
   fillDocFilter();
   renderList();
   if($('pg-stats').classList.contains('on')) renderStats();
+  if($('pg-ledger').classList.contains('on')) renderLedger();
   if($('docMgrList').style.display!=='none') renderDocMgr();
 }
 
@@ -1131,17 +1168,18 @@ window.exportPDF = ()=>{
   const parts=[]; const fy=$('flYr').value,fm=$('flMon').value,fd=$('flDoc').value,ft=$('flType').value;
   if(fd) parts.push(fd); if(fm) parts.push(`${t('rMonthPeriod')} ${fm}`); if(fy) parts.push(fy); if(ft) parts.push(typeName(ft));
   if(qStatus) parts.push(({active:t('active'),late:t('late'),soon:t('soon'),delivered:t('delivered'),unpaid:t('unpaid')})[qStatus]);
-  genReport(list,parts.join(' · ')||t('rAllCases'));
+  genReport(list,parts.join(' · ')||t('rAllCases'),{month:!!fm});
 };
 window.exportMonth = ()=>{
   const d=new Date(), y=String(d.getFullYear()), m=String(d.getMonth()+1);
   const list=listFiltered({yr:y,mon:m,doc:'',type:'',pay:''});
   if(!list.length){ toast(t('errNo'),'err'); return; }
-  genReport(list,`${t('rMonthPeriod')} ${m} · ${y}`);
+  genReport(list,`${t('rMonthPeriod')} ${m} · ${y}`,{month:true});
 };
 /* ══ REPORT (HTML → print / save as PDF) ══ */
 function repCount(i){ const k=TYPES[i.type].k; return k==='unit'?String(i.teeth||0):k==='arch'?'Arch '+(i.arch===1?'I':'II'):'1'; }
-function buildReport(list,title){
+function buildReport(list,title,opts){
+  opts=opts||{};
   const ar=lang==='ar', dir=ar?'rtl':'ltr', st=ar?'right':'left', en=ar?'left':'right';
   const A=aggregate(list);
   const byDoc={}; list.forEach(c=>(byDoc[c.doc]=byDoc[c.doc]||[]).push(c));
@@ -1185,7 +1223,8 @@ function buildReport(list,title){
       }).join('')+`</tbody>`;
     }).join('');
     return `<div class="doc"><table class="dt2"><thead><tr><th colspan="8" class="dhw"><div class="dh"><div class="dhn"><span class="av">${esc(x.d.charAt(0))}</span>${esc(x.d)}</div><div class="dhc">${chips}<span class="chip tt">${x.teeth} ${L.teeth}</span><span class="chip pr">${fmt(x.tot)} ${L.cur}</span></div></div></th></tr><tr><th>#</th><th class="l">${L.pat}</th><th>${L.kind}</th><th>${L.cnt}</th><th>${L.shade}</th><th>${L.unit}</th><th>${L.amt}</th><th>${L.final}</th></tr></thead>${bodies}
-      <tbody class="dtf"><tr><td colspan="4" class="l fl">${L.sum}: ${x.teeth} ${L.teeth} · ${x.cs.length} ${t('cases')}</td><td colspan="2"></td><td class="b nw" style="color:#64748b">${fmt(x.gross)}</td><td class="b nw" style="color:#047857">${fmt(x.tot)}</td></tr></tbody></table></div>`;
+      <tbody class="dtf"><tr><td colspan="4" class="l fl">${L.sum}: ${x.teeth} ${L.teeth} · ${x.cs.length} ${t('cases')}</td><td colspan="2"></td><td class="b nw" style="color:#64748b">${fmt(x.gross)}</td><td class="b nw" style="color:#047857">${fmt(x.tot)}</td></tr></tbody></table>
+      <div class="acb"><div style="color:#047857"><span>${opts.month?t('repMonthCases'):t('repPeriod')}</span><b>${fmt(x.tot)}</b></div><div style="color:#c2410c"><span>${t('repPrev')}</span><b>${fmt(accounts[x.d]||0)}</b></div><div style="color:#0369a1;background:#e0f2fe;border-color:#7dd3fc"><span>${t('repGrand')}</span><b>${fmt(x.tot+(accounts[x.d]||0))} ${L.cur}</b></div></div></div>`;
   }).join('');
 
   const css=`*{margin:0;padding:0;box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -1216,6 +1255,7 @@ thead{display:table-header-group}tfoot{display:table-row-group}tr,tbody{break-in
 .old{text-decoration:line-through;color:#94a3b8;font-size:10px;font-weight:600}.dsc{color:#dc2626;font-size:10px;font-weight:800}.up,.am{font-size:12px;font-weight:700;white-space:nowrap}.am{font-weight:900;color:#0f172a}
 .sh{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700;background:#fef3c7;color:#92400e}
 .dt2 .dtf td{background:#eff6ff;border-top:1.5px solid #bfdbfe;font-weight:900;color:#1d4ed8;font-size:12px}.fl{font-size:12px}
+.acb{display:flex;gap:8px;margin-top:10px;break-inside:avoid}.acb>div{flex:1;border:1.5px solid #e2e8f0;border-radius:11px;padding:9px 6px;text-align:center;background:#fff}.acb span{display:block;font-size:10px;color:#64748b;font-weight:800;margin-bottom:3px}.acb b{font-size:16px;font-weight:900;white-space:nowrap}
 .sg{margin-top:26px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;break-inside:avoid}.sg div div{height:40px;border-bottom:1.5px solid #cbd5e1;margin-bottom:6px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px;font-size:12px;font-weight:700}.sg span{display:block;text-align:center;font-size:10px;color:#94a3b8;font-weight:700}
 .fo{margin-top:22px;padding-top:10px;border-top:1.5px solid #e2e8f0;display:flex;justify-content:space-between;font-size:9px;color:#94a3b8}`;
 
@@ -1234,10 +1274,10 @@ ${detail}
 }
 
 let pendingRep=null;
-function genReport(list,title){ pendingRep={list,title}; $('rInfo').textContent=`${title} — ${list.length} ${t('cases')}`; $('rOv').classList.add('on'); }
+function genReport(list,title,opts){ pendingRep={list,title,opts:opts||{}}; $('rInfo').textContent=`${title} — ${list.length} ${t('cases')}`; $('rOv').classList.add('on'); }
 window.runReport = mode=>{
   if(!pendingRep) return;
-  const html=buildReport(pendingRep.list,pendingRep.title);
+  const html=buildReport(pendingRep.list,pendingRep.title,pendingRep.opts);
   closeOv('rOv');
   if(mode==='html'){ dl(html,`MAS-report-${today()}.html`,'text/html;charset=utf-8'); toast(t('csvOk'),'ok'); return; }
   $('printFrame')?.remove();
@@ -1252,6 +1292,42 @@ window.runReport = mode=>{
     }catch(e){ dl(html,`MAS-report-${today()}.html`,'text/html;charset=utf-8'); toast(t('rFallback'),'err'); }
   };
   f.srcdoc=html;
+};
+
+/* ══ LEDGER ══ */
+const accKey = n=>encodeURIComponent(n).replace(/\./g,'%2E');
+function initLedgerSel(){
+  const y=$('lgYr'), m=$('lgMon'); const pv=[y.value,m.value];
+  let yo='',mo=''; for(let i=2024;i<=2035;i++) yo+=`<option value="${i}">${i}</option>`; for(let i=1;i<=12;i++) mo+=`<option value="${i}">${i}</option>`;
+  y.innerHTML=yo; m.innerHTML=mo;
+  const now=new Date(); y.value=pv[0]||String(now.getFullYear()); m.value=pv[1]||String(now.getMonth()+1);
+}
+window.renderLedger = function(){
+  if(!$('lgYr').options.length) initLedgerSel();
+  const y=+$('lgYr').value, m=+$('lgMon').value, q=($('lgQ').value||'').trim().toLowerCase();
+  const rev={}; cases.forEach(c=>{ if(c.doc&&c.year===y&&c.month===m) rev[c.doc]=(rev[c.doc]||0)+c.total; });
+  const names=new Set([...cases.map(c=>c.doc).filter(Boolean),...Object.keys(accounts)]);
+  lgRows=[...names].filter(n=>!q||n.toLowerCase().includes(q)).map(n=>({name:n,rev:rev[n]||0,prev:accounts[n]||0})).map(r=>({...r,tot:r.rev+r.prev}))
+    .sort((a,b)=>(b.tot-a.tot)||a.name.localeCompare(b.name));
+  const sRev=lgRows.reduce((s,r)=>s+r.rev,0), sPrev=lgRows.reduce((s,r)=>s+r.prev,0);
+  $('lgSum').innerHTML=`<div><b style="color:#047857">${fmt(sRev)}</b>${t('lgRev')}</div><div><b style="color:#c2410c">${fmt(sPrev)}</b>${t('lgPrev')}</div><div><b style="color:#0369a1">${fmt(sRev+sPrev)}</b>${t('lgTotal')}</div>`;
+  $('lgList').innerHTML=lgRows.length?lgRows.map((r,i)=>`<div class="lgr" style="animation-delay:${Math.min(i,8)*25}ms"><div class="lgr-top"><div class="lgr-name">${esc(r.name)}</div><button class="lgr-pdf" onclick="invoiceFor(${i})">PDF</button></div>
+    <div class="lgr-cols"><div>${t('lgRev')}<b style="color:#047857">${fmt(r.rev)}</b></div><div class="ed" onclick="editPrev(${i})">${t('lgPrev')} ✎<b style="color:#c2410c">${fmt(r.prev)}</b></div><div>${t('lgTotal')}<b style="color:#0369a1">${fmt(r.tot)}</b></div></div></div>`).join(''):`<div class="empty"><span class="ei">📒</span>${t('lgNone')}</div>`;
+};
+window.editPrev = i=>{ const r=lgRows[i]; if(!r) return; pvIdx=i; $('pvName').textContent=r.name; $('pvInp').value=r.prev||''; $('pvInfo').textContent=`${t('lgInfo')}: ${fmt(r.rev)} · ${t('lgTotal')}: ${fmt(r.tot)}`; $('pvOv').classList.add('on'); };
+window.carryTotal = ()=>{ const r=lgRows[pvIdx]; if(r) $('pvInp').value=r.tot||''; };
+window.savePrev = async()=>{
+  const r=lgRows[pvIdx]; if(!r) return;
+  const v=Math.max(0,Math.round(+$('pvInp').value||0));
+  try{ await update(accRef,{[accKey(r.name)]:{name:r.name,prev:v}}); closeOv('pvOv'); toast(t('savedOk'),'ok'); }
+  catch(e){ toast(t('errAny'),'err'); }
+};
+window.invoiceFor = i=>{
+  const r=lgRows[i]; if(!r) return;
+  const y=+$('lgYr').value, m=+$('lgMon').value;
+  const list=cases.filter(c=>c.doc===r.name&&c.year===y&&c.month===m);
+  if(!list.length){ toast(t('errNo'),'err'); return; }
+  genReport(list,`${r.name} · ${t('rMonthPeriod')} ${m} · ${y}`,{month:true});
 };
 
 /* ══ ACCOUNT ══ */
@@ -1274,10 +1350,16 @@ window.confirmRename = async()=>{
     localStorage.setItem('priceMem',JSON.stringify(priceMem));
     if(lastDoc===renOld){ lastDoc=nn; localStorage.setItem('lastDoc',nn); }
     if($('fDoc').value===renOld) $('fDoc').value=nn;
+    if(accounts[renOld]!==undefined){ const nv=(accounts[nn]||0)+accounts[renOld]; await update(accRef,{[accKey(nn)]:{name:nn,prev:nv},[accKey(renOld)]:null}); }
     closeOv('renOv'); toast(t('renOk'),'ok');
   }catch(e){ toast(t('errAny'),'err'); }
 };
-window.exportJSON = ()=>dl(JSON.stringify(raw,null,1),`mas-backup-${today()}.json`,'application/json');
+window.forceUpdate = async()=>{
+  try{ const rs=await navigator.serviceWorker.getRegistrations(); await Promise.all(rs.map(r=>r.unregister())); }catch(e){}
+  try{ const ks=await caches.keys(); await Promise.all(ks.map(k=>caches.delete(k))); }catch(e){}
+  location.reload();
+};
+window.exportJSON = ()=>dl(JSON.stringify({__format:'mas2',cases:raw,accounts:accRaw},null,1),`mas-backup-${today()}.json`,'application/json');
 const fpOf = c=>{
   const n=norm('',c);
   return [n.doc,n.pat,n.recv,n.items.map(i=>[i.type,i.teeth,i.arch,i.shade].join(':')).sort().join(',')].map(x=>String(x).trim().toLowerCase()).join('|');
@@ -1287,7 +1369,12 @@ window.importJSON = inp=>{
   const r=new FileReader();
   r.onload=async()=>{
     try{
-      const obj=JSON.parse(r.result);
+      let obj=JSON.parse(r.result);
+      if(obj&&obj.__format==='mas2'){
+        const add={}; Object.entries(obj.accounts||{}).forEach(([k,a])=>{ if(a&&a.name&&accounts[a.name]===undefined) add[k]=a; });
+        if(Object.keys(add).length) await update(accRef,add);
+        obj=obj.cases||{};
+      }
       const entries=Array.isArray(obj)?obj.map(c=>[null,c]):Object.entries(obj);
       const seen=new Set(cases.map(c=>fpOf(raw[c.id]||c)));
       const ids=new Set(cases.map(c=>c.id));
@@ -1315,10 +1402,11 @@ window.showPg = (n,btn)=>{
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
   $('pg-'+n).classList.add('on');
-  (btn||document.querySelectorAll('.tab')[['add','list','stats','account'].indexOf(n)]).classList.add('on');
+  (btn||document.querySelectorAll('.tab')[['add','list','stats','ledger','account'].indexOf(n)]).classList.add('on');
   $('contentEl').scrollTop=0;
   if(n==='stats') renderStats();
   if(n==='list') renderList();
+  if(n==='ledger') renderLedger();
 };
 function showSaveOk(sub){
   $('saveOk')?.remove();
