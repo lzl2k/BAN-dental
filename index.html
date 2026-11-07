@@ -1262,7 +1262,7 @@ thead{display:table-header-group}tfoot{display:table-row-group}tr,tbody{break-in
 
   return `<!DOCTYPE html><html dir="${dir}" lang="${lang}"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MAS Dental Lab — ${esc(title)}</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet"><style>${css}</style></head><body>
-<div class="hd"><div class="lg"><img class="logo" src="${MAS_LOGO}" alt="MAS Dental Lab"><div style="font-size:11px;color:#64748b;font-weight:700">${L.rep}</div></div>
+<div class="hd"><div class="lg"><img class="logo" src="${MAS_LOGO}" alt="MAS Dental Lab"></div>
 <div class="tb"><div style="font-size:16px;font-weight:900">${esc(title)}</div><div style="font-size:10px;color:#94a3b8;margin-top:2px">${L.issued}: ${dispDate(today())}</div><div style="font-size:11px;color:#475569;margin-top:5px"><b style="color:#2563eb">${A.teeth}</b> ${L.teeth} · <b>${A.cases}</b> ${t('cases')} · <b>${docs.length}</b> ${L.docN}</div></div></div>
 <div class="kp">${kpis}</div>
 <div class="sm"><div class="smh">${L.summary}</div><table><thead>${sumHead}</thead><tbody>${sumRows}</tbody><tfoot>${sumFoot}</tfoot></table></div>
