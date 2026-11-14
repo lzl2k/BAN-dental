@@ -269,6 +269,34 @@ mark.hl{background:#fef08a;color:#713f12;border-radius:3px;padding:0 1px;font-we
 @keyframes okFade{0%,75%{opacity:1}100%{opacity:0}}
 .spin{width:26px;height:26px;border:2.5px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:sp .75s linear infinite;margin:0 auto 12px}
 @keyframes sp{to{transform:rotate(360deg)}}
+
+/* FLOW */
+.role-chip{border:1.5px solid var(--sky2);background:var(--sky);color:var(--blue2);border-radius:20px;padding:5px 11px;font-size:.66rem;font-weight:800;cursor:pointer;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.flow{margin:2px 12px 8px;padding:9px 8px 8px;background:var(--bg);border-radius:10px;border:1px solid var(--border)}
+.fl-steps{display:flex;align-items:flex-start;cursor:pointer}
+.fl-step{flex:1;text-align:center;position:relative;min-width:0}
+.fl-step:not(:last-child)::after{content:'';position:absolute;top:10px;inset-inline-start:calc(50% + 12px);inset-inline-end:calc(-50% + 12px);height:2px;background:var(--border)}
+.fl-step.dn:not(:last-child)::after{background:#10b981}
+.fl-dot{width:22px;height:22px;border-radius:50%;margin:0 auto 3px;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:900;background:#e2e8f0;color:#64748b;position:relative;z-index:1}
+.fl-step.sent .fl-dot{background:#f59e0b;color:#fff;animation:pulse 1.4s infinite}
+.fl-step.recv .fl-dot{background:#2563eb;color:#fff}
+.fl-step.start .fl-dot{background:#7c3aed;color:#fff}
+.fl-step.dn .fl-dot{background:#10b981;color:#fff}
+.fl-lb{font-size:.56rem;font-weight:800;color:var(--text2);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fl-step.sent .fl-lb,.fl-step.recv .fl-lb,.fl-step.start .fl-lb{color:var(--text)}
+.fl-now{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;padding-top:7px;border-top:1px dashed var(--border)}
+.fl-txt{font-size:.68rem;font-weight:700;color:var(--text2);min-width:0}
+.fl-txt b{color:var(--text);font-weight:900}
+.fl-btn{padding:7px 13px;border:none;border-radius:8px;color:#fff;font-size:.7rem;font-weight:800;cursor:pointer;white-space:nowrap;background:var(--blue)}
+.fl-btn.dis{background:#cbd5e1;color:#64748b}
+.role-btn{width:100%;padding:13px;margin-bottom:7px;border:2px solid var(--border);border-radius:var(--r);background:var(--white);font-size:.9rem;font-weight:800;cursor:pointer;text-align:start;display:flex;align-items:center;gap:10px}
+.role-btn.on{border-color:var(--blue);background:var(--sky)}
+.tl-row{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.tl-row:last-child{border:none}
+.tl-dot{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:900;background:#e2e8f0;color:#64748b}
+.tl-nm{font-size:.84rem;font-weight:900}
+.tl-ev{font-size:.68rem;color:var(--text2);font-weight:700;margin-top:2px}
+.tl-ev b{color:var(--text)}
 ::-webkit-scrollbar{width:0;height:0}
 </style>
 </head>
@@ -290,7 +318,7 @@ mark.hl{background:#fef08a;color:#713f12;border-radius:3px;padding:0 1px;font-we
   <div class="hdr">
     <div class="hdr-main">
       <div><div class="hdr-mas">MAS</div><div class="hdr-sub">Dental Lab</div></div>
-      <div class="hdr-av" id="hdrAv"></div>
+      <div style="display:flex;gap:8px;align-items:center"><button class="role-chip" id="roleChip" onclick="openRole()"></button><div class="hdr-av" id="hdrAv"></div></div>
     </div>
     <div class="stats-bar">
       <div class="stat-item" onclick="goList('')"><div class="stat-n" id="hRev">0</div><div class="stat-l" data-i18n="hMonth"></div></div>
@@ -447,7 +475,7 @@ mark.hl{background:#fef08a;color:#713f12;border-radius:3px;padding:0 1px;font-we
       </div>
       <div class="info-item">
         <div class="info-ti" data-i18n="appUpdate"></div>
-        <div style="font-size:.7rem;color:var(--text2);margin-bottom:8px">Version <b>2026.11.02-discount</b></div>
+        <div style="font-size:.7rem;color:var(--text2);margin-bottom:8px">Version <b>2026.11.15-flow</b></div>
         <button class="btn-act" style="width:100%;justify-content:center;padding:11px" onclick="forceUpdate()" data-i18n="appUpdateBtn"></button>
       </div>
       <button class="btn-logout" onclick="doOut()" data-i18n="logout"></button>
@@ -509,6 +537,21 @@ mark.hl{background:#fef08a;color:#713f12;border-radius:3px;padding:0 1px;font-we
   <input class="inp" type="number" inputmode="numeric" min="0" id="pvInp" placeholder="0">
   <button class="btn-act" style="width:100%;justify-content:center;padding:10px;margin-top:8px" onclick="carryTotal()" data-i18n="lgCarry"></button>
   <div class="m-acts"><button class="m-can" onclick="closeOv('pvOv')" data-i18n="cancel"></button><button class="m-sav" onclick="savePrev()" data-i18n="save"></button></div>
+</div></div>
+
+<div class="ov" id="roleOv"><div class="sheet">
+  <div class="sh-hdr"><span class="sh-ttl" data-i18n="roleTitle"></span><button class="sh-x" onclick="closeOv('roleOv')">✕</button></div>
+  <div class="lbl" data-i18n="yourName"></div>
+  <input class="inp" id="roleName" data-i18n-ph="yourNamePh" style="margin-bottom:10px">
+  <div class="lbl" data-i18n="yourRole"></div>
+  <div id="roleList"></div>
+  <button class="btn-save" onclick="saveRole()" data-i18n="save"></button>
+</div></div>
+
+<div class="ov" id="flOv"><div class="sheet">
+  <div class="sh-hdr"><span class="sh-ttl" data-i18n="flTitle"></span><button class="sh-x" onclick="closeOv('flOv')">✕</button></div>
+  <div id="flHead" style="font-size:.95rem;font-weight:900;color:#1e3a8a;margin-bottom:6px"></div>
+  <div id="flBody"></div>
 </div></div>
 
 <div class="toast" id="toast"></div>
@@ -617,6 +660,29 @@ en:{
  renOk:'Renamed ✓',tLedger:'Accounts',lgSearch:'Search doctor...',lgRev:'Month revenue',lgPrev:'Previous balance',lgTotal:'Grand total',lgEditTitle:'Edit previous balance',lgCarry:'Carry forward grand total',lgInfo:'Month revenue',lgNone:'No doctors',repMonthCases:'This month cases total',repPrev:'Previous balance',repGrand:'Grand total',repPeriod:'Cases total',appUpdate:'App update',appUpdateBtn:'🔄 Clear cache and load latest',discount:'Discount',beforeDisc:'Subtotal',showMore:'Show more',impDone:'Imported {n} cases, skipped {d} duplicates',rExport:'Export report',rPdfBtn:'📄 Save as PDF',rPdfHint:'The print dialog will open: choose “Save as PDF”, then Save',rHtmlBtn:'⬇ Download report as HTML',rFallback:'Print failed, report downloaded as HTML',pdfBusy:'Creating PDF...',impOk:'Imported',impErr:'Invalid file',
  rTitle:'Financial Report',rLab:'MAS Dental Lab',rIssued:'Issued',rDoc:'Doctor',rCases:'Cases',rQty:'Qty',rTotal:'Total',rPaid:'Paid',rRem:'Remaining',rDate:'Date',rPat:'Patient',rWorks:'Works',rSum:'Doctors Summary',rByType:'By Work Type',rGrand:'Grand Total',rDetail:'Case Details',rPrint:'🖨️ Print / Save PDF',rAllCases:'All cases',rSign1:'Lab Manager',rSign2:'Accountant',rSign3:'Date',rMonthPeriod:'Month',rYear:'Year',rStatus:'Status'
 }};
+
+Object.assign(TR.ar,{
+ roleTitle:'من أنت؟',yourName:'اسمك',yourNamePh:'اكتب اسمك',yourRole:'القسم',
+ r_manager:'المدير / السوبرفايزر',r_delegate:'المندوب (سكنر)',r_design:'قسم الدزاين',r_cnc:'قسم CNC',r_ceramic:'قسم الخزف',
+ g_scan:'المندوب',g_design:'الدزاين',g_cnc:'CNC',g_ceramic:'الخزف',
+ f_wait:'لم تصل بعد',f_sent:'بانتظار الاستلام',f_recv:'تم الاستلام',f_start:'قيد العمل',f_done:'اكتمل',
+ a_send:'إرسال للدزاين',a_recv:'استلمت الحالة',a_start:'بدأت العمل',a_done:'انتهيت · إرسال للتالي',a_deliver:'تسليم للطبيب',
+ flTitle:'مسار الحالة',flAllDone:'جاهزة للتسليم',flSince:'منذ',flNoPerm:'هذا الإجراء لقسم آخر',flNeedRole:'اختر قسمك أولاً',
+ fSent:'وصلت',fRecv:'استلم',fStart:'بدأ العمل',fDone:'أنهى',fBy:'بواسطة',
+ q_mine:'عندي',q_send:'بانتظار الدزاين',q_design:'الدزاين',q_cnc:'CNC',q_ceramic:'الخزف',q_ready:'جاهزة',
+ stepOk:'تم ✓'
+});
+Object.assign(TR.en,{
+ roleTitle:'Who are you?',yourName:'Your name',yourNamePh:'Type your name',yourRole:'Section',
+ r_manager:'Manager / Supervisor',r_delegate:'Delegate (scanner)',r_design:'Design',r_cnc:'CNC',r_ceramic:'Ceramic',
+ g_scan:'Delegate',g_design:'Design',g_cnc:'CNC',g_ceramic:'Ceramic',
+ f_wait:'Not yet',f_sent:'Awaiting receipt',f_recv:'Received',f_start:'In progress',f_done:'Done',
+ a_send:'Send to Design',a_recv:'I received it',a_start:'I started work',a_done:'Done · send next',a_deliver:'Deliver to doctor',
+ flTitle:'Case route',flAllDone:'Ready for delivery',flSince:'since',flNoPerm:'This action belongs to another section',flNeedRole:'Pick your section first',
+ fSent:'Arrived',fRecv:'Received',fStart:'Started',fDone:'Finished',fBy:'by',
+ q_mine:'Mine',q_send:'Awaiting design',q_design:'Design',q_cnc:'CNC',q_ceramic:'Ceramic',q_ready:'Ready',
+ stepOk:'Done ✓'
+});
 let lang = localStorage.getItem('lang') || 'ar';
 const t = k => TR[lang][k] ?? TR.ar[k] ?? k;
 const typeName = k => TYPES[k]?.n || k;
@@ -664,7 +730,7 @@ function norm(id,c){
   const discType = c.discType==='p'?'p':'a', discVal = +c.discVal||0;
   const disc = discOf(sub,discType,discVal), total = sub-disc;
   return { id, sub, disc, discType, discVal, doc:c.doc||'', pat:c.pat||'', recv, due:c.due||'', status:STAT[c.status]?c.status:(c.items?'received':'delivered'),
-           items, total, paid:+c.paid||0, year:y, month:m, ts:c.ts||0 };
+           items, total, paid:+c.paid||0, year:y, month:m, ts:c.ts||0, flow:c.flow||null };
 }
 function dueState(c){
   if (c.status==='delivered' || !c.due) return null;
@@ -699,7 +765,7 @@ function applyLang(){
   $('exMonth').textContent='📅 '+t('exMonth');
   $('docMgrToggle').textContent = $('docMgrList').style.display==='none'?t('show'):t('hideL');
   $('fltBtn').textContent='⚙ '+t(fltOpen?'hide':'filter');
-  fillFilters(); initLedgerSel(); renderQuick(); renderStatusChips(); renderItems(); setFormMode();
+  updRoleChip(); fillFilters(); initLedgerSel(); renderQuick(); renderStatusChips(); renderItems(); setFormMode();
   refresh();
 }
 window.setLang = l => { lang=l; localStorage.setItem('lang',l); applyLang(); };
@@ -742,7 +808,7 @@ onAuthStateChanged(auth,u=>{
     onValue(cRef,snap=>{ raw=snap.val()||{}; cases=Object.entries(raw).map(([id,c])=>norm(id,c)); refresh(); });
     accRef=ref(db,`users/${uid}/accounts`);
     onValue(accRef,snap=>{ accRaw=snap.val()||{}; accounts={}; Object.values(accRaw).forEach(a=>{ if(a&&a.name) accounts[a.name]=+a.prev||0; }); if($('pg-ledger').classList.contains('on')) renderLedger(); });
-    initForm(); applyLang();
+    initForm(); applyLang(); if(!ROLE.r) openRole(); else updRoleChip();
   } else {
     uid=null; $('login').style.display='flex'; $('app').classList.remove('on');
   }
@@ -863,7 +929,7 @@ window.saveCase = async()=>{
   try{
     let newId=editingId;
     if(editingId){ await update(ref(db,`users/${uid}/cases/${editingId}`),data); }
-    else { const r=await push(cRef,{...data,ts:Date.now()}); newId=r.key; }
+    else { const r=await push(cRef,{...data,flow:newFlow(),ts:Date.now()}); newId=r.key; }
     clean.forEach(i=>{ if(i.price) priceMem[doc+'|'+i.type]=i.price; });
     localStorage.setItem('priceMem',JSON.stringify(priceMem));
     lastDoc=doc; localStorage.setItem('lastDoc',doc);
@@ -891,7 +957,7 @@ window.openEdit = loadForEdit;
 window.duplicateCase = async id=>{
   const c=cases.find(x=>x.id===id); if(!c) return;
   const r=today(), [y,m]=r.split('-').map(Number);
-  await push(cRef,{doc:c.doc,pat:c.pat,recv:r,due:'',status:'received',items:c.items,sub:c.sub,discType:c.discType,discVal:c.discVal,disc:c.disc,total:c.total,year:y,month:m,ts:Date.now()});
+  await push(cRef,{doc:c.doc,pat:c.pat,recv:r,due:'',status:'received',items:c.items,sub:c.sub,discType:c.discType,discVal:c.discVal,disc:c.disc,total:c.total,year:y,month:m,flow:newFlow(),ts:Date.now()});
   toast(t('dupOk'),'ok');
 };
 window.openDel = id=>{ delId=id; $('delOv').classList.add('on'); };
@@ -906,6 +972,101 @@ window.payFullCase = async id=>{
   await update(ref(db,`users/${uid}/cases/${id}`),{paid:c.total}); toast(t('savedOk'),'ok');
 };
 
+
+/* ══ FLOW (مراحل الأقسام) ══ */
+const STG=['scan','design','cnc','ceramic'];
+const STG_ROLE={scan:'delegate',design:'design',cnc:'cnc',ceramic:'ceramic'};
+const ROLES=['manager','delegate','design','cnc','ceramic'];
+const ROLE_ICO={manager:'👔',delegate:'🚗',design:'🖥️',cnc:'⚙️',ceramic:'🦷'};
+let ROLE={r:localStorage.getItem('role')||'',n:localStorage.getItem('roleName')||''};
+const roleLbl=r=>t('r_'+r);
+function updRoleChip(){ const b=$('roleChip'); if(b) b.textContent=ROLE.r?`${ROLE_ICO[ROLE.r]} ${ROLE.n||roleLbl(ROLE.r)}`:'👤 '+t('roleTitle'); }
+window.openRole = ()=>{
+  $('roleName').value=ROLE.n;
+  $('roleList').innerHTML=ROLES.map(r=>`<button class="role-btn${ROLE.r===r?' on':''}" data-r="${r}" onclick="pickRole('${r}')"><span style="font-size:1.3rem">${ROLE_ICO[r]}</span>${roleLbl(r)}</button>`).join('');
+  $('roleOv').classList.add('on');
+};
+let rolePick='';
+window.pickRole = r=>{ rolePick=r; document.querySelectorAll('#roleList .role-btn').forEach(b=>b.classList.toggle('on',b.dataset.r===r)); };
+window.saveRole = ()=>{
+  const r=rolePick||ROLE.r; if(!r){ toast(t('flNeedRole'),'err'); return; }
+  ROLE={r,n:$('roleName').value.trim()};
+  localStorage.setItem('role',ROLE.r); localStorage.setItem('roleName',ROLE.n);
+  closeOv('roleOv'); updRoleChip(); renderQuick(); renderList(); toast(t('savedOk'),'ok');
+};
+const whoNow=()=>(ROLE.n?ROLE.n+' · ':'')+roleLbl(ROLE.r);
+function newFlow(){ const n=Date.now(); return {scan:{s:'done',tD:n,by:whoNow()},design:{s:'wait'},cnc:{s:'wait'},ceramic:{s:'wait'}}; }
+const stState=(c,g)=>c.flow&&c.flow[g]?c.flow[g].s:'wait';
+function curStage(c){ if(!c.flow) return null; for(const g of STG){ if(stState(c,g)!=='done') return g; } return null; }
+function nextAction(c){
+  const g=curStage(c); if(!g) return null;
+  const s=stState(c,g);
+  if(g==='design'&&s==='wait') return {g,a:'send',role:'manager'};
+  if(s==='sent') return {g,a:'recv',role:STG_ROLE[g]};
+  if(s==='recv') return {g,a:'start',role:STG_ROLE[g]};
+  if(s==='start') return {g,a:'done',role:STG_ROLE[g]};
+  return null;
+}
+function stageMatch(c,q){
+  if(!c.flow||c.status==='delivered') return false;
+  const g=curStage(c), s=g?stState(c,g):'';
+  if(q==='send') return g==='design'&&s==='wait';
+  if(q==='ready') return !g;
+  if(q==='design'||q==='cnc'||q==='ceramic') return g===q&&s!=='wait';
+  if(q==='mine'){ const na=nextAction(c); return !!na&&(na.role===ROLE.r); }
+  return false;
+}
+const fTime=ts=>{ if(!ts) return '—'; const d=new Date(ts); return `${pad(d.getHours())}:${pad(d.getMinutes())} · ${pad(d.getDate())}/${pad(d.getMonth()+1)}`; };
+const since=ts=>{ if(!ts) return ''; const m=Math.max(0,Math.round((Date.now()-ts)/6e4)); if(m<60) return m+(lang==='ar'?' د':' m'); const h=Math.floor(m/60); if(h<24) return h+(lang==='ar'?' س':' h'); return Math.floor(h/24)+(lang==='ar'?' يوم':' d'); };
+function flowHtml(c){
+  if(!c.flow) return '';
+  const g=curStage(c), na=nextAction(c);
+  const steps=STG.map((k,i)=>{ const s=stState(c,k); const cls=s==='done'?'dn':s;
+    return `<div class="fl-step ${cls}"><div class="fl-dot">${s==='done'?'✓':i+1}</div><div class="fl-lb">${t('g_'+k)}</div></div>`; }).join('');
+  let now='';
+  if(!g){
+    now=c.status==='delivered'?`<span class="fl-txt"><b>${t('s_delivered')}</b> ✓</span>`:`<span class="fl-txt"><b>${t('flAllDone')}</b></span>${c.status!=='delivered'?`<button class="fl-btn" style="background:#10b981" onclick="deliverCase('${c.id}')">${t('a_deliver')}</button>`:''}`;
+  } else {
+    const st=c.flow[g], s=st.s;
+    const stateTxt=s==='wait'?t('f_wait'):t(s==='sent'?'f_sent':s==='recv'?'f_recv':'f_start');
+    const ts=s==='sent'?st.tS:s==='recv'?st.tR:s==='start'?st.tB:0;
+    const ok=na&&ROLE.r&&(ROLE.r==='manager'||na.role===ROLE.r);
+    now=`<span class="fl-txt"><b>${t('g_'+g)}</b> — ${stateTxt}${ts?` · ${t('flSince')} ${since(ts)}`:''}</span>${na?`<button class="fl-btn${ok?'':' dis'}" onclick="flowAct('${c.id}')">${t('a_'+na.a)}</button>`:''}`;
+  }
+  return `<div class="flow"><div class="fl-steps" onclick="openFlow('${c.id}')">${steps}</div><div class="fl-now">${now}</div></div>`;
+}
+window.flowAct = async id=>{
+  const c=cases.find(x=>x.id===id); if(!c) return;
+  const na=nextAction(c); if(!na) return;
+  if(!ROLE.r){ toast(t('flNeedRole'),'err'); openRole(); return; }
+  if(ROLE.r!=='manager'&&na.role!==ROLE.r){ toast(t('flNoPerm'),'err'); return; }
+  const n=Date.now(), by=whoNow(), g=na.g, b=`flow/${g}/`, u={};
+  if(na.a==='send'){ u[b+'s']='sent'; u[b+'tS']=n; u[b+'byS']=by; }
+  else if(na.a==='recv'){ u[b+'s']='recv'; u[b+'tR']=n; u[b+'byR']=by; }
+  else if(na.a==='start'){ u[b+'s']='start'; u[b+'tB']=n; u[b+'byB']=by; if(c.status==='received') u.status='progress'; }
+  else if(na.a==='done'){
+    u[b+'s']='done'; u[b+'tD']=n; u[b+'byD']=by;
+    const nx=STG[STG.indexOf(g)+1];
+    if(nx){ u[`flow/${nx}/s`]='sent'; u[`flow/${nx}/tS`]=n; u[`flow/${nx}/byS`]=by; }
+    else u.status='ready';
+  }
+  try{ await update(ref(db,`users/${uid}/cases/${id}`),u); toast(t('stepOk'),'ok'); navigator.vibrate&&navigator.vibrate(30); }
+  catch(e){ toast(t('errAny'),'err'); }
+};
+window.deliverCase = async id=>{ await update(ref(db,`users/${uid}/cases/${id}`),{status:'delivered'}); toast(t('savedOk'),'ok'); };
+window.openFlow = id=>{
+  const c=cases.find(x=>x.id===id); if(!c||!c.flow) return;
+  $('flHead').textContent=`${c.doc} · ${c.pat}`;
+  const row=(lbl,ts,by)=>ts?`<div>${lbl}: <b>${fTime(ts)}</b>${by?` · ${t('fBy')} ${esc(by)}`:''}</div>`:'';
+  $('flBody').innerHTML=STG.map((k,i)=>{
+    const f=c.flow[k]||{s:'wait'}, s=f.s;
+    const col=s==='done'?'#10b981':s==='start'?'#7c3aed':s==='recv'?'#2563eb':s==='sent'?'#f59e0b':'#e2e8f0';
+    const ev=row(t('fSent'),f.tS,f.byS)+row(t('fRecv'),f.tR,f.byR)+row(t('fStart'),f.tB,f.byB)+(k==='scan'&&f.tD?row(t('fDone'),f.tD,f.by):row(t('fDone'),f.tD,f.byD));
+    return `<div class="tl-row"><div class="tl-dot" style="background:${col};color:${s==='wait'?'#64748b':'#fff'}">${s==='done'?'✓':i+1}</div><div style="flex:1"><div class="tl-nm">${t('g_'+k)} <span style="font-size:.66rem;color:#64748b;font-weight:700">· ${t('f_'+s)}</span></div><div class="tl-ev">${ev||'—'}</div></div></div>`;
+  }).join('');
+  $('flOv').classList.add('on');
+};
+
 /* ══ REFRESH ══ */
 function refresh(){
   const now=new Date(), mn=now.getMonth()+1, yr=now.getFullYear();
@@ -914,6 +1075,7 @@ function refresh(){
   $('hLate').textContent=cases.filter(c=>dueState(c)?.cls==='late').length;
   $('hCasesM').textContent=cases.filter(c=>c.month===mn&&c.year===yr).length;
   fillDocFilter();
+  renderQuick();
   renderList();
   if($('pg-stats').classList.contains('on')) renderStats();
   if($('pg-ledger').classList.contains('on')) renderLedger();
@@ -921,10 +1083,11 @@ function refresh(){
 }
 
 /* ══ LIST ══ */
-const QUICK=['','active','late','soon','delivered'];
+const QUICK=['','mine','active','late','soon','send','design','cnc','ceramic','ready','delivered'];
 function renderQuick(){
-  const lbl={'':t('all'),active:t('active'),late:t('late'),soon:t('soon'),delivered:t('delivered'),unpaid:t('unpaid')};
-  $('quickEl').innerHTML=QUICK.map(q=>`<button class="chip${qStatus===q?' on':''}" onclick="setQuick('${q}')">${lbl[q]}</button>`).join('');
+  const lbl={'':t('all'),mine:t('q_mine'),active:t('active'),late:t('late'),soon:t('soon'),send:t('q_send'),design:t('q_design'),cnc:t('q_cnc'),ceramic:t('q_ceramic'),ready:t('q_ready'),delivered:t('delivered'),unpaid:t('unpaid')};
+  const qs=QUICK.filter(q=>q!=='mine'||ROLE.r&&ROLE.r!=='manager');
+  $('quickEl').innerHTML=qs.map(q=>{ const n=(q&&['mine','send','design','cnc','ceramic','ready'].includes(q))?cases.filter(c=>stageMatch(c,q)).length:0; return `<button class="chip${qStatus===q?' on':''}" onclick="setQuick('${q}')">${lbl[q]}${n?' · '+n:''}</button>`; }).join('');
 }
 window.setQuick = q=>{ qStatus=q; renderQuick(); renderList(); };
 window.goList = q=>{ showPg('list',document.querySelectorAll('.tab')[1]); setQuick(q); };
@@ -947,6 +1110,7 @@ function listFiltered(over){
     if(qStatus==='soon') l=l.filter(c=>dueState(c)?.cls==='soon');
     if(qStatus==='delivered') l=l.filter(c=>c.status==='delivered');
     if(qStatus==='unpaid') l=l.filter(c=>c.total-c.paid>0);
+    if(['mine','send','design','cnc','ceramic','ready'].includes(qStatus)) l=l.filter(c=>stageMatch(c,qStatus));
     const q=($('srchQ').value||'').trim().toLowerCase();
     if(q) l=l.filter(c=>c.pat.toLowerCase().includes(q)||c.doc.toLowerCase().includes(q)||c.items.some(i=>(i.shade||'').toLowerCase().includes(q)||typeName(i.type).toLowerCase().includes(q)));
   }
@@ -1000,6 +1164,7 @@ function cardHtml(c,idx,q){
         ${c.due?`<span class="tag ${ds?ds.cls:''}">📤 ${dispDate(c.due)}${ds?' · '+ds.txt:''}</span>`:''}
       </div>
       <div class="cc-items">${rows}</div>
+      ${flowHtml(c)}
       <div class="cc-acts">
         <button class="cc-act" onclick="duplicateCase('${c.id}')">⧉ ${t('copy')}</button>
         <button class="cc-act ed" onclick="openEdit('${c.id}')">✎ ${t('edit')}</button>
