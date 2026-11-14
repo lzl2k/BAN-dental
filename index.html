@@ -913,7 +913,7 @@ function refresh(){
   const now=new Date(), mn=now.getMonth()+1, yr=now.getFullYear();
   const cnt=k=>cases.filter(c=>c.status===k).length;
   $('hSdt').textContent=cnt('sdt'); $('hDes').textContent=cnt('design'); $('hCnc').textContent=cnt('cnc'); $('hCer').textContent=cnt('ceramic');
-  $('hCom').textContent=cases.filter(c=>c.status==='complete'&&c.month===mn&&c.year===yr).length;
+  $('hCom').textContent=cnt('complete');
   fillDocFilter();
   renderList();
   if($('pg-stats').classList.contains('on')) renderStats();
