@@ -315,6 +315,7 @@ mark.hl{background:#fef08a;color:#713f12;border-radius:3px;padding:0 1px;font-we
     <div class="page on" id="pg-add">
       <div class="sec-title" id="formTitle"></div>
       <div class="card">
+        <div class="fld"><div class="lbl" data-i18n="serial"></div><input class="inp" id="fSer" inputmode="numeric" maxlength="6" placeholder="0001" oninput="serTouched=true;this.value=this.value.replace(/\D/g,'')" style="font-weight:900;letter-spacing:2px;color:var(--blue3)"></div>
         <div class="row2">
           <div class="fld"><div class="lbl" data-i18n="doctor"></div><input class="inp" id="fDoc" readonly onclick="openDoc()" data-i18n-ph="pickDoc"></div>
           <div class="fld"><div class="lbl" data-i18n="patient"></div><input class="inp" id="fPat" data-i18n-ph="name"></div>
@@ -448,7 +449,7 @@ mark.hl{background:#fef08a;color:#713f12;border-radius:3px;padding:0 1px;font-we
       </div>
       <div class="info-item">
         <div class="info-ti" data-i18n="appUpdate"></div>
-        <div style="font-size:.7rem;color:var(--text2);margin-bottom:8px">Version <b>2026.11.15-stages</b></div>
+        <div style="font-size:.7rem;color:var(--text2);margin-bottom:8px">Version <b>2026.11.15-serial</b></div>
         <button class="btn-act" style="width:100%;justify-content:center;padding:11px" onclick="forceUpdate()" data-i18n="appUpdateBtn"></button>
       </div>
       <button class="btn-logout" onclick="doOut()" data-i18n="logout"></button>
@@ -578,7 +579,7 @@ ar:{
  searchPh:'ابحث بالمريض أو الطبيب أو اللون...',all:'الكل',active:'غير مكتملة',late:'متأخرة',soon:'قريبة التسليم',delivered:'مسلّمة',unpaid:'غير مدفوعة',
  filter:'فلترة',hide:'إخفاء',allYears:'كل السنوات',allMonths:'كل الأشهر',allDocs:'كل الأطباء',allTypes:'كل الأنواع',payAll:'كل الدفعات',payUnpaid:'عليها متبقي',payPaid:'مدفوعة بالكامل',
  cases:'حالة',noCases:'لا توجد حالات',noResults:'لا نتائج',copy:'نسخ',edit:'تعديل',del:'حذف',pay:'تسديد',
- lateBy:'متأخرة',today:'اليوم',tomorrow:'غداً',inDays:'بعد',lateAlert:'حالات متأخرة عن موعد التسليم',soonAlert:'حالات تُسلَّم خلال يومين',
+ lateBy:'متأخرة',today:'اليوم',tomorrow:'غداً',inDays:'بعد',lateAlert:'حالات متأخرة عن موعد التسليم',soonAlert:'حالات تُسلَّم خلال يوم',
  delTitle:'حذف الحالة',delSub:'هل أنت متأكد؟ لا يمكن التراجع.',confirmDel:'تأكيد الحذف',
  exMonth:'تصدير تقرير هذا الشهر',
  kRevenue:'الإيراد الكلي',kCollected:'المحصّل',kOwed:'المتبقي',kCases:'الحالات',kTeeth:'الأسنان',kAppl:'أجهزة / أفكاك',
@@ -587,7 +588,7 @@ ar:{
  language:'اللغة / Language',docMgr:'إدارة الأطباء',show:'عرض',hideL:'إخفاء',rename:'تعديل الاسم',renameDoc:'تعديل اسم الطبيب',renameHint:'سيتم تحديث جميع حالاته تلقائياً',
  backup:'نسخة احتياطية',exportJson:'تصدير JSON',importJson:'استيراد JSON',logout:'تسجيل الخروج',logoutQ:'تأكيد تسجيل الخروج؟',
  docSearchPh:'ابحث أو اكتب اسماً جديداً',noDoc:'لا يوجد أطباء بعد',
- savedTitle:'تم الحفظ بنجاح',savedOk:'تم الحفظ ✓',delOk:'تم الحذف',csvOk:'تم التصدير',dupOk:'تم نسخ الحالة',
+ serial:'رقم الوصل',errSerDup:'رقم الوصل مستخدم من قبل',savedTitle:'تم الحفظ بنجاح',savedOk:'تم الحفظ ✓',delOk:'تم الحذف',csvOk:'تم التصدير',dupOk:'تم نسخ الحالة',
  errDoc:'اختر الطبيب',errPat:'أدخل اسم المريض',errType:'اختر نوع العمل',errTeeth:'أدخل عدد الأسنان',errArch:'اختر Arch I أو II',errNo:'لا توجد حالات',errLogin:'خطأ في تسجيل الدخول',errAny:'حدث خطأ، حاول مجدداً',
  renOk:'تم تغيير الاسم ✓',tLedger:'الحسابات',lgSearch:'ابحث عن طبيب...',lgRev:'إيراد الشهر',lgPrev:'المتبقي السابق',lgTotal:'المجموع الكلي',lgEditTitle:'تعديل المتبقي من الإيرادات السابقة',lgCarry:'ترحيل المجموع الكلي',lgInfo:'إيراد الشهر',lgNone:'لا يوجد أطباء',repMonthCases:'إجمالي حالات هذا الشهر',repPrev:'المتبقي من الإيرادات السابقة',repGrand:'المجموع الكلي',repPeriod:'إجمالي الحالات',appUpdate:'تحديث التطبيق',appUpdateBtn:'🔄 مسح الكاش وتحميل آخر نسخة',discount:'الخصم',beforeDisc:'المجموع قبل الخصم',showMore:'عرض المزيد',impDone:'تم استيراد {n} حالة وتجاهل {d} مكررة',rExport:'تصدير التقرير',rPdfBtn:'📄 حفظ كملف PDF',rPdfHint:'ستظهر نافذة الطباعة، اختر «حفظ كملف PDF» ثم اضغط حفظ',rHtmlBtn:'⬇ تحميل التقرير كملف HTML',rFallback:'تعذّرت الطباعة، تم تحميل التقرير كملف HTML',pdfBusy:'جارٍ إنشاء ملف PDF...',impOk:'تم الاستيراد',impErr:'ملف غير صالح',
  rTitle:'تقرير مالي',rLab:'مختبر MAS لطب الأسنان',rIssued:'تاريخ الإصدار',rDoc:'الطبيب',rCases:'الحالات',rQty:'الكمية',rTotal:'الإجمالي',rPaid:'المدفوع',rRem:'المتبقي',rDate:'التاريخ',rPat:'المريض',rWorks:'الأعمال',rSum:'ملخص الأطباء',rByType:'حسب نوع العمل',rGrand:'الإجمالي العام',rDetail:'تفاصيل الحالات',rPrint:'🖨️ طباعة / حفظ PDF',rAllCases:'كل الحالات',rSign1:'مدير المختبر',rSign2:'المحاسب',rSign3:'التاريخ',rMonthPeriod:'شهر',rYear:'السنة',rStatus:'الحالة'
@@ -605,7 +606,7 @@ en:{
  searchPh:'Search patient, doctor or shade...',all:'All',active:'Not complete',late:'Overdue',soon:'Due soon',delivered:'Delivered',unpaid:'Unpaid',
  filter:'Filter',hide:'Hide',allYears:'All Years',allMonths:'All Months',allDocs:'All Doctors',allTypes:'All Types',payAll:'All payments',payUnpaid:'Has balance',payPaid:'Fully paid',
  cases:'cases',noCases:'No cases',noResults:'No results',copy:'Copy',edit:'Edit',del:'Delete',pay:'Settle',
- lateBy:'Overdue',today:'Today',tomorrow:'Tomorrow',inDays:'In',lateAlert:'cases overdue',soonAlert:'cases due within 2 days',
+ lateBy:'Overdue',today:'Today',tomorrow:'Tomorrow',inDays:'In',lateAlert:'cases overdue',soonAlert:'cases due within 1 day',
  delTitle:'Delete Case',delSub:'Are you sure? This cannot be undone.',confirmDel:'Confirm Delete',
  exMonth:'Export This Month Report',
  kRevenue:'Total Revenue',kCollected:'Collected',kOwed:'Outstanding',kCases:'Cases',kTeeth:'Teeth',kAppl:'Appliances / Arches',
@@ -614,7 +615,7 @@ en:{
  language:'Language / اللغة',docMgr:'Doctor Manager',show:'Show',hideL:'Hide',rename:'Rename',renameDoc:'Rename Doctor',renameHint:'All of their cases will be updated',
  backup:'Backup',exportJson:'Export JSON',importJson:'Import JSON',logout:'Sign Out',logoutQ:'Confirm sign out?',
  docSearchPh:'Search or type a new name',noDoc:'No doctors yet',
- savedTitle:'Saved successfully',savedOk:'Saved ✓',delOk:'Deleted',csvOk:'Exported',dupOk:'Case duplicated',
+ serial:'Receipt No.',errSerDup:'Receipt number already used',savedTitle:'Saved successfully',savedOk:'Saved ✓',delOk:'Deleted',csvOk:'Exported',dupOk:'Case duplicated',
  errDoc:'Select doctor',errPat:'Enter patient name',errType:'Select work type',errTeeth:'Enter number of teeth',errArch:'Select Arch I or II',errNo:'No cases found',errLogin:'Login error',errAny:'Error, try again',
  renOk:'Renamed ✓',tLedger:'Accounts',lgSearch:'Search doctor...',lgRev:'Month revenue',lgPrev:'Previous balance',lgTotal:'Grand total',lgEditTitle:'Edit previous balance',lgCarry:'Carry forward grand total',lgInfo:'Month revenue',lgNone:'No doctors',repMonthCases:'This month cases total',repPrev:'Previous balance',repGrand:'Grand total',repPeriod:'Cases total',appUpdate:'App update',appUpdateBtn:'🔄 Clear cache and load latest',discount:'Discount',beforeDisc:'Subtotal',showMore:'Show more',impDone:'Imported {n} cases, skipped {d} duplicates',rExport:'Export report',rPdfBtn:'📄 Save as PDF',rPdfHint:'The print dialog will open: choose “Save as PDF”, then Save',rHtmlBtn:'⬇ Download report as HTML',rFallback:'Print failed, report downloaded as HTML',pdfBusy:'Creating PDF...',impOk:'Imported',impErr:'Invalid file',
  rTitle:'Financial Report',rLab:'MAS Dental Lab',rIssued:'Issued',rDoc:'Doctor',rCases:'Cases',rQty:'Qty',rTotal:'Total',rPaid:'Paid',rRem:'Remaining',rDate:'Date',rPat:'Patient',rWorks:'Works',rSum:'Doctors Summary',rByType:'By Work Type',rGrand:'Grand Total',rDetail:'Case Details',rPrint:'🖨️ Print / Save PDF',rAllCases:'All cases',rSign1:'Lab Manager',rSign2:'Accountant',rSign3:'Date',rMonthPeriod:'Month',rYear:'Year',rStatus:'Status'
@@ -666,7 +667,7 @@ function norm(id,c){
   const discType = c.discType==='p'?'p':'a', discVal = +c.discVal||0;
   const disc = discOf(sub,discType,discVal), total = sub-disc;
   return { id, sub, disc, discType, discVal, doc:c.doc||'', pat:c.pat||'', recv, due:c.due||'', status:STAT[c.status]?c.status:(LEGACY[c.status]||(c.items?'sdt':'complete')),
-           items, total, paid:+c.paid||0, year:y, month:m, ts:c.ts||0 };
+           items, total, paid:+c.paid||0, year:y, month:m, ts:c.ts||0, ser:+c.ser||0 };
 }
 function dueState(c){
   if (c.status==='complete' || !c.due) return null;
@@ -674,7 +675,7 @@ function dueState(c){
   if (d<0) return {cls:'late',txt:`${t('lateBy')} ${-d} ${t('days')}`};
   if (d===0) return {cls:'soon',txt:t('today')};
   if (d===1) return {cls:'soon',txt:t('tomorrow')};
-  if (d===2) return {cls:'soon',txt:`${t('inDays')} 2 ${t('days')}`};
+  if (d===2) return {cls:'',txt:`${t('inDays')} 2 ${t('days')}`};
   return {cls:'',txt:`${t('inDays')} ${d} ${t('days')}`};
 }
 
@@ -751,7 +752,12 @@ onAuthStateChanged(auth,u=>{
 });
 
 /* ══ FORM ══ */
+const serFmt=n=>n?String(n).padStart(4,'0'):'';
+let serTouched=false;
+const nextSer=()=>cases.reduce((m,c)=>Math.max(m,c.ser||0),0)+1;
+function fillSer(){ if(!editingId&&!serTouched&&$('fSer')) $('fSer').value=serFmt(nextSer()); }
 function initForm(){
+  serTouched=false; $('fSer').value=serFmt(nextSer());
   $('fRecv').value=today(); $('fDue').value=''; $('fPat').value=''; $('fDoc').value=lastDoc;
   items=[newItem()]; status='sdt'; editingId=null; discType='a'; discVal=''; $('discInp').value='';
   renderStatusChips(); renderItems(); setFormMode();
@@ -855,12 +861,17 @@ window.saveCase = async()=>{
     if(k==='unit' && !(+it.teeth>=1)){ toast(t('errTeeth'),'err'); return; }
     if(k==='arch' && !it.arch){ toast(t('errArch'),'err'); return; }
   }
+  let ser=+$('fSer').value||0;
+  if(!ser&&!editingId) ser=nextSer();
+  if(ser&&cases.some(c=>c.ser===ser&&c.id!==editingId)){
+    if(!serTouched&&!editingId) ser=nextSer(); else { toast(t('errSerDup'),'err'); flag('fSer'); return; }
+  }
   const recv=$('fRecv').value||today(), due=$('fDue').value||'';
   const [y,m]=recv.split('-').map(Number);
   const clean=items.map(it=>({type:it.type,teeth:TYPES[it.type].k==='unit'?+it.teeth:0,price:+it.price||0,shade:it.shade||'',arch:TYPES[it.type].k==='arch'?+it.arch:0}));
   const sub=clean.reduce((s,i)=>s+itemTotal(i),0);
   const disc=discOf(sub,discType,discVal), total=sub-disc;
-  const data={doc,pat,recv,due,status,items:clean,sub,discType,discVal:+discVal||0,disc,total,year:y,month:m};
+  const data={ser,doc,pat,recv,due,status,items:clean,sub,discType,discVal:+discVal||0,disc,total,year:y,month:m};
   const btn=$('btnSave'); btn.style.opacity='.6'; btn.style.pointerEvents='none';
   try{
     let newId=editingId;
@@ -881,7 +892,7 @@ window.cancelEdit = ()=>initForm();
 function loadForEdit(id){
   const c=cases.find(x=>x.id===id); if(!c) return;
   editingId=id;
-  $('fDoc').value=c.doc; $('fPat').value=c.pat; $('fRecv').value=c.recv||today(); $('fDue').value=c.due||'';
+  serTouched=true; $('fSer').value=serFmt(c.ser); $('fDoc').value=c.doc; $('fPat').value=c.pat; $('fRecv').value=c.recv||today(); $('fDue').value=c.due||'';
   status=c.status; items=c.items.map(i=>({type:i.type,teeth:i.teeth||'',price:i.price||'',shade:i.shade,arch:i.arch}));
   discType=c.discType; discVal=c.discVal?String(c.discVal):''; $('discInp').value=discVal;
   renderStatusChips(); renderItems(); setFormMode();
@@ -893,7 +904,7 @@ window.openEdit = loadForEdit;
 window.duplicateCase = async id=>{
   const c=cases.find(x=>x.id===id); if(!c) return;
   const r=today(), [y,m]=r.split('-').map(Number);
-  await push(cRef,{doc:c.doc,pat:c.pat,recv:r,due:'',status:'sdt',items:c.items,sub:c.sub,discType:c.discType,discVal:c.discVal,disc:c.disc,total:c.total,year:y,month:m,ts:Date.now()});
+  await push(cRef,{ser:nextSer(),doc:c.doc,pat:c.pat,recv:r,due:'',status:'sdt',items:c.items,sub:c.sub,discType:c.discType,discVal:c.discVal,disc:c.disc,total:c.total,year:y,month:m,ts:Date.now()});
   toast(t('dupOk'),'ok');
 };
 window.openDel = id=>{ delId=id; $('delOv').classList.add('on'); };
@@ -915,6 +926,7 @@ function refresh(){
   $('hSdt').textContent=cnt('sdt'); $('hDes').textContent=cnt('design'); $('hCnc').textContent=cnt('cnc'); $('hCer').textContent=cnt('ceramic');
   $('hCom').textContent=cnt('complete');
   fillDocFilter();
+  fillSer();
   renderList();
   if($('pg-stats').classList.contains('on')) renderStats();
   if($('pg-ledger').classList.contains('on')) renderLedger();
@@ -949,7 +961,7 @@ function listFiltered(over){
     if(STAT_ORDER.includes(qStatus)) l=l.filter(c=>c.status===qStatus);
     if(qStatus==='unpaid') l=l.filter(c=>c.total-c.paid>0);
     const q=($('srchQ').value||'').trim().toLowerCase();
-    if(q) l=l.filter(c=>c.pat.toLowerCase().includes(q)||c.doc.toLowerCase().includes(q)||c.items.some(i=>(i.shade||'').toLowerCase().includes(q)||typeName(i.type).toLowerCase().includes(q)));
+    if(q) l=l.filter(c=>(c.ser&&(String(c.ser)===q.replace(/^0+/,'')||serFmt(c.ser).includes(q)))||c.pat.toLowerCase().includes(q)||c.doc.toLowerCase().includes(q)||c.items.some(i=>(i.shade||'').toLowerCase().includes(q)||typeName(i.type).toLowerCase().includes(q)));
   }
   if(!over && (qStatus==='active'||qStatus==='late'||qStatus==='soon')) l.sort((a,b)=>(a.due||'9999').localeCompare(b.due||'9999'));
   else l.sort((a,b)=>(b.ts||0)-(a.ts||0));
@@ -993,7 +1005,7 @@ function cardHtml(c,idx,q){
       return `<div class="ci"><span class="ci-dot" style="background:${T.c}"></span><span class="ci-n">${T.n}</span><span class="ci-v">${sh}</span><span class="ci-cnt" style="color:${T.c}">${cnt}</span></div>`;
     }).join('');
     return `<div class="cc" id="cc-${c.id}" style="animation-delay:${Math.min(idx,8)*30}ms;border-right:4px solid ${TYPES[c.items[0].type].c}">
-      <div class="cc-top"><div style="min-width:0"><div class="cc-doc">${hl(c.doc,q)}</div><div class="cc-pat">${hl(c.pat,q)}</div></div><div class="cc-total">${money(c.total)}</div></div>
+      <div class="cc-top"><div style="min-width:0"><div class="cc-doc">${hl(c.doc,q)}</div><div class="cc-pat">${c.ser?`<b style="color:var(--blue);letter-spacing:1px;margin-inline-end:6px">#${serFmt(c.ser)}</b>`:''}${hl(c.pat,q)}</div></div><div class="cc-total">${money(c.total)}</div></div>
       <div class="cc-tags">
         <button class="tag btnlike" style="background:${S.bg};color:${S.c}" onclick="cycleStatus('${c.id}')">● ${t('s_'+c.status)}</button>
         <span class="tag">📥 ${dispDate(c.recv)}</span>
@@ -1155,8 +1167,8 @@ function worksText(c){
 window.doCSV = ()=>{
   const list=listFiltered(); if(!list.length){ toast(t('errNo'),'err'); return; }
   const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
-  const rows=['Received,Due,Status,Doctor,Patient,Type,Qty,Price,Arch,Shade,Item Total,Case Subtotal,Discount,Case Total'];
-  list.forEach(c=>c.items.forEach(i=>rows.push([c.recv,c.due,c.status,q(c.doc),q(c.pat),TYPES[i.type].n,itemQty(i),i.price,i.arch?(i.arch===1?'I':'II'):'',i.shade,itemTotal(i),c.sub,c.disc,c.total].join(','))));
+  const rows=['No,Received,Due,Status,Doctor,Patient,Type,Qty,Price,Arch,Shade,Item Total,Case Subtotal,Discount,Case Total'];
+  list.forEach(c=>c.items.forEach(i=>rows.push([serFmt(c.ser),c.recv,c.due,c.status,q(c.doc),q(c.pat),TYPES[i.type].n,itemQty(i),i.price,i.arch?(i.arch===1?'I':'II'):'',i.shade,itemTotal(i),c.sub,c.disc,c.total].join(','))));
   dl('\uFEFF'+rows.join('\n'),`mas-dental-${Date.now()}.csv`,'text/csv;charset=utf-8'); toast(t('csvOk'),'ok');
 };
 function dl(content,name,type){
@@ -1219,7 +1231,7 @@ function buildReport(list,title,opts){
       const sub=[dispDate(c.recv)+(ar?' ← ':' → ')+(c.due?dispDate(c.due):'—')].join('');
       return `<tbody style="background:${bg}">`+c.items.map((i,j)=>{
         const T=TYPES[i.type];
-        const first=j===0?`<td rowspan="${n}" class="g ix">${ci+1}</td><td rowspan="${n}" class="l pt">${esc(c.pat||'—')}<div class="dt">${sub}</div></td>`:'';
+        const first=j===0?`<td rowspan="${n}" class="g ix">${c.ser?serFmt(c.ser):ci+1}</td><td rowspan="${n}" class="l pt">${esc(c.pat||'—')}<div class="dt">${sub}</div></td>`:'';
         const last=j===0?`<td rowspan="${n}" class="b nw" style="color:#047857">${c.disc>0?`<div class="old">${fmt(c.sub)}</div><div class="dsc">${L.disc} ${c.discType==='p'?'<bdi>'+c.discVal+'%</bdi> · ':''}<bdi>−${fmt(c.disc)}</bdi></div>`:''}${fmt(c.total)}</td>`:'';
         return `<tr>${first}<td><span class="tp" style="background:${tint(T.c)};color:${T.c};border-color:${T.c}">${T.n}</span></td><td class="qn" style="color:${T.c}">${repCount(i)}</td><td>${(T.k==='unit'&&i.shade)?`<span class="sh">${esc(i.shade)}</span>`:'<span style="color:#cbd5e1">—</span>'}</td><td class="up">${i.price?fmt(i.price):'—'}</td><td class="am">${i.price?fmt(itemTotal(i)):'—'}</td>${last}</tr>`;
       }).join('')+`</tbody>`;
@@ -1252,7 +1264,7 @@ thead{display:table-header-group}tfoot{display:table-row-group}tr,tbody{break-in
 .dhw{padding:0!important;border:0!important;background:none!important}.dh{text-align:initial;background:linear-gradient(135deg,#1e3a8a,#2563eb);padding:10px 16px;border-radius:10px 10px 0 0;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
 .dhn{font-size:22px;font-weight:900;color:#fff;display:flex;align-items:center;gap:10px}.av{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.35);display:inline-flex;align-items:center;justify-content:center;font-size:14px}
 .dhc{display:flex;gap:5px;flex-wrap:wrap}.chip{background:#fff;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:900}.chip.tt{background:#bfdbfe;color:#1e3a8a}.chip.pr{background:#bbf7d0;color:#14532d}
-.dt2 th.l{text-align:${st}}.ix{width:28px}.pt{font-size:13px;font-weight:800}.dt{font-size:9px;color:#94a3b8;font-weight:600;margin-top:1px}
+.dt2 th.l{text-align:${st}}.ix{width:34px;font-size:10px}.pt{font-size:13px;font-weight:800}.dt{font-size:9px;color:#94a3b8;font-weight:600;margin-top:1px}
 .tp{display:inline-block;padding:2px 10px;border-radius:8px;border:1.5px solid;font-size:11px;font-weight:900}.qn{font-size:18px;font-weight:900;line-height:1.1}
 .old{text-decoration:line-through;color:#94a3b8;font-size:10px;font-weight:600}.dsc{color:#dc2626;font-size:10px;font-weight:800}.up,.am{font-size:12px;font-weight:700;white-space:nowrap}.am{font-weight:900;color:#0f172a}
 .sh{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700;background:#fef3c7;color:#92400e}
