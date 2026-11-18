@@ -269,6 +269,17 @@ mark.hl{background:#fef08a;color:#713f12;border-radius:3px;padding:0 1px;font-we
 @keyframes okFade{0%,75%{opacity:1}100%{opacity:0}}
 .spin{width:26px;height:26px;border:2.5px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:sp .75s linear infinite;margin:0 auto 12px}
 @keyframes sp{to{transform:rotate(360deg)}}
+
+/* FIN */
+.fin-locked .fin{display:none!important}
+.lock-btn{width:34px;height:34px;border-radius:50%;border:2px solid var(--sky2);background:var(--sky);font-size:.9rem;cursor:pointer;display:none;align-items:center;justify-content:center;padding:0}
+.lock-btn.show{display:flex}.lock-btn.open{background:#ecfdf5;border-color:#a7f3d0}
+.fin-st{font-size:.72rem;font-weight:700;color:var(--text2);line-height:1.7;margin-bottom:9px}
+.fin-warn{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:8px;padding:9px 11px;font-size:.7rem;font-weight:700;line-height:1.7;margin-bottom:10px}
+.fin-ok{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;border-radius:8px;padding:8px 11px;font-size:.7rem;font-weight:800;margin-bottom:8px}
+.fin-chk{display:flex;gap:8px;align-items:flex-start;font-size:.72rem;font-weight:700;margin:10px 0;line-height:1.6}
+.fin-chk input{margin-top:3px;flex-shrink:0}
+.pw-err{color:var(--red);font-size:.72rem;font-weight:800;min-height:18px;margin:5px 0}
 ::-webkit-scrollbar{width:0;height:0}
 </style>
 </head>
@@ -290,7 +301,7 @@ mark.hl{background:#fef08a;color:#713f12;border-radius:3px;padding:0 1px;font-we
   <div class="hdr">
     <div class="hdr-main">
       <div><div class="hdr-mas">MAS</div><div class="hdr-sub">Dental Lab</div></div>
-      <div class="hdr-av" id="hdrAv"></div>
+      <div style="display:flex;gap:8px;align-items:center"><button class="lock-btn" id="lockBtn" onclick="lockClick()">🔒</button><div class="hdr-av" id="hdrAv"></div></div>
     </div>
     <div class="stats-bar">
       <div class="stat-item" onclick="goList('sdt')"><div class="stat-n" id="hSdt" style="color:#0891b2">0</div><div class="stat-l" data-i18n="s_sdt"></div></div>
@@ -304,8 +315,8 @@ mark.hl{background:#fef08a;color:#713f12;border-radius:3px;padding:0 1px;font-we
   <div class="tabs">
     <button class="tab on" onclick="showPg('add',this)"><div class="t-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><span data-i18n="tAdd"></span></button>
     <button class="tab" onclick="showPg('list',this)"><div class="t-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><span data-i18n="tCases"></span></button>
-    <button class="tab" onclick="showPg('stats',this)"><div class="t-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><span data-i18n="tStats"></span></button>
-    <button class="tab" onclick="showPg('ledger',this)"><div class="t-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/><circle cx="17" cy="15" r="1.5"/></svg></div><span data-i18n="tLedger"></span></button>
+    <button class="tab fin" onclick="showPg('stats',this)"><div class="t-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><span data-i18n="tStats"></span></button>
+    <button class="tab fin" onclick="showPg('ledger',this)"><div class="t-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/><circle cx="17" cy="15" r="1.5"/></svg></div><span data-i18n="tLedger"></span></button>
     <button class="tab" onclick="showPg('account',this)"><div class="t-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span data-i18n="tAcc"></span></button>
   </div>
 
@@ -338,7 +349,7 @@ mark.hl{background:#fef08a;color:#713f12;border-radius:3px;padding:0 1px;font-we
       <div id="itemsEl"></div>
       <button class="btn-add-item" onclick="addItem()" data-i18n="addWork"></button>
 
-      <div class="totbox">
+      <div class="totbox fin">
         <div class="trow" style="border:none;margin:0;padding:0"><span data-i18n="beforeDisc"></span><b id="subTotal">0</b></div>
         <div class="trow"><span data-i18n="discount"></span><span style="display:flex;gap:6px;align-items:center"><input class="paidin" type="number" inputmode="numeric" min="0" id="discInp" placeholder="0" oninput="onDisc(this.value)"><button class="fullb" id="discBtn" onclick="toggleDiscT()" style="min-width:42px"></button></span></div>
         <div class="trow" style="border:none;padding-top:0;margin-top:4px;color:#fecaca"><span></span><b id="discShow"></b></div>
@@ -362,10 +373,10 @@ mark.hl{background:#fef08a;color:#713f12;border-radius:3px;padding:0 1px;font-we
       <div class="flt-bar">
         <button class="btn-act" id="fltBtn" onclick="toggleFlt()"></button>
         <span style="flex:1"></span>
-        <button class="btn-act" onclick="doCSV()">CSV</button>
-        <button class="btn-act pdf" onclick="exportPDF()">PDF</button>
+        <button class="btn-act fin" onclick="doCSV()">CSV</button>
+        <button class="btn-act pdf fin" onclick="exportPDF()">PDF</button>
       </div>
-      <button class="btn-month" onclick="exportMonth()" id="exMonth"></button>
+      <button class="btn-month fin" onclick="exportMonth()" id="exMonth"></button>
       <div id="fltPanel" style="display:none">
         <div class="flt-row">
           <select class="flt-sel" id="flYr" onchange="renderList()"></select>
@@ -439,6 +450,7 @@ mark.hl{background:#fef08a;color:#713f12;border-radius:3px;padding:0 1px;font-we
         </div>
         <div id="docMgrList" style="display:none;margin-top:8px;max-height:260px;overflow-y:auto"></div>
       </div>
+      <div class="info-item" id="finCard"></div>
       <div class="info-item">
         <div class="info-ti" data-i18n="backup"></div>
         <div class="btn-row">
@@ -449,7 +461,7 @@ mark.hl{background:#fef08a;color:#713f12;border-radius:3px;padding:0 1px;font-we
       </div>
       <div class="info-item">
         <div class="info-ti" data-i18n="appUpdate"></div>
-        <div style="font-size:.7rem;color:var(--text2);margin-bottom:8px">Version <b>2026.11.15-serial</b></div>
+        <div style="font-size:.7rem;color:var(--text2);margin-bottom:8px">Version <b>2026.11.19-fin</b></div>
         <button class="btn-act" style="width:100%;justify-content:center;padding:11px" onclick="forceUpdate()" data-i18n="appUpdateBtn"></button>
       </div>
       <button class="btn-logout" onclick="doOut()" data-i18n="logout"></button>
@@ -511,6 +523,37 @@ mark.hl{background:#fef08a;color:#713f12;border-radius:3px;padding:0 1px;font-we
   <input class="inp" type="number" inputmode="numeric" min="0" id="pvInp" placeholder="0">
   <button class="btn-act" style="width:100%;justify-content:center;padding:10px;margin-top:8px" onclick="carryTotal()" data-i18n="lgCarry"></button>
   <div class="m-acts"><button class="m-can" onclick="closeOv('pvOv')" data-i18n="cancel"></button><button class="m-sav" onclick="savePrev()" data-i18n="save"></button></div>
+</div></div>
+
+<div class="ov" id="finOv"><div class="sheet">
+  <div class="sh-hdr"><span class="sh-ttl" data-i18n="finUnlockTitle"></span><button class="sh-x" onclick="closeOv('finOv')">✕</button></div>
+  <div class="lbl" data-i18n="finPass"></div>
+  <input class="inp" type="password" id="fuPass" autocomplete="current-password" onkeydown="if(event.key==='Enter')doUnlock()">
+  <div class="pw-err" id="fuErr"></div>
+  <button class="btn-save" id="fuBtn" onclick="doUnlock()" data-i18n="finUnlockBtn"></button>
+</div></div>
+
+<div class="ov" id="finSetOv"><div class="sheet">
+  <div class="sh-hdr"><span class="sh-ttl" data-i18n="finSetupTitle"></span><button class="sh-x" onclick="closeOv('finSetOv')">✕</button></div>
+  <div class="fin-warn" data-i18n="finWarn"></div>
+  <div class="lbl" data-i18n="finPass"></div>
+  <input class="inp" type="password" id="fsP1" autocomplete="new-password">
+  <div class="lbl" style="margin-top:8px" data-i18n="finPass2"></div>
+  <input class="inp" type="password" id="fsP2" autocomplete="new-password">
+  <label class="fin-chk"><input type="checkbox" id="fsAck"><span data-i18n="finAck"></span></label>
+  <div class="pw-err" id="fsErr"></div>
+  <button class="btn-save" id="fsBtn" onclick="doSetup()" data-i18n="finSetupBtn"></button>
+</div></div>
+
+<div class="ov" id="finChgOv"><div class="sheet">
+  <div class="sh-hdr"><span class="sh-ttl" data-i18n="finChgTitle"></span><button class="sh-x" onclick="closeOv('finChgOv')">✕</button></div>
+  <div class="fin-warn" data-i18n="finChgWarn"></div>
+  <div class="lbl" data-i18n="finNewPass"></div>
+  <input class="inp" type="password" id="fcP1" autocomplete="new-password">
+  <div class="lbl" style="margin-top:8px" data-i18n="finPass2"></div>
+  <input class="inp" type="password" id="fcP2" autocomplete="new-password">
+  <div class="pw-err" id="fcErr"></div>
+  <button class="btn-save" id="fcBtn" onclick="doChgPass()" data-i18n="finChgBtn"></button>
 </div></div>
 
 <div class="toast" id="toast"></div>
@@ -620,6 +663,49 @@ en:{
  renOk:'Renamed ✓',tLedger:'Accounts',lgSearch:'Search doctor...',lgRev:'Month revenue',lgPrev:'Previous balance',lgTotal:'Grand total',lgEditTitle:'Edit previous balance',lgCarry:'Carry forward grand total',lgInfo:'Month revenue',lgNone:'No doctors',repMonthCases:'This month cases total',repPrev:'Previous balance',repGrand:'Grand total',repPeriod:'Cases total',appUpdate:'App update',appUpdateBtn:'🔄 Clear cache and load latest',discount:'Discount',beforeDisc:'Subtotal',showMore:'Show more',impDone:'Imported {n} cases, skipped {d} duplicates',rExport:'Export report',rPdfBtn:'📄 Save as PDF',rPdfHint:'The print dialog will open: choose “Save as PDF”, then Save',rHtmlBtn:'⬇ Download report as HTML',rFallback:'Print failed, report downloaded as HTML',pdfBusy:'Creating PDF...',impOk:'Imported',impErr:'Invalid file',
  rTitle:'Financial Report',rLab:'MAS Dental Lab',rIssued:'Issued',rDoc:'Doctor',rCases:'Cases',rQty:'Qty',rTotal:'Total',rPaid:'Paid',rRem:'Remaining',rDate:'Date',rPat:'Patient',rWorks:'Works',rSum:'Doctors Summary',rByType:'By Work Type',rGrand:'Grand Total',rDetail:'Case Details',rPrint:'🖨️ Print / Save PDF',rAllCases:'All cases',rSign1:'Lab Manager',rSign2:'Accountant',rSign3:'Date',rMonthPeriod:'Month',rYear:'Year',rStatus:'Status'
 }};
+
+Object.assign(TR.ar,{
+ finTitle:'حماية الأسعار',
+ finOffTxt:'تشفّر الأسعار والمبالغ بكلمة سر خاصة بالمحاسب. بعد التفعيل لا يرى باقي الموظفين أي سعر أو إيراد، حتى لو فتحوا قاعدة البيانات.',
+ finLockedTxt:'الحماية مفعّلة. الأسعار والإيرادات مخفية على هذا الجهاز.',
+ finOpenTxt:'الحسابات مفتوحة. تُقفل تلقائياً بعد 15 دقيقة بدون استخدام.',
+ finBtnEnable:'تفعيل الحماية',finBtnUnlock:'فتح الحسابات (للمحاسب)',finBtnLock:'قفل الآن',finBtnChange:'تغيير كلمة السر',
+ finBad:'حالات تعذّر فك تشفيرها:',
+ finUnlockTitle:'فتح الحسابات',finPass:'كلمة السر المالية',finPass2:'أعد كتابة كلمة السر',finNewPass:'كلمة السر الجديدة',
+ finUnlockBtn:'فتح',finWrong:'كلمة السر غير صحيحة',finShort:'كلمة السر لا تقل عن 8 أحرف',finMismatch:'كلمتا السر غير متطابقتين',
+ finAckErr:'أكّد أنك فهمت التحذير',
+ finSetupTitle:'تفعيل حماية الأسعار',
+ finWarn:'⚠️ إذا نسيت كلمة السر لا يمكن استرجاع الأسعار أبداً، لا من Firebase ولا من أي مكان. احفظها بمكان آمن. سيُنزَّل الآن ملف نسخة احتياطية، احتفظ به.',
+ finAck:'فهمت أنه لا يمكن استرجاع الأسعار إذا نسيت كلمة السر',
+ finSetupBtn:'تفعيل وتشفير',finProg:'جارٍ التشفير...',finProg2:'جارٍ الفتح...',
+ finConfirm:'تم تنزيل نسخة احتياطية.\nسيتم الآن تشفير كل الأسعار. المتابعة؟',
+ finDone:'تم تشفير {n} حالة ✓',finOk:'تم فتح الحسابات ✓',finLockedOk:'تم القفل 🔒',
+ finNeedUnlock:'افتح الحسابات أولاً بكلمة السر',
+ finChgTitle:'تغيير كلمة السر',finChgBtn:'تغيير',finChgDone:'تم تغيير كلمة السر ✓',
+ finChgWarn:'سيُعاد تشفير كل الأسعار بالكلمة الجديدة، ولا يمكن استرجاعها إذا نسيتها.',
+ finVerFail:'فشل التحقق من التشفير. لم يتغير أي شي.',finKeyChanged:'تغيّرت كلمة السر من جهاز آخر. افتح الحسابات من جديد.'
+});
+Object.assign(TR.en,{
+ finTitle:'Price protection',
+ finOffTxt:'Encrypts prices and amounts with a password only the accountant knows. After enabling, other staff cannot see any price or revenue, even from the database.',
+ finLockedTxt:'Protection is on. Prices and revenue are hidden on this device.',
+ finOpenTxt:'Accounts are unlocked. Locks automatically after 15 minutes of inactivity.',
+ finBtnEnable:'Enable protection',finBtnUnlock:'Unlock accounts (accountant)',finBtnLock:'Lock now',finBtnChange:'Change password',
+ finBad:'Cases that could not be decrypted:',
+ finUnlockTitle:'Unlock accounts',finPass:'Financial password',finPass2:'Repeat password',finNewPass:'New password',
+ finUnlockBtn:'Unlock',finWrong:'Wrong password',finShort:'Password must be at least 8 characters',finMismatch:'Passwords do not match',
+ finAckErr:'Confirm you understood the warning',
+ finSetupTitle:'Enable price protection',
+ finWarn:'⚠️ If you forget the password, prices can never be recovered, not from Firebase or anywhere else. Keep it somewhere safe. A backup file will be downloaded now; keep it.',
+ finAck:'I understand prices cannot be recovered if I forget the password',
+ finSetupBtn:'Enable & encrypt',finProg:'Encrypting...',finProg2:'Unlocking...',
+ finConfirm:'A backup was downloaded.\nAll prices will now be encrypted. Continue?',
+ finDone:'{n} cases encrypted ✓',finOk:'Accounts unlocked ✓',finLockedOk:'Locked 🔒',
+ finNeedUnlock:'Unlock accounts with the password first',
+ finChgTitle:'Change password',finChgBtn:'Change',finChgDone:'Password changed ✓',
+ finChgWarn:'All prices will be re-encrypted with the new password and cannot be recovered if you forget it.',
+ finVerFail:'Encryption check failed. Nothing was changed.',finKeyChanged:'Password was changed from another device. Unlock again.'
+});
 let lang = localStorage.getItem('lang') || 'ar';
 const t = k => TR[lang][k] ?? TR.ar[k] ?? k;
 const typeName = k => TYPES[k]?.n || k;
@@ -653,21 +739,29 @@ function itemQty(i){
 
 function discOf(sub,type,val){ const v=+val||0; let d=type==='p'?Math.round(sub*Math.min(v,100)/100):v; return Math.max(0,Math.min(Math.round(d),sub)); }
 function itemNet(c,i){ return c.sub>0?itemTotal(i)*c.total/c.sub:0; }
-function norm(id,c){
+function norm(id,c,fin,plainOK){
+  if(plainOK===undefined) plainOK=true;
   let items;
   if (c.items) {
     items = (Array.isArray(c.items)?c.items:Object.values(c.items)).filter(Boolean)
-      .map(i=>({type:TYPES[i.type]?i.type:'CB',teeth:+i.teeth||0,price:+i.price||0,shade:i.shade||'',arch:+i.arch||0}));
+      .map((i,idx)=>{
+        let price=0;
+        if(fin){ price = i.iid ? (+(fin.p&&fin.p[i.iid])||0) : (+(fin.pa&&fin.pa[idx])||0); }
+        else if(plainOK) price=+i.price||0;
+        return {type:TYPES[i.type]?i.type:'CB',teeth:+i.teeth||0,price,shade:i.shade||'',arch:+i.arch||0,iid:i.iid||''};
+      });
   } else {
-    items = [{type:c.vip?'VIP':(TYPES[c.type]?c.type:'CB'),teeth:+c.teeth||0,price:0,shade:c.shade||'',arch:0}];
+    items = [{type:c.vip?'VIP':(TYPES[c.type]?c.type:'CB'),teeth:+c.teeth||0,price:0,shade:c.shade||'',arch:0,iid:''}];
   }
   const recv = c.recv || c.date || ((c.year&&c.month)?c.year+'-'+pad(c.month)+'-01':'');
   const [y,m] = recv ? recv.split('-').map(Number) : [+c.year||0,+c.month||0];
   const sub = items.reduce((s,i)=>s+itemTotal(i),0);
-  const discType = c.discType==='p'?'p':'a', discVal = +c.discVal||0;
+  let discType='a', discVal=0, paid=0;
+  if(fin){ discType=fin.dt==='p'?'p':'a'; discVal=+fin.dv||0; paid=+fin.paid||0; }
+  else if(plainOK){ discType=c.discType==='p'?'p':'a'; discVal=+c.discVal||0; paid=+c.paid||0; }
   const disc = discOf(sub,discType,discVal), total = sub-disc;
   return { id, sub, disc, discType, discVal, doc:c.doc||'', pat:c.pat||'', recv, due:c.due||'', status:STAT[c.status]?c.status:(LEGACY[c.status]||(c.items?'sdt':'complete')),
-           items, total, paid:+c.paid||0, year:y, month:m, ts:c.ts||0, ser:+c.ser||0 };
+           items, total, paid, year:y, month:m, ts:c.ts||0, ser:+c.ser||0 };
 }
 function dueState(c){
   if (c.status==='complete' || !c.due) return null;
@@ -685,11 +779,206 @@ let items=[], editingId=null, payAll=false, paidVal='', status='sdt';
 let shTarget=-1, archTarget=-1, delId=null, renOld='';
 let qStatus='', srchOn=false, fltOpen=false, statMetric='rev', monSel=0, donutSel='';
 let docNames=[];
-let priceMem = {}; try { priceMem = JSON.parse(localStorage.getItem('priceMem')||'{}'); } catch(e){}
+let priceMem = {}; try { localStorage.removeItem('priceMem'); } catch(e){}
 let lastDoc = localStorage.getItem('lastDoc')||'';
 
 let discType='a', discVal='';
-const newItem = () => ({type:'',teeth:'',price:'',shade:'',arch:0});
+const newItem = () => ({type:'',teeth:'',price:'',shade:'',arch:0,iid:''});
+
+
+/* ══ FIN: تشفير الأسعار (AES-GCM + PBKDF2) ══ */
+const FIN={on:false,meta:null,key:null,bad:0};
+const FIN_IT=600000;
+const enc8=new TextEncoder(), dec8=new TextDecoder();
+const b64e=u=>{ let s=''; for(let i=0;i<u.length;i++) s+=String.fromCharCode(u[i]); return btoa(s); };
+const b64d=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+const genIid=()=>Array.from(crypto.getRandomValues(new Uint8Array(6)),b=>(b%36).toString(36)).join('');
+const finLocked=()=>FIN.on&&!FIN.key;
+async function deriveKey(pass,it){
+  const m=await crypto.subtle.importKey('raw',enc8.encode(pass),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt:enc8.encode('MAS-FIN-v1|'+uid),iterations:it||FIN_IT,hash:'SHA-256'},m,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+}
+async function encJSON(obj,key){
+  const iv=crypto.getRandomValues(new Uint8Array(12));
+  const ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},key||FIN.key,enc8.encode(JSON.stringify(obj))));
+  const out=new Uint8Array(12+ct.length); out.set(iv); out.set(ct,12); return b64e(out);
+}
+async function decJSON(str,key){
+  const u=b64d(str);
+  const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:u.slice(0,12)},key||FIN.key,u.slice(12));
+  return JSON.parse(dec8.decode(pt));
+}
+const decCache=new Map();
+async function decFin(str){
+  if(decCache.has(str)) return decCache.get(str);
+  let o=null; try{ o=await decJSON(str); }catch(e){}
+  decCache.set(str,o); return o;
+}
+const itemsOf=c=>c&&c.items?(Array.isArray(c.items)?c.items:Object.values(c.items)).filter(Boolean):[];
+function hasPlain(c){
+  if(!c||c.fin) return false;
+  return ['sub','total','disc','discVal','paid'].some(k=>c[k]!==undefined&&c[k]!==null)||itemsOf(c).some(i=>i.price!==undefined&&i.price!==null);
+}
+/* ما يُخزَّن للحالة حسب الوضع: عادي (قبل التفعيل) / مقفل (بدون أسعار) / مفتوح (أسعار مشفّرة) */
+async function storeFields(clean,f){
+  if(!FIN.on){
+    const sub=clean.reduce((x,i)=>x+itemTotal(i),0), disc=discOf(sub,f.dt,f.dv);
+    return {items:clean,sub,discType:f.dt,discVal:+f.dv||0,disc,total:sub-disc};
+  }
+  const bare=clean.map(({price,...r})=>r);
+  if(!FIN.key) return {items:bare};
+  const p={}; clean.forEach(i=>{ if(i.price) p[i.iid]=i.price; });
+  const fin={p,pa:clean.map(i=>i.price||0),dt:f.dt==='p'?'p':'a',dv:+f.dv||0,paid:+f.paid||0};
+  return {items:bare,fin:await encJSON(fin),sub:null,disc:null,total:null,discType:null,discVal:null,paid:null};
+}
+async function encFields(id,c){
+  const n=norm(id,c,null,true);
+  const clean=n.items.map(i=>({type:i.type,teeth:i.teeth,price:i.price,shade:i.shade,arch:i.arch,iid:i.iid||genIid()}));
+  const bare=clean.map(({price,...r})=>r);
+  const fin={p:{},pa:clean.map(i=>i.price||0),dt:n.discType,dv:n.discVal,paid:n.paid};
+  clean.forEach(i=>{ if(i.price) fin.p[i.iid]=i.price; });
+  const f={items:bare,fin:await encJSON(fin),sub:null,disc:null,total:null,discType:null,discVal:null,paid:null};
+  const chk=norm(id,{...c,items:bare},await decJSON(f.fin),true);
+  if(chk.sub!==n.sub||chk.total!==n.total||chk.paid!==n.paid) throw new Error('verify');
+  return f;
+}
+async function migratePlain(){
+  if(!FIN.on||!FIN.key) return 0;
+  const ids=Object.keys(raw).filter(id=>hasPlain(raw[id]));
+  const staged=[];
+  for(const id of ids){ staged.push([id,await encFields(id,raw[id])]); }   // تحقّق من الكل قبل كتابة أي شي
+  const accUpd={};
+  for(const [k,a] of Object.entries(accRaw)){
+    if(a&&a.name&&a.pe===undefined&&a.prev!==undefined&&a.prev!==null){ accUpd[k+'/pe']=await encJSON({v:+a.prev||0}); accUpd[k+'/prev']=null; }
+  }
+  for(let i=0;i<staged.length;i+=80){
+    const part={};
+    staged.slice(i,i+80).forEach(([id,f])=>Object.entries(f).forEach(([k,v])=>part[id+'/'+k]=v));
+    await update(cRef,part);
+  }
+  if(Object.keys(accUpd).length) await update(accRef,accUpd);
+  return staged.length;
+}
+const pendingPlain=()=>Object.values(raw).some(hasPlain)||Object.values(accRaw).some(a=>a&&a.name&&a.pe===undefined&&a.prev!==undefined&&a.prev!==null);
+
+let rbSeq=0;
+async function rebuild(){
+  const seq=++rbSeq;
+  const plainOK=!FIN.on||!!FIN.key;
+  let bad=0;
+  const cs=await Promise.all(Object.entries(raw).filter(([,c])=>c&&typeof c==='object').map(async([id,c])=>{
+    let fin=null;
+    if(c.fin&&FIN.key){ fin=await decFin(c.fin); if(!fin) bad++; }
+    return norm(id,c,fin,plainOK);
+  }));
+  const acc={};
+  await Promise.all(Object.values(accRaw).map(async a=>{
+    if(!a||!a.name) return;
+    let v=0;
+    if(a.pe){ if(FIN.key){ const o=await decFin(a.pe); if(o) v=+o.v||0; else bad++; } }
+    else if(plainOK) v=+a.prev||0;
+    acc[a.name]=v;
+  }));
+  if(seq!==rbSeq) return;
+  FIN.bad=bad; cases=cs; accounts=acc;
+  priceMem={};
+  if(plainOK) [...cases].sort((a,b)=>(a.ts||0)-(b.ts||0)).forEach(c=>c.items.forEach(i=>{ if(i.price) priceMem[c.doc+'|'+i.type]=i.price; }));
+  finUi(); refresh();
+}
+function onMeta(m){
+  if(FIN.key&&m&&FIN.meta&&m.chk!==FIN.meta.chk){ FIN.key=null; decCache.clear(); toast(t('finKeyChanged'),'err'); }
+  FIN.meta=m||null; FIN.on=!!m;
+  if(!FIN.on){ FIN.key=null; decCache.clear(); }
+  rebuild();
+}
+let prevLocked=false;
+function finUi(){
+  const locked=finLocked();
+  document.body.classList.toggle('fin-locked',locked);
+  const b=$('lockBtn'); if(b){ b.classList.toggle('show',FIN.on); b.classList.toggle('open',!!FIN.key); b.textContent=FIN.key?'🔓':'🔒'; }
+  renderFinCard();
+  if(prevLocked!==locked){
+    prevLocked=locked;
+    if(locked){ initForm(); const act=document.querySelector('.page.on'); if(act&&(act.id==='pg-stats'||act.id==='pg-ledger')) showPg('add'); }
+    else renderItems();
+  }
+}
+function renderFinCard(){
+  const el=$('finCard'); if(!el) return;
+  let h=`<div class="info-ti">🔐 ${t('finTitle')}</div>`;
+  if(!FIN.on) h+=`<div class="fin-st">${t('finOffTxt')}</div><button class="btn-act" style="width:100%;justify-content:center;padding:11px" onclick="openFinSetup()">${t('finBtnEnable')}</button>`;
+  else if(!FIN.key) h+=`<div class="fin-st">${t('finLockedTxt')}</div><button class="btn-act" style="width:100%;justify-content:center;padding:11px" onclick="openUnlock()">🔓 ${t('finBtnUnlock')}</button>`;
+  else h+=`<div class="fin-ok">${t('finOpenTxt')}</div>${FIN.bad?`<div class="fin-warn">${t('finBad')} ${FIN.bad}</div>`:''}<div class="btn-row"><button class="btn-act" style="flex:1;justify-content:center" onclick="lockNow()">🔒 ${t('finBtnLock')}</button><button class="btn-act" style="flex:1;justify-content:center" onclick="openChgPass()">${t('finBtnChange')}</button></div>`;
+  el.innerHTML=h;
+}
+let idleT=null;
+function bumpIdle(){ clearTimeout(idleT); if(FIN.key) idleT=setTimeout(()=>lockNow(),15*60*1000); }
+['pointerdown','keydown','touchstart'].forEach(ev=>document.addEventListener(ev,bumpIdle,{passive:true}));
+window.lockNow=()=>{ FIN.key=null; decCache.clear(); clearTimeout(idleT); rebuild(); toast(t('finLockedOk'),'ok'); };
+window.lockClick=()=>{ if(FIN.key) lockNow(); else openUnlock(); };
+window.openUnlock=()=>{ $('fuPass').value=''; $('fuErr').textContent=''; $('finOv').classList.add('on'); setTimeout(()=>$('fuPass').focus(),350); };
+window.doUnlock=async()=>{
+  const pw=$('fuPass').value; if(!pw||!FIN.meta) return;
+  const btn=$('fuBtn'), er=$('fuErr'); er.textContent=''; btn.disabled=true; btn.textContent=t('finProg2');
+  try{
+    const key=await deriveKey(pw,FIN.meta.it);
+    try{ if(await decJSON(FIN.meta.chk,key)!=='MAS-OK') throw 0; }catch(e){ er.textContent=t('finWrong'); return; }
+    FIN.key=key; decCache.clear(); bumpIdle();
+    await rebuild();
+    closeOv('finOv'); toast(t('finOk'),'ok');
+    if(pendingPlain()) migratePlain().catch(e=>console.error(e));
+  }catch(e){ er.textContent=t('errAny'); }
+  finally{ btn.disabled=false; btn.textContent=t('finUnlockBtn'); $('fuPass').value=''; }
+};
+window.openFinSetup=()=>{ ['fsP1','fsP2'].forEach(i=>$(i).value=''); $('fsAck').checked=false; $('fsErr').textContent=''; $('finSetOv').classList.add('on'); };
+window.doSetup=async()=>{
+  const p1=$('fsP1').value, p2=$('fsP2').value, er=$('fsErr'), btn=$('fsBtn'); er.textContent='';
+  if(p1.length<8){ er.textContent=t('finShort'); return; }
+  if(p1!==p2){ er.textContent=t('finMismatch'); return; }
+  if(!$('fsAck').checked){ er.textContent=t('finAckErr'); return; }
+  btn.disabled=true; btn.textContent=t('finProg');
+  try{
+    const key=await deriveKey(p1);
+    const sample=Object.values(raw).find(c=>c&&c.fin)?.fin||Object.values(accRaw).find(a=>a&&a.pe)?.pe;
+    if(sample){   // بيانات مشفّرة موجودة (مثلاً حُذف سجل الحماية): نفس كلمة السر لازم تفتحها
+      try{ await decJSON(sample,key); }catch(e){ er.textContent=t('finWrong'); return; }
+    } else {
+      exportJSON();
+      if(!confirm(t('finConfirm'))) return;
+    }
+    const meta={v:1,it:FIN_IT,chk:await encJSON('MAS-OK',key)};
+    FIN.key=key; FIN.meta=meta; decCache.clear();
+    await update(ref(db,`users/${uid}/meta`),{fin:meta});
+    FIN.on=true; bumpIdle();
+    await rebuild();
+    const n=await migratePlain();
+    closeOv('finSetOv'); toast(t('finDone').replace('{n}',n),'ok');
+  }catch(e){ console.error(e); er.textContent=e&&e.message==='verify'?t('finVerFail'):t('errAny'); if(!FIN.on){ FIN.key=null; FIN.meta=null; } }
+  finally{ btn.disabled=false; btn.textContent=t('finSetupBtn'); }
+};
+window.openChgPass=()=>{ ['fcP1','fcP2'].forEach(i=>$(i).value=''); $('fcErr').textContent=''; $('finChgOv').classList.add('on'); };
+window.doChgPass=async()=>{
+  if(!FIN.key) return;
+  const p1=$('fcP1').value, p2=$('fcP2').value, er=$('fcErr'), btn=$('fcBtn'); er.textContent='';
+  if(p1.length<8){ er.textContent=t('finShort'); return; }
+  if(p1!==p2){ er.textContent=t('finMismatch'); return; }
+  btn.disabled=true; btn.textContent=t('finProg');
+  const old={key:FIN.key,meta:FIN.meta};
+  try{
+    const nk=await deriveKey(p1);
+    const upd={};
+    for(const [id,c] of Object.entries(raw)){ if(c&&c.fin) upd[`cases/${id}/fin`]=await encJSON(await decJSON(c.fin),nk); }
+    for(const [k,a] of Object.entries(accRaw)){ if(a&&a.pe) upd[`accounts/${k}/pe`]=await encJSON(await decJSON(a.pe),nk); }
+    const meta={v:1,it:FIN_IT,chk:await encJSON('MAS-OK',nk)};
+    upd['meta/fin']=meta;
+    FIN.key=nk; FIN.meta=meta; decCache.clear();
+    try{ await update(ref(db,`users/${uid}`),upd); }
+    catch(e){ FIN.key=old.key; FIN.meta=old.meta; decCache.clear(); throw e; }
+    bumpIdle(); await rebuild();
+    closeOv('finChgOv'); toast(t('finChgDone'),'ok');
+  }catch(e){ console.error(e); er.textContent=t('finVerFail'); }
+  finally{ btn.disabled=false; btn.textContent=t('finChgBtn'); }
+};
 
 /* ══ LANGUAGE ══ */
 function applyLang(){
@@ -698,6 +987,7 @@ function applyLang(){
   document.querySelectorAll('[data-i18n]').forEach(e=>e.textContent=t(e.dataset.i18n));
   document.querySelectorAll('[data-i18n-ph]').forEach(e=>e.placeholder=t(e.dataset.i18nPh));
   $('btnAr').classList.toggle('on',lang==='ar'); $('btnEn').classList.toggle('on',lang==='en');
+  if(typeof finUi==='function') finUi();
   $('mRev').textContent=t('mRev'); $('mQty').textContent=t('mQty');
   $('exMonth').textContent='📅 '+t('exMonth');
   $('docMgrToggle').textContent = $('docMgrList').style.display==='none'?t('show'):t('hideL');
@@ -742,12 +1032,14 @@ onAuthStateChanged(auth,u=>{
     $('hdrAv').innerHTML=av(false); $('accAv').innerHTML=av(true);
     $('accNm').textContent=u.displayName||'User'; $('accEm').textContent=u.email||'';
     cRef=ref(db,`users/${uid}/cases`);
-    onValue(cRef,snap=>{ raw=snap.val()||{}; cases=Object.entries(raw).map(([id,c])=>norm(id,c)); refresh(); });
+    onValue(cRef,snap=>{ raw=snap.val()||{}; rebuild(); });
     accRef=ref(db,`users/${uid}/accounts`);
-    onValue(accRef,snap=>{ accRaw=snap.val()||{}; accounts={}; Object.values(accRaw).forEach(a=>{ if(a&&a.name) accounts[a.name]=+a.prev||0; }); if($('pg-ledger').classList.contains('on')) renderLedger(); });
+    onValue(accRef,snap=>{ accRaw=snap.val()||{}; rebuild(); });
+    onValue(ref(db,`users/${uid}/meta/fin`),snap=>onMeta(snap.val()));
     initForm(); applyLang();
   } else {
-    uid=null; $('login').style.display='flex'; $('app').classList.remove('on');
+    uid=null; FIN.key=null; FIN.on=false; FIN.meta=null; decCache.clear(); clearTimeout(idleT); raw={}; accRaw={}; cases=[]; accounts={}; priceMem={}; document.body.classList.remove('fin-locked');
+    $('login').style.display='flex'; $('app').classList.remove('on');
   }
 });
 
@@ -785,7 +1077,8 @@ function renderItems(){
     const grid=ORDER.map(k=>{const on=it.type===k;return `<button class="tchip${on?' on':''}" style="${on?`background:${TYPES[k].c};border-color:${TYPES[k].c}`:''}" onclick="setItemType(${i},'${k}')">${TYPES[k].n}</button>`;}).join('');
     let body='';
     if(T){
-      const priceInp=(lbl)=>`<div class="fld"><div class="lbl">${lbl}</div><input class="inp" type="number" inputmode="numeric" min="0" value="${esc(it.price)}" placeholder="0" oninput="setF(${i},'price',this.value)"></div>`;
+      const LK=finLocked();
+      const priceInp=(lbl)=>LK?'':`<div class="fld"><div class="lbl">${lbl}</div><input class="inp" type="number" inputmode="numeric" min="0" value="${esc(it.price)}" placeholder="0" oninput="setF(${i},'price',this.value)"></div>`;
       if(T.k==='unit'){
         body=`<div class="row2"><div class="fld"><div class="lbl">${t('teethCount')}</div><input class="inp" type="number" inputmode="numeric" min="1" value="${esc(it.teeth)}" placeholder="0" oninput="setF(${i},'teeth',this.value)"></div>${priceInp(t('unitPrice'))}</div>
         <div class="fld"><div class="lbl">${t('shade')}</div><button class="shade-btn${it.shade?' picked':''}" onclick="openShade(${i})"><span class="sh-dot" style="${it.shade?`background:${getClr(it.shade)}`:''}"></span><span>${it.shade?esc(it.shade):t('pickShade')}</span></button></div>`;
@@ -794,7 +1087,7 @@ function renderItems(){
       } else {
         body=priceInp(t('piecePrice'));
       }
-      body+=`<div class="sub" id="sub${i}">${subText(it)}</div>`;
+      if(!LK) body+=`<div class="sub" id="sub${i}">${subText(it)}</div>`;
     }
     return `<div class="item" style="${T?`border-right-color:${T.c}`:''}"><div class="item-h"><span>${t('work')} ${i+1}${T?' · '+T.n:''}</span>${items.length>1?`<button class="x" onclick="rmItem(${i})">✕</button>`:''}</div><div class="tgrid">${grid}</div>${body}</div>`;
   }).join('');
@@ -868,19 +1161,20 @@ window.saveCase = async()=>{
   }
   const recv=$('fRecv').value||today(), due=$('fDue').value||'';
   const [y,m]=recv.split('-').map(Number);
-  const clean=items.map(it=>({type:it.type,teeth:TYPES[it.type].k==='unit'?+it.teeth:0,price:+it.price||0,shade:it.shade||'',arch:TYPES[it.type].k==='arch'?+it.arch:0}));
+  const clean=items.map(it=>({type:it.type,teeth:TYPES[it.type].k==='unit'?+it.teeth:0,price:finLocked()?0:(+it.price||0),shade:it.shade||'',arch:TYPES[it.type].k==='arch'?+it.arch:0,iid:it.iid||genIid()}));
   const sub=clean.reduce((s,i)=>s+itemTotal(i),0);
   const disc=discOf(sub,discType,discVal), total=sub-disc;
-  const data={ser,doc,pat,recv,due,status,items:clean,sub,discType,discVal:+discVal||0,disc,total,year:y,month:m};
   const btn=$('btnSave'); btn.style.opacity='.6'; btn.style.pointerEvents='none';
   try{
+    const oldC=editingId?cases.find(x=>x.id===editingId):null;
+    const sf=await storeFields(clean,{dt:discType,dv:discVal,paid:oldC?oldC.paid:0});
+    const data={ser,doc,pat,recv,due,status,year:y,month:m,...sf};
     let newId=editingId;
     if(editingId){ await update(ref(db,`users/${uid}/cases/${editingId}`),data); }
     else { const r=await push(cRef,{...data,ts:Date.now()}); newId=r.key; }
     clean.forEach(i=>{ if(i.price) priceMem[doc+'|'+i.type]=i.price; });
-    localStorage.setItem('priceMem',JSON.stringify(priceMem));
     lastDoc=doc; localStorage.setItem('lastDoc',doc);
-    showSaveOk(`${doc} · ${pat} · ${money(total)}`);
+    showSaveOk(`${doc} · ${pat}${finLocked()?'':' · '+money(total)}`);
     const wasEdit=!!editingId;
     initForm();
     if(wasEdit){ showPg('list',document.querySelectorAll('.tab')[1]); setTimeout(()=>{ const c=$('cc-'+newId); if(c) c.classList.add('flash'); },300); }
@@ -893,7 +1187,7 @@ function loadForEdit(id){
   const c=cases.find(x=>x.id===id); if(!c) return;
   editingId=id;
   serTouched=true; $('fSer').value=serFmt(c.ser); $('fDoc').value=c.doc; $('fPat').value=c.pat; $('fRecv').value=c.recv||today(); $('fDue').value=c.due||'';
-  status=c.status; items=c.items.map(i=>({type:i.type,teeth:i.teeth||'',price:i.price||'',shade:i.shade,arch:i.arch}));
+  status=c.status; items=c.items.map(i=>({type:i.type,teeth:i.teeth||'',price:i.price||'',shade:i.shade,arch:i.arch,iid:i.iid||''}));
   discType=c.discType; discVal=c.discVal?String(c.discVal):''; $('discInp').value=discVal;
   renderStatusChips(); renderItems(); setFormMode();
   showPg('add',document.querySelectorAll('.tab')[0]);
@@ -904,7 +1198,9 @@ window.openEdit = loadForEdit;
 window.duplicateCase = async id=>{
   const c=cases.find(x=>x.id===id); if(!c) return;
   const r=today(), [y,m]=r.split('-').map(Number);
-  await push(cRef,{ser:nextSer(),doc:c.doc,pat:c.pat,recv:r,due:'',status:'sdt',items:c.items,sub:c.sub,discType:c.discType,discVal:c.discVal,disc:c.disc,total:c.total,year:y,month:m,ts:Date.now()});
+  const clean=c.items.map(i=>({type:i.type,teeth:i.teeth,price:finLocked()?0:i.price,shade:i.shade,arch:i.arch,iid:genIid()}));
+  const sf=await storeFields(clean,{dt:c.discType,dv:c.discVal,paid:0});
+  await push(cRef,{ser:nextSer(),doc:c.doc,pat:c.pat,recv:r,due:'',status:'sdt',year:y,month:m,ts:Date.now(),...sf});
   toast(t('dupOk'),'ok');
 };
 window.openDel = id=>{ delId=id; $('delOv').classList.add('on'); };
@@ -916,7 +1212,10 @@ window.cycleStatus = async id=>{
 };
 window.payFullCase = async id=>{
   const c=cases.find(x=>x.id===id); if(!c) return;
-  await update(ref(db,`users/${uid}/cases/${id}`),{paid:c.total}); toast(t('savedOk'),'ok');
+  if(finLocked()){ toast(t('finNeedUnlock'),'err'); return; }
+  if(!FIN.on) await update(ref(db,`users/${uid}/cases/${id}`),{paid:c.total});
+  else { const clean=c.items.map(i=>({...i,iid:i.iid||genIid()})); const sf=await storeFields(clean,{dt:c.discType,dv:c.discVal,paid:c.total}); await update(ref(db,`users/${uid}/cases/${id}`),sf); }
+  toast(t('savedOk'),'ok');
 };
 
 /* ══ REFRESH ══ */
@@ -983,7 +1282,7 @@ window.renderList = function(){
   $('lCnt').textContent=`${list.length} ${t('cases')}`;
   const tq={}; let tTeeth=0;
   list.forEach(c=>c.items.forEach(i=>{ const n=itemQty(i); tq[i.type]=(tq[i.type]||0)+n; if(TYPES[i.type].k==='unit') tTeeth+=n; }));
-  $('lSum').textContent=list.length?`${fmt(tTeeth)} ${t('tooth')} · ${money(list.reduce((s,c)=>s+c.total,0))}`:'';
+  $('lSum').textContent=list.length?`${fmt(tTeeth)} ${t('tooth')}${finLocked()?'':' · '+money(list.reduce((s,c)=>s+c.total,0))}`:'';
   const ft=$('flType').value;
   $('typeCnt').innerHTML=ORDER.filter(k=>tq[k]).map(k=>`<button class="tcnt${ft===k?' on':''}" style="color:${TYPES[k].c};border-color:${TYPES[k].c}${ft===k?`;background:${TYPES[k].c}`:''}" onclick="toggleTypeF('${k}')">${TYPES[k].n} · ${tq[k]}${TYPES[k].k==='unit'?'':' '+unitLbl(k)}</button>`).join('');
   if(!list.length){ $('listEl').innerHTML=`<div class="empty"><span class="ei">${q?'🔍':'📋'}</span>${q?t('noResults'):t('noCases')}</div>`; return; }
@@ -1005,11 +1304,11 @@ function cardHtml(c,idx,q){
       return `<div class="ci"><span class="ci-dot" style="background:${T.c}"></span><span class="ci-n">${T.n}</span><span class="ci-v">${sh}</span><span class="ci-cnt" style="color:${T.c}">${cnt}</span></div>`;
     }).join('');
     return `<div class="cc" id="cc-${c.id}" style="animation-delay:${Math.min(idx,8)*30}ms;border-right:4px solid ${TYPES[c.items[0].type].c}">
-      <div class="cc-top"><div style="min-width:0"><div class="cc-doc">${hl(c.doc,q)}</div><div class="cc-pat">${c.ser?`<b style="color:var(--blue);letter-spacing:1px;margin-inline-end:6px">#${serFmt(c.ser)}</b>`:''}${hl(c.pat,q)}</div></div><div class="cc-total">${money(c.total)}</div></div>
+      <div class="cc-top"><div style="min-width:0"><div class="cc-doc">${hl(c.doc,q)}</div><div class="cc-pat">${c.ser?`<b style="color:var(--blue);letter-spacing:1px;margin-inline-end:6px">#${serFmt(c.ser)}</b>`:''}${hl(c.pat,q)}</div></div><div class="cc-total fin">${money(c.total)}</div></div>
       <div class="cc-tags">
         <button class="tag btnlike" style="background:${S.bg};color:${S.c}" onclick="cycleStatus('${c.id}')">● ${t('s_'+c.status)}</button>
         <span class="tag">📥 ${dispDate(c.recv)}</span>
-        ${c.disc>0?`<span class="tag" style="background:#fef2f2;color:#b91c1c">🏷 ${t('discount')} −${fmt(c.disc)}</span>`:''}
+        ${c.disc>0?`<span class="tag fin" style="background:#fef2f2;color:#b91c1c">🏷 ${t('discount')} −${fmt(c.disc)}</span>`:''}
         ${c.due?`<span class="tag ${ds?ds.cls:''}">📤 ${dispDate(c.due)}${ds?' · '+ds.txt:''}</span>`:''}
       </div>
       <div class="cc-items">${rows}</div>
@@ -1333,7 +1632,10 @@ window.carryTotal = ()=>{ const r=lgRows[pvIdx]; if(r) $('pvInp').value=r.tot||'
 window.savePrev = async()=>{
   const r=lgRows[pvIdx]; if(!r) return;
   const v=Math.max(0,Math.round(+$('pvInp').value||0));
-  try{ await update(accRef,{[accKey(r.name)]:{name:r.name,prev:v}}); closeOv('pvOv'); toast(t('savedOk'),'ok'); }
+  try{
+    if(finLocked()){ toast(t('finNeedUnlock'),'err'); return; }
+    const rec=FIN.on?{name:r.name,pe:await encJSON({v}),prev:null}:{name:r.name,prev:v};
+    await update(accRef,{[accKey(r.name)]:rec}); closeOv('pvOv'); toast(t('savedOk'),'ok'); }
   catch(e){ toast(t('errAny'),'err'); }
 };
 window.invoiceFor = i=>{
@@ -1359,12 +1661,19 @@ window.openRename = i=>{ renOld=docNames[i]; $('renInp').value=renOld; $('renOv'
 window.confirmRename = async()=>{
   const nn=$('renInp').value.trim(); if(!nn||nn===renOld){ closeOv('renOv'); return; }
   try{
+    const fo=Object.entries(accRaw).find(([,x])=>x&&x.name===renOld), fn=Object.entries(accRaw).find(([,x])=>x&&x.name===nn);
+    const ko=fo?fo[0]:accKey(renOld), kn=fn?fn[0]:accKey(nn), eo=fo?fo[1]:null, en=fn?fn[1]:null;
+    if(eo&&en&&finLocked()){ toast(t('finNeedUnlock'),'err'); return; }
     await Promise.all(cases.filter(c=>c.doc===renOld).map(c=>update(ref(db,`users/${uid}/cases/${c.id}`),{doc:nn})));
-    Object.keys(priceMem).forEach(k=>{ if(k.startsWith(renOld+'|')){ priceMem[nn+k.slice(renOld.length)]=priceMem[k]; delete priceMem[k]; } });
-    localStorage.setItem('priceMem',JSON.stringify(priceMem));
     if(lastDoc===renOld){ lastDoc=nn; localStorage.setItem('lastDoc',nn); }
     if($('fDoc').value===renOld) $('fDoc').value=nn;
-    if(accounts[renOld]!==undefined){ const nv=(accounts[nn]||0)+accounts[renOld]; await update(accRef,{[accKey(nn)]:{name:nn,prev:nv},[accKey(renOld)]:null}); }
+    if(eo){
+      let rec;
+      if(!FIN.on) rec={name:nn,prev:(accounts[nn]||0)+(accounts[renOld]||0)};
+      else if(!en) rec={name:nn,...(eo.pe?{pe:eo.pe}:{}),...(eo.prev!==undefined&&eo.prev!==null?{prev:eo.prev}:{})};
+      else rec={name:nn,pe:await encJSON({v:(accounts[nn]||0)+(accounts[renOld]||0)}),prev:null};
+      await update(accRef,{[kn]:rec,[ko]:null});
+    }
     closeOv('renOv'); toast(t('renOk'),'ok');
   }catch(e){ toast(t('errAny'),'err'); }
 };
@@ -1373,19 +1682,24 @@ window.forceUpdate = async()=>{
   try{ const ks=await caches.keys(); await Promise.all(ks.map(k=>caches.delete(k))); }catch(e){}
   location.reload();
 };
-window.exportJSON = ()=>dl(JSON.stringify({__format:'mas2',cases:raw,accounts:accRaw},null,1),`mas-backup-${today()}.json`,'application/json');
+window.exportJSON = ()=>dl(JSON.stringify({__format:'mas2',cases:raw,accounts:accRaw,finMeta:FIN.meta},null,1),`mas-backup-${today()}.json`,'application/json');
 const fpOf = c=>{
   const n=norm('',c);
   return [n.doc,n.pat,n.recv,n.items.map(i=>[i.type,i.teeth,i.arch,i.shade].join(':')).sort().join(',')].map(x=>String(x).trim().toLowerCase()).join('|');
 };
 window.importJSON = inp=>{
   const f=inp.files[0]; if(!f) return;
+  if(finLocked()){ toast(t('finNeedUnlock'),'err'); inp.value=''; return; }
   const r=new FileReader();
   r.onload=async()=>{
     try{
       let obj=JSON.parse(r.result);
       if(obj&&obj.__format==='mas2'){
-        const add={}; Object.entries(obj.accounts||{}).forEach(([k,a])=>{ if(a&&a.name&&accounts[a.name]===undefined) add[k]=a; });
+        const add={};
+        for(const [k,a] of Object.entries(obj.accounts||{})){
+          if(!(a&&a.name&&accounts[a.name]===undefined)) continue;
+          add[k]=(FIN.on&&a.pe===undefined&&a.prev!==undefined&&a.prev!==null)?{name:a.name,pe:await encJSON({v:+a.prev||0})}:a;
+        }
         if(Object.keys(add).length) await update(accRef,add);
         obj=obj.cases||{};
       }
@@ -1399,7 +1713,8 @@ window.importJSON = inp=>{
         if((id&&ids.has(id))||seen.has(fp)){ nDup++; continue; }
         seen.add(fp);
         const key=push(cRef).key;
-        const rec=JSON.parse(JSON.stringify(c)); if(!rec.ts) rec.ts=Date.now()+(k++);
+        let rec=JSON.parse(JSON.stringify(c)); if(!rec.ts) rec.ts=Date.now()+(k++);
+        if(FIN.on&&hasPlain(rec)){ const ef=await encFields('',rec); rec={...rec,...ef}; Object.keys(rec).forEach(x=>{ if(rec[x]===null) delete rec[x]; }); }
         add[key]=rec; nNew++;
       }
       const keys=Object.keys(add);
@@ -1413,6 +1728,7 @@ window.importJSON = inp=>{
 
 /* ══ NAV / UI ══ */
 window.showPg = (n,btn)=>{
+  if(finLocked()&&(n==='stats'||n==='ledger')){ n='add'; btn=null; }
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
   $('pg-'+n).classList.add('on');
